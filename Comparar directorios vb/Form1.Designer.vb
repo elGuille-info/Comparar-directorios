@@ -22,7 +22,7 @@ Partial Class Form1
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
+        Dim ListViewItem6 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
@@ -54,6 +54,13 @@ Partial Class Form1
         Me.btnBorrar = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripInfo = New System.Windows.Forms.StatusStrip()
         Me.LabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.btnMover = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnCopiarDir = New System.Windows.Forms.ToolStripButton()
+        Me.btnMkDir = New System.Windows.Forms.ToolStripButton()
+        Me.btnMoverDir = New System.Windows.Forms.ToolStripButton()
+        Me.btnBorrarDir = New System.Windows.Forms.ToolStripButton()
+        Me.btnNuevoFichero = New System.Windows.Forms.ToolStripButton()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -95,8 +102,8 @@ Partial Class Form1
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.GridLines = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem1.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem6.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem6})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -144,7 +151,7 @@ Partial Class Form1
         Me.btnAbrirDirIzq.Name = "btnAbrirDirIzq"
         Me.btnAbrirDirIzq.Size = New System.Drawing.Size(62, 22)
         Me.btnAbrirDirIzq.Text = "Abrir..."
-        Me.btnAbrirDirIzq.ToolTipText = "Seleccionar el directorio a abrir directorio en el panel izquierdo"
+        Me.btnAbrirDirIzq.ToolTipText = "Seleccionar el directorio a abrir en el panel izquierdo"
         '
         'ToolStripSeparator1
         '
@@ -216,7 +223,7 @@ Partial Class Form1
         Me.btnAbrirDirDer.Name = "btnAbrirDirDer"
         Me.btnAbrirDirDer.Size = New System.Drawing.Size(62, 22)
         Me.btnAbrirDirDer.Text = "Abrir..."
-        Me.btnAbrirDirDer.ToolTipText = "Seleccionar el directorio a abrir directorio en el panel derecho"
+        Me.btnAbrirDirDer.ToolTipText = "Seleccionar el directorio a abrir en el panel derecho"
         '
         'ToolStripSeparator2
         '
@@ -234,7 +241,7 @@ Partial Class Form1
         'ToolStripComparar
         '
         Me.ToolStripComparar.AutoSize = False
-        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.btnMostrar, Me.ToolStripSeparator5, Me.btnCopiar, Me.btnBorrar})
+        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.btnMostrar, Me.ToolStripSeparator5, Me.btnNuevoFichero, Me.btnCopiar, Me.btnMover, Me.btnBorrar, Me.ToolStripSeparator6, Me.btnMkDir, Me.btnCopiarDir, Me.btnMoverDir, Me.btnBorrarDir})
         Me.ToolStripComparar.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripComparar.Name = "ToolStripComparar"
         Me.ToolStripComparar.Size = New System.Drawing.Size(1035, 25)
@@ -277,7 +284,7 @@ Partial Class Form1
         Me.btnMostrar.Name = "btnMostrar"
         Me.btnMostrar.Size = New System.Drawing.Size(43, 22)
         Me.btnMostrar.Text = "Ver"
-        Me.btnMostrar.ToolTipText = "Abrir en el Notepad el primer fichero seleccionado"
+        Me.btnMostrar.ToolTipText = "Abrir en el Notepad el primer fichero seleccionado del panel activo"
         '
         'ToolStripSeparator5
         '
@@ -292,7 +299,8 @@ Partial Class Form1
         Me.btnCopiar.Name = "btnCopiar"
         Me.btnCopiar.Size = New System.Drawing.Size(62, 22)
         Me.btnCopiar.Text = "Copiar"
-        Me.btnCopiar.ToolTipText = "Copiar el primer fichero seleccionado al otro directorio"
+        Me.btnCopiar.ToolTipText = "Copiar el primer fichero seleccionado del panel activo al otro panel (directorio)" &
+    ""
         '
         'btnBorrar
         '
@@ -300,9 +308,9 @@ Partial Class Form1
         Me.btnBorrar.Image = CType(resources.GetObject("btnBorrar.Image"), System.Drawing.Image)
         Me.btnBorrar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnBorrar.Name = "btnBorrar"
-        Me.btnBorrar.Size = New System.Drawing.Size(59, 22)
-        Me.btnBorrar.Text = "Borrar"
-        Me.btnBorrar.ToolTipText = "Borrar el primer fichero seleccionado"
+        Me.btnBorrar.Size = New System.Drawing.Size(70, 22)
+        Me.btnBorrar.Text = "Eliminar"
+        Me.btnBorrar.ToolTipText = "Eliminar el primer fichero seleccionado del panel activo"
         '
         'StatusStripInfo
         '
@@ -320,6 +328,71 @@ Partial Class Form1
         Me.LabelInfo.Spring = True
         Me.LabelInfo.Text = "ToolStripStatusLabel1"
         Me.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnMover
+        '
+        Me.btnMover.AutoToolTip = False
+        Me.btnMover.Image = CType(resources.GetObject("btnMover.Image"), System.Drawing.Image)
+        Me.btnMover.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnMover.Name = "btnMover"
+        Me.btnMover.Size = New System.Drawing.Size(61, 22)
+        Me.btnMover.Text = "Mover"
+        Me.btnMover.ToolTipText = "Mover el fichero seleccionado del panel activo al otro panel (directorio)"
+        '
+        'ToolStripSeparator6
+        '
+        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
+        '
+        'btnCopiarDir
+        '
+        Me.btnCopiarDir.AutoToolTip = False
+        Me.btnCopiarDir.Image = CType(resources.GetObject("btnCopiarDir.Image"), System.Drawing.Image)
+        Me.btnCopiarDir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnCopiarDir.Name = "btnCopiarDir"
+        Me.btnCopiarDir.Size = New System.Drawing.Size(62, 22)
+        Me.btnCopiarDir.Text = "Copiar"
+        Me.btnCopiarDir.ToolTipText = "Copiar el directorio seleccionado del panel activo al otro panel (directorio)"
+        '
+        'btnMkDir
+        '
+        Me.btnMkDir.AutoToolTip = False
+        Me.btnMkDir.Image = CType(resources.GetObject("btnMkDir.Image"), System.Drawing.Image)
+        Me.btnMkDir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnMkDir.Name = "btnMkDir"
+        Me.btnMkDir.Size = New System.Drawing.Size(62, 22)
+        Me.btnMkDir.Text = "Nuevo"
+        Me.btnMkDir.ToolTipText = "Crear un nuevo directorio en el panel activo"
+        '
+        'btnMoverDir
+        '
+        Me.btnMoverDir.AutoToolTip = False
+        Me.btnMoverDir.Image = CType(resources.GetObject("btnMoverDir.Image"), System.Drawing.Image)
+        Me.btnMoverDir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnMoverDir.Name = "btnMoverDir"
+        Me.btnMoverDir.Size = New System.Drawing.Size(61, 22)
+        Me.btnMoverDir.Text = "Mover"
+        Me.btnMoverDir.ToolTipText = "Mover el directorio seleccionado del panel activo al otro panel (directorio)"
+        '
+        'btnBorrarDir
+        '
+        Me.btnBorrarDir.AutoToolTip = False
+        Me.btnBorrarDir.Image = CType(resources.GetObject("btnBorrarDir.Image"), System.Drawing.Image)
+        Me.btnBorrarDir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnBorrarDir.Name = "btnBorrarDir"
+        Me.btnBorrarDir.Size = New System.Drawing.Size(70, 22)
+        Me.btnBorrarDir.Text = "Eliminar"
+        Me.btnBorrarDir.ToolTipText = "Eliminar el directorio seleccionado"
+        '
+        'btnNuevoFichero
+        '
+        Me.btnNuevoFichero.AutoToolTip = False
+        Me.btnNuevoFichero.Image = CType(resources.GetObject("btnNuevoFichero.Image"), System.Drawing.Image)
+        Me.btnNuevoFichero.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnNuevoFichero.Name = "btnNuevoFichero"
+        Me.btnNuevoFichero.Size = New System.Drawing.Size(62, 22)
+        Me.btnNuevoFichero.Text = "Nuevo"
+        Me.btnNuevoFichero.ToolTipText = "Crear un nuevo fichero en el panel (directorio) activo"
         '
         'Form1
         '
@@ -382,4 +455,11 @@ Partial Class Form1
     Private WithEvents ToolStripSeparator1 As ToolStripSeparator
     Private WithEvents ToolStripSeparator2 As ToolStripSeparator
     Private WithEvents btnBorrar As ToolStripButton
+    Private WithEvents btnMover As ToolStripButton
+    Private WithEvents ToolStripSeparator6 As ToolStripSeparator
+    Private WithEvents btnMkDir As ToolStripButton
+    Private WithEvents btnCopiarDir As ToolStripButton
+    Private WithEvents btnMoverDir As ToolStripButton
+    Private WithEvents btnBorrarDir As ToolStripButton
+    Private WithEvents btnNuevoFichero As ToolStripButton
 End Class

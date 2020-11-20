@@ -245,7 +245,8 @@ Public Class Form1
         If dir.Parent IsNot Nothing Then
             Dim it = lv.Items.Add("[..]")
             'it.SubItems.Add("")
-            it.SubItems.Add($"[{dir.Parent.Name.ToUpper}]")
+            'it.SubItems.Add($"[↑ {dir.Parent.Name.ToUpper}]")
+            it.SubItems.Add($"[..\{dir.Parent.Name.ToUpper}]")
             it.SubItems.Add("[UP--DIR]")
             'it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
             it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm"))
@@ -564,6 +565,26 @@ Public Class Form1
 
         ' Releer el directorio de destino
         MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
+
+    End Sub
+
+    Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click
+
+    End Sub
+
+    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles btnMkDir.Click
+
+    End Sub
+
+    Private Sub BtnCopiarDir_Click(sender As Object, e As EventArgs) Handles btnCopiarDir.Click
+
+    End Sub
+
+    Private Sub BtnMoverDir_Click(sender As Object, e As EventArgs) Handles btnMoverDir.Click
+
+    End Sub
+
+    Private Sub BtnBorrarDir_Click(sender As Object, e As EventArgs) Handles btnBorrarDir.Click
 
     End Sub
 End Class
