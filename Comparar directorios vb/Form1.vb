@@ -52,6 +52,10 @@ Public Class Form1
 
     End Sub
 
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        LabelIzq.Text = $"Width: {Me.Width}, Height: {Me.Height}"
+    End Sub
+
     Private Sub BtnAbrirDirIzquierdo_Click(sender As Object, e As EventArgs) Handles btnAbrirDirIzquierdo.Click
         AbrirCarpeta(lvDirIzq)
     End Sub
@@ -97,8 +101,9 @@ Public Class Form1
     End Sub
 
     Private Sub MostrarDirectorio(sDir As String, lv As ListView)
-        lv.Tag = sDir
+        'lv.Tag = sDir
         Dim dir = New DirectoryInfo(sDir)
+        lv.Tag = dir
 
         If lv Is lvDirIzq Then
             LabelIzq.Text = dir.FullName ' dir.Name
@@ -114,7 +119,7 @@ Public Class Form1
         If dir.Parent IsNot Nothing Then
             Dim it = lv.Items.Add("..")
             it.BackColor = Color.Yellow
-            it.Tag = dir.Parent.FullName
+            it.Tag = dir.Parent '.FullName
             it.Checked = False
             it.ToolTipText = dir.Parent.FullName
         End If
@@ -125,7 +130,7 @@ Public Class Form1
             it.ForeColor = Color.DarkOliveGreen
             it.BackColor = Color.LightGoldenrodYellow
             it.Checked = False
-            it.Tag = di.FullName
+            it.Tag = di '.FullName
             it.ToolTipText = di.FullName
             'it.Font = New Font(it.Font, FontStyle.Bold)
         Next
@@ -133,8 +138,9 @@ Public Class Form1
             Dim it = lv.Items.Add("")
             it.SubItems.Add(fi.Name)
             it.SubItems.Add(fi.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
+            it.SubItems.Add(fi.Length.ToString("#,##0"))
             it.Checked = False
-            it.Tag = Nothing
+            it.Tag = fi
         Next
 
     End Sub
@@ -143,7 +149,7 @@ Public Class Form1
         IrParentDir(lvDirIzq)
     End Sub
 
-    Private Sub LvDirDer_DoubleClick(sender As Object, e As EventArgs) Handles lvDirDer.DoubleClick, lvDirDer.Click
+    Private Sub LvDirDer_DoubleClick(sender As Object, e As EventArgs)
         IrParentDir(lvDirDer)
     End Sub
 
@@ -151,7 +157,10 @@ Public Class Form1
         ' Comprobar si es un elemento con directorio
         If lv.SelectedItems.Count > 0 Then
             ' ir a ese directorio
-            Dim sDir = lv.SelectedItems(0).Tag.ToString
+            Dim di = TryCast(lv.SelectedItems(0).Tag, DirectoryInfo)
+            If di Is Nothing Then Return
+
+            Dim sDir = di.FullName
             If Not String.IsNullOrEmpty(sDir) Then
                 MostrarDirectorio(sDir, lv)
             End If
@@ -160,6 +169,74 @@ Public Class Form1
 
     Private Sub BtnComparar_Click(sender As Object, e As EventArgs) Handles btnComparar.Click
         ' Comparar el contenido de los 2 directorios
+        ' Recorrer los ficheros del panel izquierdo buscando cambios con el derecho
+        '   No existe           x   FireBrick
+        '   Es más grande       t>  Green
+        '   Es más pequeño      t<  DarkGreen
+        '   La fecha es mayor   f>  Blue
+        '   La fecha es menor   f<  SlateBlue
+        '   Son iguales         =
+        Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
+        If diIzq Is Nothing Then Return
+        Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
+        If diDer Is Nothing Then Return
+
+        LabelIzq.Text = "Comparando los directorios..."
+        Application.DoEvents()
+
+        Dim t = 0
+        Dim tf = 0
+        Dim tn = 0
+
+        For i = 0 To lvDirIzq.Items.Count - 1
+            Dim itIzq = lvDirIzq.Items(i)
+            Dim fiIzq = TryCast(itIzq.Tag, FileInfo)
+            If fiIzq Is Nothing Then Continue For
+            tf += 1
+            Dim fiDer As FileInfo
+            Dim existe As Boolean = False
+            For j = 0 To lvDirDer.Items.Count - 1
+                fiDer = TryCast(lvDirDer.Items(j).Tag, FileInfo)
+                If fiDer Is Nothing Then Continue For
+                If fiIzq.Name = fiDer.Name Then
+                    existe = True
+                    t += 1
+                    itIzq.Text = "="
+                    itIzq.ToolTipText = "Son iguales"
+                    If fiIzq.Length > fiDer.Length Then
+                        itIzq.ForeColor = Color.Green
+                        itIzq.Text = "t>"
+                        itIzq.ToolTipText = "El tamaño es mayor"
+                    ElseIf fiIzq.Length < fiDer.Length Then
+                        itIzq.ForeColor = Color.DarkGreen
+                        itIzq.Text = "t<"
+                        itIzq.ToolTipText = "El tamaño es menor"
+                    ElseIf fiIzq.LastWriteTime > fiDer.LastWriteTime Then
+                        itIzq.Text = "f>"
+                        itIzq.ForeColor = Color.Blue
+                        itIzq.ToolTipText = "La fecha es mayor"
+                    ElseIf fiIzq.LastWriteTime < fiDer.LastWriteTime Then
+                        itIzq.Text = "f<"
+                        itIzq.ForeColor = Color.SlateBlue
+                        itIzq.ToolTipText = "La fecha es menor"
+                    End If
+                    Exit For
+                End If
+            Next
+            If Not existe Then
+                itIzq.ForeColor = Color.Firebrick
+                itIzq.Text = "x"
+                itIzq.ToolTipText = "No existe"
+                tn += 1
+            End If
+        Next
+        LabelIzq.Text = $"De {tf} ficheros {t} tienen el mismo nombre,"
+
+        If tn > 0 Then
+            LabelDer.Text = $"{tn} no existen"
+        Else
+            LabelDer.Text = ""
+        End If
 
     End Sub
 
@@ -167,4 +244,5 @@ Public Class Form1
         MostrarDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
         MostrarDirectorio(lvDirDer.Tag.ToString, lvDirDer)
     End Sub
+
 End Class
