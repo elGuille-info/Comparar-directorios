@@ -22,12 +22,11 @@ Partial Class Form1
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem7 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim ListViewItem8 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
-        Me.chDirIzq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.chInfoIzq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chNombreIzq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chFechaIzq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chTamañoIzq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -36,7 +35,7 @@ Partial Class Form1
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.LabelIzq1 = New System.Windows.Forms.ToolStripLabel()
         Me.lvDirDer = New System.Windows.Forms.ListView()
-        Me.chDirDer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.chInfoDer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chNombreDer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chFechaDer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chTamañoDer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -50,11 +49,11 @@ Partial Class Form1
         Me.btnLimpiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnMostrar = New System.Windows.Forms.ToolStripButton()
-        Me.StatusStripInfo = New System.Windows.Forms.StatusStrip()
-        Me.LabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
         Me.btnBorrar = New System.Windows.Forms.ToolStripButton()
+        Me.StatusStripInfo = New System.Windows.Forms.StatusStrip()
+        Me.LabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -92,12 +91,12 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvDirIzq.BackColor = System.Drawing.SystemColors.Info
-        Me.lvDirIzq.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chDirIzq, Me.chNombreIzq, Me.chFechaIzq, Me.chTamañoIzq})
+        Me.lvDirIzq.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chInfoIzq, Me.chNombreIzq, Me.chTamañoIzq, Me.chFechaIzq})
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.GridLines = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem7.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem7})
+        ListViewItem1.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -106,10 +105,10 @@ Partial Class Form1
         Me.lvDirIzq.UseCompatibleStateImageBehavior = False
         Me.lvDirIzq.View = System.Windows.Forms.View.Details
         '
-        'chDirIzq
+        'chInfoIzq
         '
-        Me.chDirIzq.Text = "Dir"
-        Me.chDirIzq.Width = 36
+        Me.chInfoIzq.Text = "Info"
+        Me.chInfoIzq.Width = 36
         '
         'chNombreIzq
         '
@@ -143,9 +142,9 @@ Partial Class Form1
         Me.btnAbrirDirIzq.Image = CType(resources.GetObject("btnAbrirDirIzq.Image"), System.Drawing.Image)
         Me.btnAbrirDirIzq.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnAbrirDirIzq.Name = "btnAbrirDirIzq"
-        Me.btnAbrirDirIzq.Size = New System.Drawing.Size(107, 22)
-        Me.btnAbrirDirIzq.Text = "Abrir directorio"
-        Me.btnAbrirDirIzq.ToolTipText = "Abrir el directorio en el panel izquierdo"
+        Me.btnAbrirDirIzq.Size = New System.Drawing.Size(62, 22)
+        Me.btnAbrirDirIzq.Text = "Abrir..."
+        Me.btnAbrirDirIzq.ToolTipText = "Seleccionar el directorio a abrir directorio en el panel izquierdo"
         '
         'ToolStripSeparator1
         '
@@ -166,12 +165,10 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvDirDer.BackColor = System.Drawing.SystemColors.Info
-        Me.lvDirDer.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chDirDer, Me.chNombreDer, Me.chFechaDer, Me.chTamañoDer})
+        Me.lvDirDer.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chInfoDer, Me.chNombreDer, Me.chTamañoDer, Me.chFechaDer})
         Me.lvDirDer.FullRowSelect = True
         Me.lvDirDer.GridLines = True
         Me.lvDirDer.HideSelection = False
-        ListViewItem8.StateImageIndex = 0
-        Me.lvDirDer.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem8})
         Me.lvDirDer.Location = New System.Drawing.Point(6, 28)
         Me.lvDirDer.Name = "lvDirDer"
         Me.lvDirDer.ShowItemToolTips = True
@@ -180,10 +177,10 @@ Partial Class Form1
         Me.lvDirDer.UseCompatibleStateImageBehavior = False
         Me.lvDirDer.View = System.Windows.Forms.View.Details
         '
-        'chDirDer
+        'chInfoDer
         '
-        Me.chDirDer.Text = "Dir"
-        Me.chDirDer.Width = 36
+        Me.chInfoDer.Text = "Info"
+        Me.chInfoDer.Width = 36
         '
         'chNombreDer
         '
@@ -217,9 +214,9 @@ Partial Class Form1
         Me.btnAbrirDirDer.Image = CType(resources.GetObject("btnAbrirDirDer.Image"), System.Drawing.Image)
         Me.btnAbrirDirDer.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnAbrirDirDer.Name = "btnAbrirDirDer"
-        Me.btnAbrirDirDer.Size = New System.Drawing.Size(107, 22)
-        Me.btnAbrirDirDer.Text = "Abrir directorio"
-        Me.btnAbrirDirDer.ToolTipText = "Abrir directorio en el panel derecho"
+        Me.btnAbrirDirDer.Size = New System.Drawing.Size(62, 22)
+        Me.btnAbrirDirDer.Text = "Abrir..."
+        Me.btnAbrirDirDer.ToolTipText = "Seleccionar el directorio a abrir directorio en el panel derecho"
         '
         'ToolStripSeparator2
         '
@@ -282,23 +279,6 @@ Partial Class Form1
         Me.btnMostrar.Text = "Ver"
         Me.btnMostrar.ToolTipText = "Abrir en el Notepad el primer fichero seleccionado"
         '
-        'StatusStripInfo
-        '
-        Me.StatusStripInfo.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelInfo})
-        Me.StatusStripInfo.Location = New System.Drawing.Point(0, 536)
-        Me.StatusStripInfo.Name = "StatusStripInfo"
-        Me.StatusStripInfo.Size = New System.Drawing.Size(1035, 22)
-        Me.StatusStripInfo.TabIndex = 1
-        Me.StatusStripInfo.Text = "StatusStrip1"
-        '
-        'LabelInfo
-        '
-        Me.LabelInfo.Name = "LabelInfo"
-        Me.LabelInfo.Size = New System.Drawing.Size(1020, 17)
-        Me.LabelInfo.Spring = True
-        Me.LabelInfo.Text = "ToolStripStatusLabel1"
-        Me.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
@@ -323,6 +303,23 @@ Partial Class Form1
         Me.btnBorrar.Size = New System.Drawing.Size(59, 22)
         Me.btnBorrar.Text = "Borrar"
         Me.btnBorrar.ToolTipText = "Borrar el primer fichero seleccionado"
+        '
+        'StatusStripInfo
+        '
+        Me.StatusStripInfo.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelInfo})
+        Me.StatusStripInfo.Location = New System.Drawing.Point(0, 536)
+        Me.StatusStripInfo.Name = "StatusStripInfo"
+        Me.StatusStripInfo.Size = New System.Drawing.Size(1035, 22)
+        Me.StatusStripInfo.TabIndex = 1
+        Me.StatusStripInfo.Text = "StatusStrip1"
+        '
+        'LabelInfo
+        '
+        Me.LabelInfo.Name = "LabelInfo"
+        Me.LabelInfo.Size = New System.Drawing.Size(1020, 17)
+        Me.LabelInfo.Spring = True
+        Me.LabelInfo.Text = "ToolStripStatusLabel1"
+        Me.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Form1
         '
@@ -359,7 +356,7 @@ Partial Class Form1
     Private WithEvents btnAbrirDirIzq As ToolStripButton
     Private WithEvents btnAbrirDirDer As ToolStripButton
     Private WithEvents lvDirIzq As ListView
-    Private WithEvents chDirIzq As ColumnHeader
+    Private WithEvents chInfoIzq As ColumnHeader
     Private WithEvents chNombreIzq As ColumnHeader
     Private WithEvents chFechaIzq As ColumnHeader
     Private WithEvents SplitContainer1 As SplitContainer
@@ -370,7 +367,7 @@ Partial Class Form1
     Private WithEvents btnLimpiar As ToolStripButton
     Private WithEvents chTamañoIzq As ColumnHeader
     Private WithEvents lvDirDer As ListView
-    Private WithEvents chDirDer As ColumnHeader
+    Private WithEvents chInfoDer As ColumnHeader
     Private WithEvents chNombreDer As ColumnHeader
     Private WithEvents chFechaDer As ColumnHeader
     Private WithEvents chTamañoDer As ColumnHeader

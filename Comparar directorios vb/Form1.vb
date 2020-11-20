@@ -18,6 +18,18 @@ Imports System.IO
 Imports System.Diagnostics
 
 Public Class Form1
+
+    ''' <summary>
+    ''' El prefijo de los ficheros de configuración
+    ''' </summary>
+    Const prefijoConfig As String = "CompararDirectorios"
+
+    ''' <summary>
+    ''' Colección con los últimos directorios mostrados
+    ''' en ambos paneles
+    ''' </summary>
+    Private ultimosDirs As New List(Of String)
+
     ''' <summary>
     ''' El panel en el que se ha pulsado un fichero o directorio
     ''' </summary>
@@ -32,41 +44,23 @@ Public Class Form1
         lvDirDer.Items.Clear()
         lvDirIzq.Items.Clear()
 
-        Dim dirCfg = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-        Dim ficCfg As String
-
-        ficCfg = "Mostrar2Directorios_Izq.config.txt"
-        Dim fic = Path.Combine(dirCfg, ficCfg)
-        Dim dIzq As String
-        If File.Exists(fic) Then
-            Using sr As New StreamReader(fic, Encoding.Default, True)
-                dIzq = sr.ReadLine
-                sr.Close()
-            End Using
-
-            ' Mostrar los ficheros en el panel izquierdo
-            MostrarDirectorio(dIzq, lvDirIzq)
-        End If
-
-        ficCfg = "Mostrar2Directorios_Der.config.txt"
-        fic = Path.Combine(dirCfg, ficCfg)
-        If File.Exists(fic) Then
-            Using sr As New StreamReader(fic, Encoding.Default, True)
-                dIzq = sr.ReadLine
-                sr.Close()
-            End Using
-
-            ' Mostrar los ficheros en el panel derecho
-            MostrarDirectorio(dIzq, lvDirDer)
-        End If
-
+        ' Leer los datos de la configuración
+        LeerConfig()
+        ' Empezar comparando los directorios
+        CompararDirectorios()
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         LabelIzq1.Width = ToolStripIzq.Width - (btnAbrirDirIzq.Width + 24)
         LabelDer1.Width = ToolStripDer.Width - (btnAbrirDirDer.Width + 24)
 
-        LabelInfo.Text = $"Width: {Me.Width}, Height: {Me.Height} - LabelIzq1.Width: {LabelIzq1.Width}, LabelDer1.Width: {LabelDer1.Width}"
+        Dim sCopyR = "(c) Guillermo Som (elGuille), 2020"
+        If Date.Now.Year > 2020 Then
+            sCopyR &= $"-{Date.Now.Year}"
+        End If
+        LabelInfo.Text = $"{Application.ProductName} v{Application.ProductVersion}, {sCopyR} " &
+            $"- Ventana: Width: {Me.Width}, Height: {Me.Height} " &
+            $"- LabelIzq1.Width: {LabelIzq1.Width}, LabelDer1.Width: {LabelDer1.Width}"
 
         If lvDirIzq.Tag IsNot Nothing Then
             MostrarNombreDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
@@ -84,6 +78,10 @@ Public Class Form1
         AbrirCarpeta(lvDirDer)
     End Sub
 
+    ''' <summary>
+    ''' Seleccionar la carpeta a abrir en el ListView (panel) indicado
+    ''' </summary>
+    ''' <param name="lv">ListView donde se mostrará el directorio seleccionado</param>
     Private Sub AbrirCarpeta(lv As ListView)
 
         Dim sDir As String = ""
@@ -101,18 +99,25 @@ Public Class Form1
             Return
         End If
 
-        MostrarDirectorio(fb.SelectedPath, lv)
+        MostrarContenidoDirectorio(fb.SelectedPath, lv)
     End Sub
 
+    ''' <summary>
+    ''' Guardar los datos de configuración:
+    '''     Nombre del directorio de cada panel,
+    '''     Los últimos directorios mostrados en ambos paneles
+    ''' </summary>
+    ''' <param name="sDir">Cadena con el nombre del directorio</param>
+    ''' <param name="lv">ListView donde se muestra el contenido del directorio</param>
     Private Sub GuardarConfig(sDir As String, lv As ListView)
         ' Guardar el nombre del directorio abierto
         Dim dirCfg = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
 
         Dim ficCfg As String
         If lv Is lvDirIzq Then
-            ficCfg = "Mostrar2Directorios_Izq.config.txt"
+            ficCfg = $"{prefijoConfig}_Izq.config.txt"
         Else
-            ficCfg = "Mostrar2Directorios_Der.config.txt"
+            ficCfg = $"{prefijoConfig}_Der.config.txt"
         End If
         Dim fic = Path.Combine(dirCfg, ficCfg)
         Using sw As New StreamWriter(fic, False, Encoding.Default)
@@ -120,8 +125,80 @@ Public Class Form1
             sw.Flush()
             sw.Close()
         End Using
+
+        ' Guardar todos los directorios abiertos
+        If ultimosDirs.Count = 0 Then Return
+
+        ficCfg = $"{prefijoConfig}_UltimosDirectorios.config.txt"
+        fic = Path.Combine(dirCfg, ficCfg)
+        Using sw As New StreamWriter(fic, False, Encoding.Default)
+            For Each s In ultimosDirs
+                If s.Any Then
+                    sw.WriteLine(s)
+                End If
+            Next
+            sw.Flush()
+            sw.Close()
+        End Using
+
     End Sub
 
+    ''' <summary>
+    ''' Leer la configuración con los nombres de los dos directorios usados
+    ''' y la lista de los últimos directorios
+    ''' </summary>
+    Private Sub LeerConfig()
+        Dim dirCfg = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        Dim ficCfg As String
+
+        ficCfg = $"{prefijoConfig}_Izq.config.txt"
+        Dim fic = Path.Combine(dirCfg, ficCfg)
+        Dim dIzq As String
+        If File.Exists(fic) Then
+            Using sr As New StreamReader(fic, Encoding.Default, True)
+                dIzq = sr.ReadLine
+                sr.Close()
+            End Using
+
+            ' Mostrar los ficheros en el panel izquierdo
+            MostrarContenidoDirectorio(dIzq, lvDirIzq)
+        End If
+
+        ficCfg = $"{prefijoConfig}_Der.config.txt"
+        fic = Path.Combine(dirCfg, ficCfg)
+        If File.Exists(fic) Then
+            Using sr As New StreamReader(fic, Encoding.Default, True)
+                dIzq = sr.ReadLine
+                sr.Close()
+            End Using
+
+            ' Mostrar los ficheros en el panel derecho
+            MostrarContenidoDirectorio(dIzq, lvDirDer)
+        End If
+
+        ' Leer los últimos directorios abiertos
+        ultimosDirs.Clear()
+        ficCfg = $"{prefijoConfig}_UltimosDirectorios.config.txt"
+        fic = Path.Combine(dirCfg, ficCfg)
+        If File.Exists(fic) Then
+            Using sr As New StreamReader(fic, Encoding.Default, True)
+                Do While Not sr.EndOfStream
+                    Dim s = sr.ReadLine
+                    If s.Any Then
+                        ultimosDirs.Add(s)
+                    End If
+                Loop
+                sr.Close()
+            End Using
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Mostrar el nombre del directorio en la etiqueta adecuada
+    ''' </summary>
+    ''' <param name="sDir">Cadena con el nombre del directorio</param>
+    ''' <param name="lv">ListView donde se muestra el contenido del directorio</param>
     Private Sub MostrarNombreDirectorio(sDir As String, lv As ListView)
         Dim dir = New DirectoryInfo(sDir)
 
@@ -146,49 +223,46 @@ Public Class Form1
 
     End Sub
 
-    Private Sub MostrarDirectorio(sDir As String, lv As ListView)
+    ''' <summary>
+    ''' Mostrar el contenido del directorio indicado
+    ''' </summary>
+    ''' <param name="sDir">Cadena con el nombre del directorio</param>
+    ''' <param name="lv">ListView donde se muestra el contenido del directorio</param>
+    Private Sub MostrarContenidoDirectorio(sDir As String, lv As ListView)
+        ' Comprobación de error, por si no existe el directorio
+        If Not Directory.Exists(sDir) Then
+            sDir = Environment.CurrentDirectory
+        End If
         Dim dir = New DirectoryInfo(sDir)
         lv.Tag = dir
 
         MostrarNombreDirectorio(sDir, lv)
 
-        'If lv Is lvDirIzq Then
-        '    Dim s = dir.FullName
-        '    ' El ancho predeterminado es 384 y 70 caracteres
-        '    Dim maxLeng = CInt(LabelIzq1.Width / 5.5)
-        '    If s.Length > maxLeng Then
-        '        s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
-        '    End If
-        '    LabelIzq1.Text = s ' dir.Name 'dir.FullName
-        '    LabelIzq1.ToolTipText = dir.FullName
-        'Else
-        '    Dim s = dir.FullName
-        '    Dim maxLeng = CInt(LabelIzq1.Width / 5.5)
-        '    If s.Length > maxLeng Then
-        '        s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
-        '    End If
-        '    LabelDer1.Text = s ' dir.Name 'dir.FullName
-        '    LabelDer1.ToolTipText = dir.FullName
-        'End If
-
         Dim dirs = dir.GetDirectories
         Dim files = dir.GetFiles
+
         lv.Items.Clear()
         If dir.Parent IsNot Nothing Then
-            Dim it = lv.Items.Add("..")
-            it.SubItems.Add("")
-            it.SubItems.Add("")
-            it.SubItems.Add("")
-            it.BackColor = Color.Yellow
+            Dim it = lv.Items.Add("[..]")
+            'it.SubItems.Add("")
+            it.SubItems.Add($"[{dir.Parent.Name.ToUpper}]")
+            it.SubItems.Add("[UP--DIR]")
+            'it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
+            it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm"))
+            it.ForeColor = Color.DarkOliveGreen
+            'it.BackColor = Color.Yellow
+            it.BackColor = Color.LightGoldenrodYellow
+            it.Font = New Font(it.Font, FontStyle.Bold)
             it.Tag = dir.Parent '.FullName
             it.Checked = False
             it.ToolTipText = dir.Parent.FullName
         End If
         For Each di In dirs
             Dim it = lv.Items.Add("DIR")
-            it.SubItems.Add(di.Name)
+            ' Mostrar en mayúsculas los nombres de los directorios
+            it.SubItems.Add(di.Name.ToUpper)
+            it.SubItems.Add("[SUB--DIR]")
             it.SubItems.Add(di.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
-            it.SubItems.Add("")
             it.ForeColor = Color.DarkOliveGreen
             it.BackColor = Color.LightGoldenrodYellow
             it.Checked = False
@@ -199,13 +273,19 @@ Public Class Form1
         For Each fi In files
             Dim it = lv.Items.Add("")
             it.SubItems.Add(fi.Name)
-            it.SubItems.Add(fi.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
             it.SubItems.Add(fi.Length.ToString("#,##0"))
+            it.SubItems.Add(fi.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
             it.Checked = False
             it.Tag = fi
         Next
 
         ' Guardar el directorio usado actualmente
+        ' y añadirlo a la lista de últimos directorios (si no está ya)
+        If Not ultimosDirs.Contains(sDir) Then
+            ultimosDirs.Add(sDir)
+        End If
+
+        ' Guardar la información del directorio actual y los últimos abiertos
         GuardarConfig(sDir, lv)
 
         If lv Is lvDirDer AndAlso comparado Then
@@ -255,7 +335,7 @@ Public Class Form1
 
             Dim sDir = di.FullName
             If Not String.IsNullOrEmpty(sDir) Then
-                MostrarDirectorio(sDir, lv)
+                MostrarContenidoDirectorio(sDir, lv)
             End If
         End If
     End Sub
@@ -264,6 +344,9 @@ Public Class Form1
         CompararDirectorios()
     End Sub
 
+    ''' <summary>
+    ''' Comparar el contenido de los ficheros de los dos directorios mostrados
+    ''' </summary>
     Private Sub CompararDirectorios()
         ' Comparar el contenido de los 2 directorios
         ' Recorrer los ficheros del panel izquierdo buscando cambios con el derecho
@@ -361,9 +444,12 @@ Public Class Form1
         Releer()
     End Sub
 
+    ''' <summary>
+    ''' Releer el contenido de los dos directorios
+    ''' </summary>
     Private Sub Releer()
-        MostrarDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
-        MostrarDirectorio(lvDirDer.Tag.ToString, lvDirDer)
+        MostrarContenidoDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
+        MostrarContenidoDirectorio(lvDirDer.Tag.ToString, lvDirDer)
     End Sub
 
     Private Sub LvDirIzq_Enter(sender As Object, e As EventArgs) Handles lvDirIzq.Enter, lvDirDer.Enter
@@ -374,6 +460,9 @@ Public Class Form1
         VerFichero()
     End Sub
 
+    ''' <summary>
+    ''' Mostrar el fichero seleccionado en Notepad (bloc de notas)
+    ''' </summary>
     Private Sub VerFichero()
         If quePanel Is Nothing Then Return
         If quePanel.SelectedItems.Count = 0 Then Return
@@ -395,9 +484,15 @@ Public Class Form1
         CopiarFichero()
     End Sub
 
+    ''' <summary>
+    ''' Copiar un fichero del panel activo al otro panel
+    ''' </summary>
     Private Sub CopiarFichero()
+        ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
+        ' Si no hay fichero seleccionado en el panel activo, salir
         If quePanel.SelectedItems.Count = 0 Then Return
+        ' El fichero (FileInfo) del primer fichero seleccionado
         Dim fi = TryCast(quePanel.SelectedItems(0).Tag, FileInfo)
         If fi Is Nothing Then Return
 
@@ -431,16 +526,22 @@ Public Class Form1
         File.Copy(fi.FullName, fDest)
 
         ' Releer el directorio de destino
-        MostrarDirectorio(lvDest.Tag.ToString, lvDest)
+        MostrarContenidoDirectorio(lvDest.Tag.ToString, lvDest)
     End Sub
 
     Private Sub BtnBorrar_Click(sender As Object, e As EventArgs) Handles btnBorrar.Click
         BorrarFichero()
     End Sub
 
+    ''' <summary>
+    ''' Borrar el fichero seleccionado en el panel activo
+    ''' </summary>
     Private Sub BorrarFichero()
+        ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
+        ' Si no hay fichero seleccionado en el panel activo, salir
         If quePanel.SelectedItems.Count = 0 Then Return
+        ' El fichero (FileInfo) del primer fichero seleccionado
         Dim fi = TryCast(quePanel.SelectedItems(0).Tag, FileInfo)
         If fi Is Nothing Then Return
 
@@ -462,7 +563,7 @@ Public Class Form1
         End If
 
         ' Releer el directorio de destino
-        MostrarDirectorio(quePanel.Tag.ToString, quePanel)
+        MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
 
     End Sub
 End Class

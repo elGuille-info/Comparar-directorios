@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Revisar los valores de los atributos del ensamblado
 
 <Assembly: AssemblyTitle("Comparar directorios")>
-<Assembly: AssemblyDescription("Mostrar el contenido de 2 directorios y compararlos")>
+<Assembly: AssemblyDescription("Mostrar el contenido de 2 directorios y compararlos con opciones para ver, copiar y borrar ficheros  (revisión del 20-n0v-2020)")>
 <Assembly: AssemblyCompany("elGuille")>
 <Assembly: AssemblyProduct("Comparar directorios")>
 <Assembly: AssemblyCopyright("Copyright © Guillermo Som (elGuille), 2020")>
@@ -32,4 +32,4 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")>
 
 <Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyFileVersion("1.0.0.20")>
