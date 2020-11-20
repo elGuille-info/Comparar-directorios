@@ -71,6 +71,7 @@ Partial Class Form1
         Me.SplitContainer1.Panel1.Controls.Add(Me.ToolStripIzq)
         Me.SplitContainer1.Panel1.Controls.Add(Me.StatusStrip1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.lvDirIzq)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.ToolStripIzq)
         '
         'SplitContainer1.Panel2
         '
@@ -306,7 +307,7 @@ Partial Class Form1
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents ToolStripIzq As ToolStrip
+    Friend WithEvents ToolStripIzq As ToolStrip
     Private WithEvents btnAbrirDirIzquierdo As ToolStripButton
     Private WithEvents btnAbrirDirDerecho As ToolStripButton
     Private WithEvents lvDirIzq As ListView
