@@ -52,6 +52,10 @@ Public Class Form1
 
     End Sub
 
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        LabelIzq.Text = $"Width: {Me.Width}, Height: {Me.Height}"
+    End Sub
+
     Private Sub BtnAbrirDirIzquierdo_Click(sender As Object, e As EventArgs) Handles btnAbrirDirIzquierdo.Click
         AbrirCarpeta(lvDirIzq)
     End Sub
@@ -143,7 +147,7 @@ Public Class Form1
         IrParentDir(lvDirIzq)
     End Sub
 
-    Private Sub LvDirDer_DoubleClick(sender As Object, e As EventArgs) Handles lvDirDer.DoubleClick, lvDirDer.Click
+    Private Sub LvDirDer_DoubleClick(sender As Object, e As EventArgs)
         IrParentDir(lvDirDer)
     End Sub
 
@@ -167,4 +171,5 @@ Public Class Form1
         MostrarDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
         MostrarDirectorio(lvDirDer.Tag.ToString, lvDirDer)
     End Sub
+
 End Class
