@@ -24,23 +24,40 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
+<<<<<<< Updated upstream
         Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30"}, -1)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+=======
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.ToolStripComparar = New System.Windows.Forms.ToolStrip()
+        Me.btnComparar = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnLimpiar = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripIzq = New System.Windows.Forms.ToolStrip()
+        Me.btnAbrirDirIzquierdo = New System.Windows.Forms.ToolStripButton()
+>>>>>>> Stashed changes
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.LabelIzq = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
         Me.chDir = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chNombre = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chFecha = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+<<<<<<< Updated upstream
         Me.ToolStripIzq = New System.Windows.Forms.ToolStrip()
         Me.btnAbrirDirIzquierdo = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
         Me.LabelDer = New System.Windows.Forms.ToolStripStatusLabel()
+=======
+        Me.chTamaño = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+>>>>>>> Stashed changes
         Me.lvDirDer = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+<<<<<<< Updated upstream
         Me.ToolStripDer = New System.Windows.Forms.ToolStrip()
         Me.btnAbrirDirDerecho = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
@@ -48,10 +65,22 @@ Partial Class Form1
         Me.btnComparar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnLimpiar = New System.Windows.Forms.ToolStripButton()
+=======
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ToolStripDer = New System.Windows.Forms.ToolStrip()
+        Me.btnAbrirDirDerecho = New System.Windows.Forms.ToolStripButton()
+        Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
+        Me.LabelDer = New System.Windows.Forms.ToolStripStatusLabel()
+>>>>>>> Stashed changes
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
+<<<<<<< Updated upstream
+=======
+        Me.ToolStripComparar.SuspendLayout()
+        Me.ToolStripIzq.SuspendLayout()
+>>>>>>> Stashed changes
         Me.StatusStrip1.SuspendLayout()
         Me.ToolStripIzq.SuspendLayout()
         Me.StatusStrip2.SuspendLayout()
@@ -81,6 +110,65 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 400
         Me.SplitContainer1.TabIndex = 0
         '
+<<<<<<< Updated upstream
+=======
+        'ToolStripComparar
+        '
+        Me.ToolStripComparar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ToolStripComparar.AutoSize = False
+        Me.ToolStripComparar.Dock = System.Windows.Forms.DockStyle.None
+        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar})
+        Me.ToolStripComparar.Location = New System.Drawing.Point(324, 0)
+        Me.ToolStripComparar.Name = "ToolStripComparar"
+        Me.ToolStripComparar.Size = New System.Drawing.Size(184, 25)
+        Me.ToolStripComparar.TabIndex = 3
+        Me.ToolStripComparar.Text = "ToolStrip1"
+        '
+        'btnComparar
+        '
+        Me.btnComparar.Image = CType(resources.GetObject("btnComparar.Image"), System.Drawing.Image)
+        Me.btnComparar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnComparar.Name = "btnComparar"
+        Me.btnComparar.Size = New System.Drawing.Size(80, 22)
+        Me.btnComparar.Text = "Comparar"
+        Me.btnComparar.ToolTipText = "Comparar el contenido de los dos directorios"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+        '
+        'btnLimpiar
+        '
+        Me.btnLimpiar.Image = CType(resources.GetObject("btnLimpiar.Image"), System.Drawing.Image)
+        Me.btnLimpiar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnLimpiar.Name = "btnLimpiar"
+        Me.btnLimpiar.Size = New System.Drawing.Size(67, 22)
+        Me.btnLimpiar.Text = "Limpiar"
+        Me.btnLimpiar.ToolTipText = "Limpiar la comparación"
+        '
+        'ToolStripIzq
+        '
+        Me.ToolStripIzq.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ToolStripIzq.AutoSize = False
+        Me.ToolStripIzq.Dock = System.Windows.Forms.DockStyle.None
+        Me.ToolStripIzq.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAbrirDirIzquierdo})
+        Me.ToolStripIzq.Location = New System.Drawing.Point(0, 0)
+        Me.ToolStripIzq.Name = "ToolStripIzq"
+        Me.ToolStripIzq.Size = New System.Drawing.Size(324, 25)
+        Me.ToolStripIzq.TabIndex = 0
+        Me.ToolStripIzq.Text = "ToolStrip2"
+        '
+        'btnAbrirDirIzquierdo
+        '
+        Me.btnAbrirDirIzquierdo.Image = CType(resources.GetObject("btnAbrirDirIzquierdo.Image"), System.Drawing.Image)
+        Me.btnAbrirDirIzquierdo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAbrirDirIzquierdo.Name = "btnAbrirDirIzquierdo"
+        Me.btnAbrirDirIzquierdo.Size = New System.Drawing.Size(159, 22)
+        Me.btnAbrirDirIzquierdo.Text = "Abrir directorio Izquierdo"
+        '
+>>>>>>> Stashed changes
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelIzq})
@@ -109,9 +197,15 @@ Partial Class Form1
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.GridLines = True
         Me.lvDirIzq.HideSelection = False
+<<<<<<< Updated upstream
         ListViewItem3.StateImageIndex = 0
         Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
         Me.lvDirIzq.Location = New System.Drawing.Point(8, 28)
+=======
+        ListViewItem1.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
+>>>>>>> Stashed changes
         Me.lvDirIzq.MultiSelect = False
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -136,6 +230,7 @@ Partial Class Form1
         Me.chFecha.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.chFecha.Width = 120
         '
+<<<<<<< Updated upstream
         'ToolStripIzq
         '
         Me.ToolStripIzq.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -179,6 +274,13 @@ Partial Class Form1
         Me.LabelDer.Spring = True
         Me.LabelDer.Text = "ToolStripStatusLabel2"
         Me.LabelDer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+=======
+        'chTamaño
+        '
+        Me.chTamaño.Text = "Tamaño"
+        Me.chTamaño.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.chTamaño.Width = 80
+>>>>>>> Stashed changes
         '
         'lvDirDer
         '
@@ -190,9 +292,15 @@ Partial Class Form1
         Me.lvDirDer.FullRowSelect = True
         Me.lvDirDer.GridLines = True
         Me.lvDirDer.HideSelection = False
+<<<<<<< Updated upstream
         ListViewItem4.StateImageIndex = 0
         Me.lvDirDer.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4})
         Me.lvDirDer.Location = New System.Drawing.Point(3, 28)
+=======
+        ListViewItem2.StateImageIndex = 0
+        Me.lvDirDer.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        Me.lvDirDer.Location = New System.Drawing.Point(6, 28)
+>>>>>>> Stashed changes
         Me.lvDirDer.MultiSelect = False
         Me.lvDirDer.Name = "lvDirDer"
         Me.lvDirDer.ShowItemToolTips = True
@@ -274,6 +382,41 @@ Partial Class Form1
         Me.btnLimpiar.Text = "Limpiar"
         Me.btnLimpiar.ToolTipText = "Limpiar la comparación"
         '
+        'ToolStripDer
+        '
+        Me.ToolStripDer.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAbrirDirDerecho})
+        Me.ToolStripDer.Location = New System.Drawing.Point(0, 0)
+        Me.ToolStripDer.Name = "ToolStripDer"
+        Me.ToolStripDer.Size = New System.Drawing.Size(516, 25)
+        Me.ToolStripDer.TabIndex = 1
+        Me.ToolStripDer.Text = "ToolStrip1"
+        '
+        'btnAbrirDirDerecho
+        '
+        Me.btnAbrirDirDerecho.Image = CType(resources.GetObject("btnAbrirDirDerecho.Image"), System.Drawing.Image)
+        Me.btnAbrirDirDerecho.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAbrirDirDerecho.Name = "btnAbrirDirDerecho"
+        Me.btnAbrirDirDerecho.Size = New System.Drawing.Size(153, 22)
+        Me.btnAbrirDirDerecho.Text = "Abrir directorio derecho"
+        '
+        'StatusStrip2
+        '
+        Me.StatusStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelDer})
+        Me.StatusStrip2.Location = New System.Drawing.Point(0, 536)
+        Me.StatusStrip2.Name = "StatusStrip2"
+        Me.StatusStrip2.ShowItemToolTips = True
+        Me.StatusStrip2.Size = New System.Drawing.Size(516, 22)
+        Me.StatusStrip2.TabIndex = 3
+        Me.StatusStrip2.Text = "StatusStrip2"
+        '
+        'LabelDer
+        '
+        Me.LabelDer.Name = "LabelDer"
+        Me.LabelDer.Size = New System.Drawing.Size(501, 17)
+        Me.LabelDer.Spring = True
+        Me.LabelDer.Text = "ToolStripStatusLabel2"
+        Me.LabelDer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -290,6 +433,13 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.PerformLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
+<<<<<<< Updated upstream
+=======
+        Me.ToolStripComparar.ResumeLayout(False)
+        Me.ToolStripComparar.PerformLayout()
+        Me.ToolStripIzq.ResumeLayout(False)
+        Me.ToolStripIzq.PerformLayout()
+>>>>>>> Stashed changes
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         Me.ToolStripIzq.ResumeLayout(False)
