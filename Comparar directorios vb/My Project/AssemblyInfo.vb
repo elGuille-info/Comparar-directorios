@@ -8,12 +8,12 @@ Imports System.Runtime.InteropServices
 
 ' Revisar los valores de los atributos del ensamblado
 
-<Assembly: AssemblyTitle("Comparar directorios vb")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("Comparar directorios vb")>
-<Assembly: AssemblyCopyright("Copyright ©  2020")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyTitle("Comparar directorios")>
+<Assembly: AssemblyDescription("Mostrar el contenido de 2 directorios y compararlos")>
+<Assembly: AssemblyCompany("elGuille")>
+<Assembly: AssemblyProduct("Comparar directorios")>
+<Assembly: AssemblyCopyright("Copyright © Guillermo Som (elGuille), 2020")>
+<Assembly: AssemblyTrademark("Microsoft Visual Basic 2019 (.NET Framework 4.8)")>
 
 <Assembly: ComVisible(False)>
 

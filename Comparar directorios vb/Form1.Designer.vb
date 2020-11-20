@@ -23,8 +23,8 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
-        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
+        Dim ListViewItem7 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
+        Dim ListViewItem8 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "19/11/2020 21:16:30", "4.906.213"}, -1)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.ToolStripIzq = New System.Windows.Forms.ToolStrip()
         Me.btnAbrirDirIzquierdo = New System.Windows.Forms.ToolStripButton()
@@ -165,8 +165,8 @@ Partial Class Form1
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.GridLines = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem3.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
+        ListViewItem7.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem7})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
         Me.lvDirIzq.MultiSelect = False
         Me.lvDirIzq.Name = "lvDirIzq"
@@ -243,8 +243,8 @@ Partial Class Form1
         Me.lvDirDer.FullRowSelect = True
         Me.lvDirDer.GridLines = True
         Me.lvDirDer.HideSelection = False
-        ListViewItem4.StateImageIndex = 0
-        Me.lvDirDer.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4})
+        ListViewItem8.StateImageIndex = 0
+        Me.lvDirDer.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem8})
         Me.lvDirDer.Location = New System.Drawing.Point(6, 28)
         Me.lvDirDer.MultiSelect = False
         Me.lvDirDer.Name = "lvDirDer"
@@ -286,7 +286,7 @@ Partial Class Form1
         Me.MinimumSize = New System.Drawing.Size(1040, 500)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Mostrar el contenido de 2 directorios"
+        Me.Text = "Mostrar el contenido de 2 directorios y compararlos"
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
