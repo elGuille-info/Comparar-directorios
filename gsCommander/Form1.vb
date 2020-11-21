@@ -157,8 +157,8 @@ Public Class Form1
         CopiarFicheros()
     End Sub
 
-    Private Sub BtnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
-        EliminarFicheros()
+    Private Sub BtnBorrar_Click(sender As Object, e As EventArgs) Handles btnBorrar.Click
+        BorrarFicheros()
     End Sub
 
     Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click
@@ -181,8 +181,8 @@ Public Class Form1
         MoverDirectorios()
     End Sub
 
-    Private Sub BtnEliminarDir_Click(sender As Object, e As EventArgs) Handles btnEliminarDir.Click
-        EliminarDirectorios()
+    Private Sub BtnBorrarDir_Click(sender As Object, e As EventArgs) Handles btnBorrarDir.Click
+        BorrarDirectorios()
     End Sub
 
     ''' <summary>
@@ -500,7 +500,7 @@ Public Class Form1
     ''' <summary>
     ''' Eliminar los directorios seleccionados en el panel activo
     ''' </summary>
-    Private Sub EliminarDirectorios()
+    Private Sub BorrarDirectorios()
         ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
         ' Si no hay nada seleccionado en el panel activo, salir
@@ -509,7 +509,7 @@ Public Class Form1
         Dim diDest = TryCast(quePanel.Tag, DirectoryInfo)
         If diDest Is Nothing Then Return
 
-        Dim eliminarTodos = False
+        Dim borrarTodos = False
 
         For i = quePanel.SelectedIndices.Count - 1 To 0 Step -1
             ' El directorio (DirectoryInfo) seleccionado
@@ -519,30 +519,25 @@ Public Class Form1
 
             ' Confirmar solo si existe
             If di.Exists Then
-                Dim s = $"¿Quieres eliminar el directorio {di.Name}{vbCrLf}{vbCrLf} de {di.FullName}?"
-                Dim sTit = "Eliminar directorio"
+                Dim s = $"¿Quieres borrar el directorio {di.Name}{vbCrLf}{vbCrLf} de {di.FullName}?"
+                Dim sTit = "Borrar directorio"
 
                 Dim ret As DialogConfirmResult
 
                 ' Si se debe volver a mostrar el diálogo de confirmación
-                If Not eliminarTodos Then
+                If Not borrarTodos Then
                     ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Warning)
                     If ret = DialogConfirmResult.NoToAll Then
                         Return
                     ElseIf ret = DialogConfirmResult.No Then
                         Continue For
                     ElseIf ret = DialogConfirmResult.YesToAll Then
-                        eliminarTodos = True
+                        borrarTodos = True
                     End If
                 End If
 
                 Try
-                    ' El directorio debe estar vacío antes de eliminarlo
-                    Dim dDest2 = di.FullName
-                    eliminarContenidoDir(di.FullName)
-                    If di.Exists Then
-                        di.Delete()
-                    End If
+                    di.Delete()
                 Catch ex As Exception
                     LabelInfo.Text = ex.Message
                     Continue For
@@ -1003,7 +998,7 @@ Public Class Form1
                 End If
             End If
             Try
-                ' Antes de moverlo, hay que eliminar el de destino
+                ' Antes de moverlo, hay que borrar el de destino
                 ' si no dará error de que no se puede mover un fichero que ya existe
                 If File.Exists(fDest) Then
                     File.Delete(fDest)
@@ -1023,17 +1018,17 @@ Public Class Form1
     End Sub
 
     ''' <summary>
-    ''' Eliminar el fichero seleccionado en el panel activo
+    ''' Borrar el fichero seleccionado en el panel activo
     ''' </summary>
-    Private Sub EliminarFicheros()
+    Private Sub BorrarFicheros()
         ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
         ' Si no hay fichero seleccionado en el panel activo, salir
         If quePanel.SelectedIndices.Count = 0 Then Return
 
-        Dim eliminarTodos = False
+        Dim borrarTodos = False
 
-        ' Eliminar todos los ficheros seleccionados
+        ' Borrar todos los ficheros seleccionados
         For i = 0 To quePanel.SelectedIndices.Count - 1
             ' El fichero (FileInfo) seleccionado
             Dim fi = TryCast(quePanel.Items(quePanel.SelectedIndices(i)).Tag, FileInfo)
@@ -1042,20 +1037,20 @@ Public Class Form1
 
             ' Confirmar solo si existe
             If fi.Exists Then
-                Dim s = $"¿Quieres eliminar el fichero{vbCrLf}{vbCrLf}{fi.FullName}?"
-                Dim sTit = "Eliminar fichero"
+                Dim s = $"¿Quieres borrar el fichero{vbCrLf}{vbCrLf}{fi.FullName}?"
+                Dim sTit = "Borrar fichero"
 
                 Dim ret As DialogConfirmResult
 
                 ' Si se debe volver a mostrar el diálogo de confirmación
-                If Not eliminarTodos Then
+                If Not borrarTodos Then
                     ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Warning)
                     If ret = DialogConfirmResult.NoToAll Then
                         Return
                     ElseIf ret = DialogConfirmResult.No Then
                         Continue For
                     ElseIf ret = DialogConfirmResult.YesToAll Then
-                        eliminarTodos = True
+                        borrarTodos = True
                     End If
                 End If
 

@@ -53,12 +53,12 @@ Partial Class Form1
         Me.btnNuevoFichero = New System.Windows.Forms.ToolStripButton()
         Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
         Me.btnMover = New System.Windows.Forms.ToolStripButton()
-        Me.btnEliminar = New System.Windows.Forms.ToolStripButton()
+        Me.btnBorrar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnMkDir = New System.Windows.Forms.ToolStripButton()
         Me.btnCopiarDir = New System.Windows.Forms.ToolStripButton()
         Me.btnMoverDir = New System.Windows.Forms.ToolStripButton()
-        Me.btnEliminarDir = New System.Windows.Forms.ToolStripButton()
+        Me.btnBorrarDir = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripInfo = New System.Windows.Forms.StatusStrip()
         Me.LabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -241,7 +241,7 @@ Partial Class Form1
         'ToolStripComparar
         '
         Me.ToolStripComparar.AutoSize = False
-        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.btnMostrar, Me.ToolStripSeparator5, Me.btnNuevoFichero, Me.btnCopiar, Me.btnMover, Me.btnEliminar, Me.ToolStripSeparator6, Me.btnMkDir, Me.btnCopiarDir, Me.btnMoverDir, Me.btnEliminarDir})
+        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.btnMostrar, Me.ToolStripSeparator5, Me.btnNuevoFichero, Me.btnCopiar, Me.btnMover, Me.btnBorrar, Me.ToolStripSeparator6, Me.btnMkDir, Me.btnCopiarDir, Me.btnMoverDir, Me.btnBorrarDir})
         Me.ToolStripComparar.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripComparar.Name = "ToolStripComparar"
         Me.ToolStripComparar.Size = New System.Drawing.Size(1035, 25)
@@ -322,15 +322,15 @@ Partial Class Form1
         Me.btnMover.Text = "Mover"
         Me.btnMover.ToolTipText = "Mover el fichero seleccionado del panel activo al otro panel (directorio)"
         '
-        'btnEliminar
+        'btnBorrar
         '
-        Me.btnEliminar.AutoToolTip = False
-        Me.btnEliminar.Image = CType(resources.GetObject("btnEliminar.Image"), System.Drawing.Image)
-        Me.btnEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnEliminar.Name = "btnEliminar"
-        Me.btnEliminar.Size = New System.Drawing.Size(70, 22)
-        Me.btnEliminar.Text = "Eliminar"
-        Me.btnEliminar.ToolTipText = "Eliminar el primer fichero seleccionado del panel activo"
+        Me.btnBorrar.AutoToolTip = False
+        Me.btnBorrar.Image = CType(resources.GetObject("btnBorrar.Image"), System.Drawing.Image)
+        Me.btnBorrar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnBorrar.Name = "btnBorrar"
+        Me.btnBorrar.Size = New System.Drawing.Size(70, 22)
+        Me.btnBorrar.Text = "Eliminar"
+        Me.btnBorrar.ToolTipText = "Eliminar el primer fichero seleccionado del panel activo"
         '
         'ToolStripSeparator6
         '
@@ -367,15 +367,15 @@ Partial Class Form1
         Me.btnMoverDir.Text = "Mover"
         Me.btnMoverDir.ToolTipText = "Mover el directorio seleccionado del panel activo al otro panel (directorio)"
         '
-        'btnEliminarDir
+        'btnBorrarDir
         '
-        Me.btnEliminarDir.AutoToolTip = False
-        Me.btnEliminarDir.Image = CType(resources.GetObject("btnEliminarDir.Image"), System.Drawing.Image)
-        Me.btnEliminarDir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnEliminarDir.Name = "btnEliminarDir"
-        Me.btnEliminarDir.Size = New System.Drawing.Size(70, 22)
-        Me.btnEliminarDir.Text = "Eliminar"
-        Me.btnEliminarDir.ToolTipText = "Eliminar el directorio seleccionado"
+        Me.btnBorrarDir.AutoToolTip = False
+        Me.btnBorrarDir.Image = CType(resources.GetObject("btnBorrarDir.Image"), System.Drawing.Image)
+        Me.btnBorrarDir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnBorrarDir.Name = "btnBorrarDir"
+        Me.btnBorrarDir.Size = New System.Drawing.Size(70, 22)
+        Me.btnBorrarDir.Text = "Eliminar"
+        Me.btnBorrarDir.ToolTipText = "Eliminar el directorio seleccionado"
         '
         'StatusStripInfo
         '
@@ -454,12 +454,12 @@ Partial Class Form1
     Private WithEvents btnCopiar As ToolStripButton
     Private WithEvents ToolStripSeparator1 As ToolStripSeparator
     Private WithEvents ToolStripSeparator2 As ToolStripSeparator
-    Private WithEvents btnEliminar As ToolStripButton
+    Private WithEvents btnBorrar As ToolStripButton
     Private WithEvents btnMover As ToolStripButton
     Private WithEvents ToolStripSeparator6 As ToolStripSeparator
     Private WithEvents btnMkDir As ToolStripButton
     Private WithEvents btnCopiarDir As ToolStripButton
     Private WithEvents btnMoverDir As ToolStripButton
-    Private WithEvents btnEliminarDir As ToolStripButton
+    Private WithEvents btnBorrarDir As ToolStripButton
     Private WithEvents btnNuevoFichero As ToolStripButton
 End Class
