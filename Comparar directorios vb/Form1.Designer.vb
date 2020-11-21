@@ -22,7 +22,7 @@ Partial Class Form1
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
@@ -32,6 +32,7 @@ Partial Class Form1
         Me.chFechaIzq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ToolStripIzq = New System.Windows.Forms.ToolStrip()
         Me.btnAbrirDirIzq = New System.Windows.Forms.ToolStripButton()
+        Me.BtnAbrirDirIzqDropDown = New System.Windows.Forms.ToolStripDropDownButton()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.LabelDirIzq = New System.Windows.Forms.ToolStripLabel()
         Me.lvDirDer = New System.Windows.Forms.ListView()
@@ -41,6 +42,7 @@ Partial Class Form1
         Me.chFechaDer = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ToolStripDer = New System.Windows.Forms.ToolStrip()
         Me.btnAbrirDirDer = New System.Windows.Forms.ToolStripButton()
+        Me.BtnAbrirDirDerDropDown = New System.Windows.Forms.ToolStripDropDownButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.LabelDirDer = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripComparar = New System.Windows.Forms.ToolStrip()
@@ -50,18 +52,25 @@ Partial Class Form1
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnMostrar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.btnNuevoFichero = New System.Windows.Forms.ToolStripButton()
+        Me.BtnNuevoDropDown = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripSplitButton()
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
+        Me.BtnActualizarMasRecientes = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
         Me.btnMover = New System.Windows.Forms.ToolStripButton()
-        Me.btnEliminar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
-        Me.btnMkDir = New System.Windows.Forms.ToolStripButton()
         Me.btnCopiarDir = New System.Windows.Forms.ToolStripButton()
         Me.btnMoverDir = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnEliminar = New System.Windows.Forms.ToolStripButton()
         Me.btnEliminarDir = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnNuevoFichero = New System.Windows.Forms.ToolStripButton()
+        Me.BtnNuevoDir = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripInfo = New System.Windows.Forms.StatusStrip()
         Me.LabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.BtnAbrirDirIzqDropDown = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -103,8 +112,8 @@ Partial Class Form1
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.GridLines = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem3.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
+        ListViewItem2.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -153,6 +162,17 @@ Partial Class Form1
         Me.btnAbrirDirIzq.Size = New System.Drawing.Size(53, 22)
         Me.btnAbrirDirIzq.Text = "Abrir"
         Me.btnAbrirDirIzq.ToolTipText = "Seleccionar el directorio a abrir en el panel izquierdo"
+        '
+        'BtnAbrirDirIzqDropDown
+        '
+        Me.BtnAbrirDirIzqDropDown.AutoToolTip = False
+        Me.BtnAbrirDirIzqDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.BtnAbrirDirIzqDropDown.Image = CType(resources.GetObject("BtnAbrirDirIzqDropDown.Image"), System.Drawing.Image)
+        Me.BtnAbrirDirIzqDropDown.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnAbrirDirIzqDropDown.Name = "BtnAbrirDirIzqDropDown"
+        Me.BtnAbrirDirIzqDropDown.Size = New System.Drawing.Size(29, 22)
+        Me.BtnAbrirDirIzqDropDown.Text = "..."
+        Me.BtnAbrirDirIzqDropDown.ToolTipText = "Seleccionar un directorio de los últimos directorios usados"
         '
         'ToolStripSeparator1
         '
@@ -209,7 +229,7 @@ Partial Class Form1
         '
         'ToolStripDer
         '
-        Me.ToolStripDer.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAbrirDirDer, Me.ToolStripSeparator2, Me.LabelDirDer})
+        Me.ToolStripDer.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAbrirDirDer, Me.BtnAbrirDirDerDropDown, Me.ToolStripSeparator2, Me.LabelDirDer})
         Me.ToolStripDer.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripDer.Name = "ToolStripDer"
         Me.ToolStripDer.Size = New System.Drawing.Size(516, 25)
@@ -222,9 +242,20 @@ Partial Class Form1
         Me.btnAbrirDirDer.Image = CType(resources.GetObject("btnAbrirDirDer.Image"), System.Drawing.Image)
         Me.btnAbrirDirDer.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnAbrirDirDer.Name = "btnAbrirDirDer"
-        Me.btnAbrirDirDer.Size = New System.Drawing.Size(62, 22)
-        Me.btnAbrirDirDer.Text = "Abrir..."
+        Me.btnAbrirDirDer.Size = New System.Drawing.Size(53, 22)
+        Me.btnAbrirDirDer.Text = "Abrir"
         Me.btnAbrirDirDer.ToolTipText = "Seleccionar el directorio a abrir en el panel derecho"
+        '
+        'BtnAbrirDirDerDropDown
+        '
+        Me.BtnAbrirDirDerDropDown.AutoToolTip = False
+        Me.BtnAbrirDirDerDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.BtnAbrirDirDerDropDown.Image = CType(resources.GetObject("BtnAbrirDirDerDropDown.Image"), System.Drawing.Image)
+        Me.BtnAbrirDirDerDropDown.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnAbrirDirDerDropDown.Name = "BtnAbrirDirDerDropDown"
+        Me.BtnAbrirDirDerDropDown.Size = New System.Drawing.Size(29, 22)
+        Me.BtnAbrirDirDerDropDown.Text = "..."
+        Me.BtnAbrirDirDerDropDown.ToolTipText = "Seleccionar un directorio de los últimos directorios usados"
         '
         'ToolStripSeparator2
         '
@@ -242,7 +273,7 @@ Partial Class Form1
         'ToolStripComparar
         '
         Me.ToolStripComparar.AutoSize = False
-        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.btnMostrar, Me.ToolStripSeparator5, Me.btnNuevoFichero, Me.btnCopiar, Me.btnMover, Me.btnEliminar, Me.ToolStripSeparator6, Me.btnMkDir, Me.btnCopiarDir, Me.btnMoverDir, Me.btnEliminarDir})
+        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.btnMostrar, Me.ToolStripSeparator5, Me.BtnActualizarMasRecientes, Me.ToolStripSeparator7, Me.BtnNuevoDropDown, Me.ToolStripSeparator10, Me.BtnEliminarSplit, Me.ToolStripSeparator11, Me.btnCopiar, Me.btnMover, Me.ToolStripSeparator6, Me.btnCopiarDir, Me.btnMoverDir, Me.ToolStripSeparator8, Me.btnEliminar, Me.btnEliminarDir, Me.ToolStripSeparator9})
         Me.ToolStripComparar.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripComparar.Name = "ToolStripComparar"
         Me.ToolStripComparar.Size = New System.Drawing.Size(1035, 25)
@@ -292,15 +323,46 @@ Partial Class Form1
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
         '
-        'btnNuevoFichero
+        'BtnNuevoDropDown
         '
-        Me.btnNuevoFichero.AutoToolTip = False
-        Me.btnNuevoFichero.Image = CType(resources.GetObject("btnNuevoFichero.Image"), System.Drawing.Image)
-        Me.btnNuevoFichero.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnNuevoFichero.Name = "btnNuevoFichero"
-        Me.btnNuevoFichero.Size = New System.Drawing.Size(62, 22)
-        Me.btnNuevoFichero.Text = "Nuevo"
-        Me.btnNuevoFichero.ToolTipText = "Crear un nuevo fichero en el panel (directorio) activo"
+        Me.BtnNuevoDropDown.AutoToolTip = False
+        Me.BtnNuevoDropDown.Image = CType(resources.GetObject("BtnNuevoDropDown.Image"), System.Drawing.Image)
+        Me.BtnNuevoDropDown.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnNuevoDropDown.Name = "BtnNuevoDropDown"
+        Me.BtnNuevoDropDown.Size = New System.Drawing.Size(71, 22)
+        Me.BtnNuevoDropDown.Text = "Nuevo"
+        Me.BtnNuevoDropDown.ToolTipText = "Selecciona la opción para crear un nuevo fichero o un nuevo directorio"
+        '
+        'BtnEliminarSplit
+        '
+        Me.BtnEliminarSplit.AutoToolTip = False
+        Me.BtnEliminarSplit.Image = CType(resources.GetObject("BtnEliminarSplit.Image"), System.Drawing.Image)
+        Me.BtnEliminarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnEliminarSplit.Name = "BtnEliminarSplit"
+        Me.BtnEliminarSplit.Size = New System.Drawing.Size(82, 22)
+        Me.BtnEliminarSplit.Text = "Eliminar"
+        Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios"
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(6, 25)
+        '
+        'BtnActualizarMasRecientes
+        '
+        Me.BtnActualizarMasRecientes.AutoToolTip = False
+        Me.BtnActualizarMasRecientes.Image = CType(resources.GetObject("BtnActualizarMasRecientes.Image"), System.Drawing.Image)
+        Me.BtnActualizarMasRecientes.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnActualizarMasRecientes.Name = "BtnActualizarMasRecientes"
+        Me.BtnActualizarMasRecientes.Size = New System.Drawing.Size(79, 22)
+        Me.BtnActualizarMasRecientes.Text = "Actualizar"
+        Me.BtnActualizarMasRecientes.ToolTipText = "Actualizar con los ficheros más recientes del panel activo en el otro panel (dire" &
+    "ctorio)"
+        '
+        'ToolStripSeparator10
+        '
+        Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(6, 25)
         '
         'btnCopiar
         '
@@ -322,30 +384,10 @@ Partial Class Form1
         Me.btnMover.Text = "Mover"
         Me.btnMover.ToolTipText = "Mover los ficheros seleccionados del panel activo al otro panel (directorio)"
         '
-        'btnEliminar
-        '
-        Me.btnEliminar.AutoToolTip = False
-        Me.btnEliminar.Image = CType(resources.GetObject("btnEliminar.Image"), System.Drawing.Image)
-        Me.btnEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnEliminar.Name = "btnEliminar"
-        Me.btnEliminar.Size = New System.Drawing.Size(70, 22)
-        Me.btnEliminar.Text = "Eliminar"
-        Me.btnEliminar.ToolTipText = "Eliminar los ficheros seleccionados del panel activo"
-        '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
         Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
-        '
-        'btnMkDir
-        '
-        Me.btnMkDir.AutoToolTip = False
-        Me.btnMkDir.Image = CType(resources.GetObject("btnMkDir.Image"), System.Drawing.Image)
-        Me.btnMkDir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnMkDir.Name = "btnMkDir"
-        Me.btnMkDir.Size = New System.Drawing.Size(62, 22)
-        Me.btnMkDir.Text = "Nuevo"
-        Me.btnMkDir.ToolTipText = "Crear un nuevo directorio en el panel activo"
         '
         'btnCopiarDir
         '
@@ -367,6 +409,21 @@ Partial Class Form1
         Me.btnMoverDir.Text = "Mover"
         Me.btnMoverDir.ToolTipText = "Mover los directorios seleccionados del panel activo al otro panel (directorio)"
         '
+        'ToolStripSeparator8
+        '
+        Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(6, 25)
+        '
+        'btnEliminar
+        '
+        Me.btnEliminar.AutoToolTip = False
+        Me.btnEliminar.Image = CType(resources.GetObject("btnEliminar.Image"), System.Drawing.Image)
+        Me.btnEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnEliminar.Name = "btnEliminar"
+        Me.btnEliminar.Size = New System.Drawing.Size(70, 22)
+        Me.btnEliminar.Text = "Eliminar ficheros"
+        Me.btnEliminar.ToolTipText = "Eliminar los ficheros seleccionados del panel activo"
+        '
         'btnEliminarDir
         '
         Me.btnEliminarDir.AutoToolTip = False
@@ -374,8 +431,33 @@ Partial Class Form1
         Me.btnEliminarDir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnEliminarDir.Name = "btnEliminarDir"
         Me.btnEliminarDir.Size = New System.Drawing.Size(70, 22)
-        Me.btnEliminarDir.Text = "Eliminar"
+        Me.btnEliminarDir.Text = "Eliminar directorios"
         Me.btnEliminarDir.ToolTipText = "Eliminar los directorios seleccionados en el panel activo"
+        '
+        'ToolStripSeparator9
+        '
+        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 25)
+        '
+        'btnNuevoFichero
+        '
+        Me.btnNuevoFichero.AutoToolTip = False
+        Me.btnNuevoFichero.Image = CType(resources.GetObject("btnNuevoFichero.Image"), System.Drawing.Image)
+        Me.btnNuevoFichero.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnNuevoFichero.Name = "btnNuevoFichero"
+        Me.btnNuevoFichero.Size = New System.Drawing.Size(62, 22)
+        Me.btnNuevoFichero.Text = "Nuevo fichero"
+        Me.btnNuevoFichero.ToolTipText = "Crear un nuevo fichero en el panel (directorio) activo"
+        '
+        'BtnNuevoDir
+        '
+        Me.BtnNuevoDir.AutoToolTip = False
+        Me.BtnNuevoDir.Image = CType(resources.GetObject("BtnNuevoDir.Image"), System.Drawing.Image)
+        Me.BtnNuevoDir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnNuevoDir.Name = "BtnNuevoDir"
+        Me.BtnNuevoDir.Size = New System.Drawing.Size(62, 22)
+        Me.BtnNuevoDir.Text = "Nuevo directorio"
+        Me.BtnNuevoDir.ToolTipText = "Crear un nuevo directorio en el panel activo"
         '
         'StatusStripInfo
         '
@@ -394,16 +476,10 @@ Partial Class Form1
         Me.LabelInfo.Text = "ToolStripStatusLabel1"
         Me.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'BtnAbrirDirIzqDropDown
+        'ToolStripSeparator11
         '
-        Me.BtnAbrirDirIzqDropDown.AutoToolTip = False
-        Me.BtnAbrirDirIzqDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.BtnAbrirDirIzqDropDown.Image = CType(resources.GetObject("BtnAbrirDirIzqDropDown.Image"), System.Drawing.Image)
-        Me.BtnAbrirDirIzqDropDown.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnAbrirDirIzqDropDown.Name = "BtnAbrirDirIzqDropDown"
-        Me.BtnAbrirDirIzqDropDown.Size = New System.Drawing.Size(29, 22)
-        Me.BtnAbrirDirIzqDropDown.Text = "..."
-        Me.BtnAbrirDirIzqDropDown.ToolTipText = "Seleccionar de directorios recientes"
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(6, 25)
         '
         'Form1
         '
@@ -436,6 +512,7 @@ Partial Class Form1
         Me.PerformLayout()
 
     End Sub
+
     Private WithEvents ToolStripIzq As ToolStrip
     Private WithEvents btnAbrirDirIzq As ToolStripButton
     Private WithEvents btnAbrirDirDer As ToolStripButton
@@ -455,7 +532,7 @@ Partial Class Form1
     Private WithEvents chNombreDer As ColumnHeader
     Private WithEvents chFechaDer As ColumnHeader
     Private WithEvents chTamañoDer As ColumnHeader
-    Friend WithEvents StatusStripInfo As StatusStrip
+    Private WithEvents StatusStripInfo As StatusStrip
     Private WithEvents LabelInfo As ToolStripStatusLabel
     Private WithEvents LabelDirIzq As ToolStripLabel
     Private WithEvents LabelDirDer As ToolStripLabel
@@ -468,10 +545,19 @@ Partial Class Form1
     Private WithEvents btnEliminar As ToolStripButton
     Private WithEvents btnMover As ToolStripButton
     Private WithEvents ToolStripSeparator6 As ToolStripSeparator
-    Private WithEvents btnMkDir As ToolStripButton
+    Private WithEvents BtnNuevoDir As ToolStripButton
     Private WithEvents btnCopiarDir As ToolStripButton
     Private WithEvents btnMoverDir As ToolStripButton
     Private WithEvents btnEliminarDir As ToolStripButton
     Private WithEvents btnNuevoFichero As ToolStripButton
     Private WithEvents BtnAbrirDirIzqDropDown As ToolStripDropDownButton
+    Private WithEvents BtnAbrirDirDerDropDown As ToolStripDropDownButton
+    Private WithEvents ToolStripSeparator7 As ToolStripSeparator
+    Private WithEvents BtnActualizarMasRecientes As ToolStripButton
+    Private WithEvents ToolStripSeparator10 As ToolStripSeparator
+    Private WithEvents ToolStripSeparator8 As ToolStripSeparator
+    Private WithEvents ToolStripSeparator9 As ToolStripSeparator
+    Private WithEvents BtnNuevoDropDown As ToolStripDropDownButton
+    Private WithEvents BtnEliminarSplit As ToolStripSplitButton
+    Private WithEvents ToolStripSeparator11 As ToolStripSeparator
 End Class

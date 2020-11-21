@@ -121,12 +121,12 @@ Public Class ConfirmDialog
         Dim t = lineas.Length
         For i = 0 To lineas.Length - 1
             If lineas(i).Any Then
-                If lineas(i).Length > 38 Then
-                    t += 1
+                If lineas(i).Length > 40 Then
+                    t += 1 + (lineas(i).Length \ 40)
                 End If
             End If
         Next
-        If lineas.Length > 8 Then
+        If t > 8 Then
             Me.Height += (t - 8) * 17
         End If
         Me.LabelMessage.Text = message

@@ -28,7 +28,10 @@ Public Class Form1
     ''' Colección con los últimos directorios mostrados
     ''' en ambos paneles
     ''' </summary>
-    Private ReadOnly ultimosDirs As New List(Of String)
+    ''' <remarks>
+    ''' Se supone que HashSet mejora la comprobación con Contains con respecto a List
+    ''' </remarks>
+    Private ReadOnly ultimosDirs As New HashSet(Of String) ' List(Of String)
 
     ''' <summary>
     ''' El panel en el que se ha pulsado un fichero o directorio
@@ -40,12 +43,30 @@ Public Class Form1
     ''' </summary>
     Private comparado As Boolean
 
+    Public Sub New()
+
+        ' Esta llamada es exigida por el diseñador.
+        InitializeComponent()
+
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.BtnNuevoDropDown.DropDown = New ToolStripDropDown()
+        Me.BtnNuevoDropDown.DropDown.Items.AddRange(New System.Windows.Forms.ToolStripItem() {btnNuevoFichero, BtnNuevoDir})
+
+        BtnEliminarSplit.DropDown = New ToolStripDropDown()
+        BtnEliminarSplit.DropDown.Items.AddRange(New System.Windows.Forms.ToolStripItem() {btnEliminar, btnEliminarDir})
+    End Sub
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lvDirDer.Items.Clear()
         lvDirIzq.Items.Clear()
 
         ' Leer los datos de la configuración
         LeerConfig()
+
+        ' Asignar los ultimos directorios a los menús
+        AsignarMenuUltimosDir(BtnAbrirDirIzqDropDown)
+        AsignarMenuUltimosDir(BtnAbrirDirDerDropDown)
+
         Dim s = ""
         Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
         If diIzq IsNot Nothing Then s = $"{diIzq.FullName}"
@@ -72,9 +93,33 @@ Public Class Form1
 
     End Sub
 
+    ''' <summary>
+    ''' Asignar los últimos directorios a los botones
+    ''' </summary>
+    ''' <param name="BtnDropDown">El botón al que se añaden los menús</param>
+    Private Sub AsignarMenuUltimosDir(BtnDropDown As ToolStripDropDownButton)
+        BtnDropDown.DropDownItems.Clear()
+
+        For Each sDir In ultimosDirs
+            If sDir.Any Then
+                Dim mnu As New ToolStripMenuItem(sDir)
+                AddHandler mnu.Click, Sub(s1 As Object, e1 As EventArgs)
+                                          For Each m As ToolStripMenuItem In BtnDropDown.DropDownItems
+                                              m.Checked = False
+                                          Next
+                                          Dim m2 = TryCast(s1, ToolStripMenuItem)
+                                          m2.Checked = True
+                                          MostrarContenidoDirectorio(m2.Text, lvDirIzq)
+                                      End Sub
+                mnu.Checked = False
+                BtnDropDown.DropDownItems.Add(mnu)
+            End If
+        Next
+    End Sub
+
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         LabelDirIzq.Width = ToolStripIzq.Width - (BtnAbrirDirIzqDropDown.Width + btnAbrirDirIzq.Width + 24)
-        LabelDirDer.Width = ToolStripDer.Width - (btnAbrirDirDer.Width + 24)
+        LabelDirDer.Width = ToolStripDer.Width - (BtnAbrirDirDerDropDown.Width + btnAbrirDirDer.Width + 24)
 
         Dim sCopyR = "(c) Guillermo Som (elGuille), 2020"
         If Date.Now.Year > 2020 Then
@@ -100,30 +145,45 @@ Public Class Form1
         AbrirCarpeta(lvDirDer)
     End Sub
 
-    Private Sub LvDirIzq_Click(sender As Object, e As EventArgs) Handles lvDirIzq.Click
-        ' comprobar si es un fichero
-        If lvDirIzq.SelectedItems.Count > 0 Then
-            Dim fi = TryCast(lvDirIzq.SelectedItems(0).Tag, FileInfo)
-            If fi Is Nothing Then Return
+    Private Sub LvDirIzq_Click(sender As Object, e As EventArgs) Handles lvDirIzq.Click, lvDirDer.Click
+        Dim lv = TryCast(sender, ListView)
+        If lv Is Nothing Then Return
+        If lv.SelectedItems.Count = 0 Then Return
 
-            If lvDirDer.SelectedItems.Count > 0 Then
-                lvDirDer.SelectedItems.Clear()
-            End If
+        Dim lv1 As ListView
+        If lv Is lvDirIzq Then
+            lv1 = lvDirDer
+        Else
+            lv1 = lvDirIzq
+        End If
+
+        If lv1.SelectedItems.Count > 0 Then
+            lv1.SelectedItems.Clear()
+        End If
+
+        ' Seleccionar todos los de la izquierda
+        For i = 0 To lv.SelectedItems.Count - 1
+            Dim fi = TryCast(lv.SelectedItems(0).Tag, FileInfo)
+            ' Seleccionar tanto ficheros como directorios
+            'If fi Is Nothing Then Return
 
             ' Buscar el elemento en la otra lista
-            Dim nombre = lvDirIzq.SelectedItems(0).SubItems(1).Text
-            For i = 0 To lvDirDer.Items.Count - 1
-                Dim nombreDer = lvDirDer.Items(i).SubItems(1).Text
+            Dim nombre = lv.SelectedItems(i).SubItems(1).Text
+            If String.IsNullOrEmpty(nombre) Then Continue For
+
+            For j = 0 To lv1.Items.Count - 1
+                Dim nombreDer = lv1.Items(j).SubItems(1).Text
                 If String.IsNullOrEmpty(nombreDer) Then Continue For
                 If nombre = nombreDer Then
-                    lvDirDer.Items(i).Selected = True
+                    lv1.Items(j).Selected = True
                     Exit For
                 End If
             Next
-        End If
+        Next
+
     End Sub
 
-    Private Sub LvDirIzq_DoubleClick(sender As Object, e As EventArgs) Handles lvDirIzq.DoubleClick ', lvDirIzq.Click
+    Private Sub LvDirIzq_DoubleClick(sender As Object, e As EventArgs) Handles lvDirIzq.DoubleClick
         IrParentDir(lvDirIzq)
     End Sub
 
@@ -177,7 +237,7 @@ Public Class Form1
         MoverFicheros()
     End Sub
 
-    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles btnMkDir.Click
+    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles BtnNuevoDir.Click
         CrearDirectorio()
     End Sub
 
@@ -192,6 +252,31 @@ Public Class Form1
     Private Sub BtnEliminarDir_Click(sender As Object, e As EventArgs) Handles btnEliminarDir.Click
         EliminarDirectorios()
     End Sub
+
+    Private Sub BtnDropDown_DropDownOpening(sender As Object, e As EventArgs) Handles BtnAbrirDirIzqDropDown.DropDownOpening, BtnAbrirDirDerDropDown.DropDownOpening
+        ' marcar como seleccionado el directorio actual
+        Dim lv As ListView
+        Dim BtnDropDown As ToolStripDropDownButton
+        If sender Is BtnAbrirDirIzqDropDown Then
+            lv = lvDirIzq
+            BtnDropDown = BtnAbrirDirIzqDropDown
+        Else
+            lv = lvDirDer
+            BtnDropDown = BtnAbrirDirDerDropDown
+        End If
+        Dim sDir = lv.Tag.ToString
+        For Each m As ToolStripMenuItem In BtnDropDown.DropDownItems
+            If m.Text = sDir Then
+                m.Checked = True
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub BtnActualizarMasRecientes_Click(sender As Object, e As EventArgs) Handles BtnActualizarMasRecientes.Click
+        ActualizarMasRecientes()
+    End Sub
+
 
     ''' <summary>
     ''' Crear un nuevo fichero en el panel activo
@@ -322,12 +407,12 @@ Public Class Form1
             ' Copiar cada directorio y ficheros del directorio de origen en el destino
             ' primero copiar los ficheros
             Dim files = di.GetFiles
-            copiarFiles2Dir(files, dDest)
+            CopiarFiles2Dir(files, dDest)
 
             ' a coninuación los directorios y sus ficheros, etc.
             ' hay que hacerlo recursivo
             Dim dirs = di.GetDirectories
-            copiarDirs2Dir(dirs, dDest)
+            CopiarDirs2Dir(dirs, dDest)
         Next
 
         ' Releer los dos directorios
@@ -341,7 +426,7 @@ Public Class Form1
     ''' </summary>
     ''' <param name="dirs">Array de tipo DirectoryInfo con los directorios a del origen</param>
     ''' <param name="dDest">Directorio de destino, si no existe se creará</param>
-    Private Sub copiarDirs2Dir(dirs As DirectoryInfo(), dDest As String)
+    Private Sub CopiarDirs2Dir(dirs As DirectoryInfo(), dDest As String)
         ' si no existe, crear el directorio de destino
         If Not Directory.Exists(dDest) Then
             Directory.CreateDirectory(dDest)
@@ -357,12 +442,12 @@ Public Class Form1
 
             ' Copiar todos los ficheros
             Dim files = di.GetFiles
-            copiarFiles2Dir(files, dDest2)
+            CopiarFiles2Dir(files, dDest2)
 
             ' comprobar si hay más directorios
             ' y copiarlos recursivamente
             Dim dirs2 = di.GetDirectories
-            copiarDirs2Dir(dirs2, dDest2)
+            CopiarDirs2Dir(dirs2, dDest2)
         Next
     End Sub
 
@@ -371,7 +456,7 @@ Public Class Form1
     ''' </summary>
     ''' <param name="files">Array del tipo FileInfo con los ficheros de origen a copiar</param>
     ''' <param name="dDest">Directorio de destino, si no existe se creará</param>
-    Private Sub copiarFiles2Dir(files As FileInfo(), dDest As String)
+    Private Sub CopiarFiles2Dir(files As FileInfo(), dDest As String)
         ' si no existe, crear el directorio de destino
         If Not Directory.Exists(dDest) Then
             Directory.CreateDirectory(dDest)
@@ -468,7 +553,7 @@ Public Class Form1
                     LabelInfo.Text = $"Eliminando el directorio {di.Name}..."
                     Application.DoEvents()
 
-                    eliminarContenidoDir(dDest)
+                    EliminarContenidoDir(dDest)
                     If Directory.Exists(dDest) Then
                         Directory.Delete(dDest)
                     End If
@@ -492,7 +577,7 @@ Public Class Form1
     ''' Eliminar todo el contenido de un directorio
     ''' </summary>
     ''' <param name="sDir">El nombre del directorio a eliminar</param>
-    Private Sub eliminarContenidoDir(sDir As String)
+    Private Sub EliminarContenidoDir(sDir As String)
         Dim di = New DirectoryInfo(sDir)
         ' eliminar los ficheros
         Dim files = di.GetFiles
@@ -501,7 +586,7 @@ Public Class Form1
         Next
         Dim dirs = di.GetDirectories
         For i = dirs.Length - 1 To 0 Step -1
-            eliminarContenidoDir(dirs(i).FullName)
+            EliminarContenidoDir(dirs(i).FullName)
         Next
     End Sub
 
@@ -547,7 +632,7 @@ Public Class Form1
                 Try
                     ' El directorio debe estar vacío antes de eliminarlo
                     Dim dDest2 = di.FullName
-                    eliminarContenidoDir(di.FullName)
+                    EliminarContenidoDir(di.FullName)
                     If di.Exists Then
                         di.Delete()
                     End If
@@ -638,8 +723,25 @@ Public Class Form1
         Dim dirCfg = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         Dim ficCfg As String
 
-        ficCfg = $"{prefijoConfig}_Izq.config.txt"
+        ' Leer los últimos directorios abiertos
+        ' Leerlos antes de mostrar directorios, si no, los sobrescribe
+        ultimosDirs.Clear()
+        ficCfg = $"{prefijoConfig}_UltimosDirectorios.config.txt"
         Dim fic = Path.Combine(dirCfg, ficCfg)
+        If File.Exists(fic) Then
+            Using sr As New StreamReader(fic, Encoding.Default, True)
+                Do While Not sr.EndOfStream
+                    Dim s = sr.ReadLine
+                    If s.Any Then
+                        ultimosDirs.Add(s)
+                    End If
+                Loop
+                sr.Close()
+            End Using
+        End If
+
+        ficCfg = $"{prefijoConfig}_Izq.config.txt"
+        fic = Path.Combine(dirCfg, ficCfg)
         Dim dIzq As String
         If File.Exists(fic) Then
             Using sr As New StreamReader(fic, Encoding.Default, True)
@@ -661,22 +763,6 @@ Public Class Form1
 
             ' Mostrar los ficheros en el panel derecho
             MostrarContenidoDirectorio(dIzq, lvDirDer)
-        End If
-
-        ' Leer los últimos directorios abiertos
-        ultimosDirs.Clear()
-        ficCfg = $"{prefijoConfig}_UltimosDirectorios.config.txt"
-        fic = Path.Combine(dirCfg, ficCfg)
-        If File.Exists(fic) Then
-            Using sr As New StreamReader(fic, Encoding.Default, True)
-                Do While Not sr.EndOfStream
-                    Dim s = sr.ReadLine
-                    If s.Any Then
-                        ultimosDirs.Add(s)
-                    End If
-                Loop
-                sr.Close()
-            End Using
         End If
 
     End Sub
@@ -776,17 +862,22 @@ Public Class Form1
         ' Guardar la información del directorio actual y los últimos abiertos
         GuardarConfig(sDir, lv)
 
-        If lv Is lvDirDer AndAlso comparado Then
+        If comparado Then
             CompararDirectorios()
-        Else
-            comparado = False
         End If
+        'If lv Is lvDirDer AndAlso comparado Then
+        '    CompararDirectorios()
+        'Else
+        '    comparado = False
+        'End If
     End Sub
 
     ''' <summary>
-    ''' Comparar el contenido de los ficheros de los dos directorios mostrados
+    ''' Comparar el contenido de los ficheros de los dos directorios mostrados.
+    ''' Devuelve el número de ficheros con fecha más reciente.
     ''' </summary>
-    Private Sub CompararDirectorios()
+    ''' <returns>Devuelve el número de ficheros más recientes o -1 si no se ha procesado</returns>
+    Private Function CompararDirectorios() As Integer
         ' Comparar el contenido de los 2 directorios
         ' Recorrer los ficheros del panel izquierdo buscando cambios con el derecho
         ' Comprobar la fecha antes que el tamaño
@@ -796,10 +887,11 @@ Public Class Form1
         '   Es más grande       t>  Green
         '   Es más pequeño      t<  DarkGreen
         '   Son iguales         =
+
         Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
-        If diIzq Is Nothing Then Return
+        If diIzq Is Nothing Then Return -1
         Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
-        If diDer Is Nothing Then Return
+        If diDer Is Nothing Then Return -1
 
         LabelInfo.Text = "Comparando los directorios..."
         Application.DoEvents()
@@ -825,35 +917,59 @@ Public Class Form1
             Dim fiDer As FileInfo
             Dim existe As Boolean = False
             For j = 0 To lvDirDer.Items.Count - 1
+                Dim itDer = lvDirDer.Items(j)
                 fiDer = TryCast(lvDirDer.Items(j).Tag, FileInfo)
                 If fiDer Is Nothing Then Continue For
+                itDer.ForeColor = Color.FromKnownColor(KnownColor.WindowText)
                 If fiIzq.Name = fiDer.Name Then
                     existe = True
                     t += 1
                     itIzq.Text = "="
                     itIzq.ToolTipText = "Son iguales"
+                    itDer.Text = "="
+                    itDer.ToolTipText = "Son iguales"
                     If fiIzq.LastWriteTime.ToString("yyyy/MM/dd HH:mm") > fiDer.LastWriteTime.ToString("yyyy/MM/dd HH:mm") Then
                         itIzq.Text = "f>"
                         itIzq.ForeColor = Color.Blue
                         itIzq.ToolTipText = "La fecha es mayor"
+                        ' Lo contrario en el otro directorio
+                        itDer.Text = "f<"
+                        itDer.ForeColor = Color.SlateBlue
+                        itDer.ToolTipText = "La fecha es menor"
+
                         tfma += 1
                         ti += 1
                     ElseIf fiIzq.LastWriteTime.ToString("yyyy/MM/dd HH:mm") < fiDer.LastWriteTime.ToString("yyyy/MM/dd HH:mm") Then
                         itIzq.Text = "f<"
                         itIzq.ForeColor = Color.SlateBlue
                         itIzq.ToolTipText = "La fecha es menor"
+                        '
+                        itDer.Text = "f>"
+                        itDer.ForeColor = Color.Blue
+                        itDer.ToolTipText = "La fecha es mayor"
+
                         tfme += 1
                         ti += 1
                     ElseIf fiIzq.Length > fiDer.Length Then
                         itIzq.ForeColor = Color.Green
                         itIzq.Text = "t>"
                         itIzq.ToolTipText = "El tamaño es mayor"
+                        '
+                        itDer.ForeColor = Color.DarkGreen
+                        itDer.Text = "t<"
+                        itDer.ToolTipText = "El tamaño es menor"
+
                         ttma += 1
                         ti += 1
                     ElseIf fiIzq.Length < fiDer.Length Then
                         itIzq.ForeColor = Color.DarkGreen
                         itIzq.Text = "t<"
                         itIzq.ToolTipText = "El tamaño es menor"
+                        '
+                        itDer.ForeColor = Color.Green
+                        itDer.Text = "t>"
+                        itDer.ToolTipText = "El tamaño es mayor"
+
                         ttme += 1
                         ti += 1
                     End If
@@ -877,7 +993,9 @@ Public Class Form1
         Else
             LabelInfo.Text = $"De {tf} ficheros los {t} son iguales."
         End If
-    End Sub
+
+        Return tfma
+    End Function
 
     ''' <summary>
     ''' Copiar un fichero del panel activo al otro panel
@@ -1108,6 +1226,45 @@ Public Class Form1
         }
         p.Start()
 
+    End Sub
+
+    ''' <summary>
+    ''' Actualizar los ficheros más recientes del panel activo en el otro.
+    ''' </summary>
+    Private Sub ActualizarMasRecientes()
+        ' Si no está asignado el panel activo, salir
+        If quePanel Is Nothing Then Return
+
+        ' Comparar los directorios
+        Dim tfm = CompararDirectorios()
+        If tfm = -1 Then Return
+
+        Dim lvDest As ListView
+        If quePanel Is lvDirIzq Then
+            lvDest = lvDirDer
+        Else
+            lvDest = lvDirIzq
+        End If
+        Dim dDest = lvDest.Tag.ToString
+
+        Dim ret = ConfirmDialog.Show($"Esto copiará los ficheros más recientes (con fecha más actual) del directorio:{vbCrLf}{vbCrLf}{quePanel.Tag.ToString}{vbCrLf}{vbCrLf}al directorio:{vbCrLf}{vbCrLf}{dDest}{vbCrLf}{vbCrLf}y no se pedirá confirmación individual de sobrescritura{vbCrLf}{vbCrLf}¿Quieres actualizar los {tfm} ficheros más recientes?",
+                                     "Actualizar ficheros",
+                                     DialogConfirmButtons.YesNo,
+                                     DialogConfirmIcon.Information)
+        If ret = DialogConfirmResult.No Then Return
+
+        ' Los ficheros más recientes tendrán f> en el texto del item
+        For i = 0 To quePanel.Items.Count - 1
+            If quePanel.Items(i).Text = "f>" Then
+                Dim fi = TryCast(quePanel.Items(i).Tag, FileInfo)
+                If fi Is Nothing Then Continue For
+                Dim fDest = Path.Combine(dDest, fi.Name)
+                fi.CopyTo(fDest, True)
+            End If
+        Next
+
+        Releer()
+        CompararDirectorios()
     End Sub
 
 End Class
