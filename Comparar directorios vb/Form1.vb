@@ -28,7 +28,7 @@ Public Class Form1
     ''' Colección con los últimos directorios mostrados
     ''' en ambos paneles
     ''' </summary>
-    Private ultimosDirs As New List(Of String)
+    Private ReadOnly ultimosDirs As New List(Of String)
 
     ''' <summary>
     ''' El panel en el que se ha pulsado un fichero o directorio
@@ -46,8 +46,22 @@ Public Class Form1
 
         ' Leer los datos de la configuración
         LeerConfig()
-        ' Empezar comparando los directorios
-        CompararDirectorios()
+        Dim s = ""
+        Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
+        If diIzq IsNot Nothing Then s = $"{diIzq.FullName}"
+        Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
+        If diDer IsNot Nothing Then s &= $"{vbCrLf}y{vbCrLf}{diDer.FullName}"
+        If Not s.Any Then Return
+
+        Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
+                                     s,
+                                     "Comparar directorios",
+                                     DialogConfirmButtons.YesNo,
+                                     DialogConfirmIcon.Information)
+        If ret = DialogConfirmResult.Yes Then
+            CompararDirectorios()
+        End If
+
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -78,6 +92,242 @@ Public Class Form1
         AbrirCarpeta(lvDirDer)
     End Sub
 
+    Private Sub LvDirIzq_Click(sender As Object, e As EventArgs) Handles lvDirIzq.Click
+        ' comprobar si es un fichero
+        If lvDirIzq.SelectedItems.Count > 0 Then
+            Dim fi = TryCast(lvDirIzq.SelectedItems(0).Tag, FileInfo)
+            If fi Is Nothing Then Return
+
+            If lvDirDer.SelectedItems.Count > 0 Then
+                lvDirDer.SelectedItems.Clear()
+            End If
+
+            ' Buscar el elemento en la otra lista
+            Dim nombre = lvDirIzq.SelectedItems(0).SubItems(1).Text
+            For i = 0 To lvDirDer.Items.Count - 1
+                Dim nombreDer = lvDirDer.Items(i).SubItems(1).Text
+                If String.IsNullOrEmpty(nombreDer) Then Continue For
+                If nombre = nombreDer Then
+                    lvDirDer.Items(i).Selected = True
+                    Exit For
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub LvDirIzq_DoubleClick(sender As Object, e As EventArgs) Handles lvDirIzq.DoubleClick ', lvDirIzq.Click
+        IrParentDir(lvDirIzq)
+    End Sub
+
+    Private Sub LvDirDer_DoubleClick(sender As Object, e As EventArgs) Handles lvDirDer.DoubleClick
+        IrParentDir(lvDirDer)
+    End Sub
+
+    Private Sub IrParentDir(lv As ListView)
+        ' Comprobar si es un elemento con directorio
+        If lv.SelectedItems.Count > 0 Then
+            ' ir a ese directorio
+            Dim di = TryCast(lv.SelectedItems(0).Tag, DirectoryInfo)
+            If di Is Nothing Then Return
+
+            Dim sDir = di.FullName
+            If Not String.IsNullOrEmpty(sDir) Then
+                MostrarContenidoDirectorio(sDir, lv)
+            End If
+        End If
+    End Sub
+
+    Private Sub BtnComparar_Click(sender As Object, e As EventArgs) Handles btnComparar.Click
+        CompararDirectorios()
+    End Sub
+
+    Private Sub BtnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
+        Releer()
+    End Sub
+
+    Private Sub LvDirIzq_Enter(sender As Object, e As EventArgs) Handles lvDirIzq.Enter, lvDirDer.Enter
+        quePanel = TryCast(sender, ListView)
+    End Sub
+
+    Private Sub BtnMostrar_Click(sender As Object, e As EventArgs) Handles btnMostrar.Click
+        VerFichero()
+    End Sub
+
+    Private Sub BtnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
+        CopiarFicheros()
+    End Sub
+
+    Private Sub BtnBorrar_Click(sender As Object, e As EventArgs) Handles btnBorrar.Click
+        BorrarFicheros()
+    End Sub
+
+    Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click
+        NuevoFichero()
+    End Sub
+
+    Private Sub BtnMover_Click(sender As Object, e As EventArgs) Handles btnMover.Click
+        MoverFicheros()
+    End Sub
+
+    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles btnMkDir.Click
+        CrearDirectorio()
+    End Sub
+
+    Private Sub BtnCopiarDir_Click(sender As Object, e As EventArgs) Handles btnCopiarDir.Click
+        CopiarDirectorios()
+    End Sub
+
+    Private Sub BtnMoverDir_Click(sender As Object, e As EventArgs) Handles btnMoverDir.Click
+        MoverDirectorios()
+    End Sub
+
+    Private Sub BtnBorrarDir_Click(sender As Object, e As EventArgs) Handles btnBorrarDir.Click
+        BorrarDirectorios()
+    End Sub
+
+    Private Sub NuevoFichero()
+
+    End Sub
+
+    Private Sub CrearDirectorio()
+
+    End Sub
+
+    ''' <summary>
+    ''' Copiar los directorios seleccionados
+    ''' </summary>
+    Private Sub CopiarDirectorios()
+        ' Si no está asignado el panel activo, salir
+        If quePanel Is Nothing Then Return
+        ' Si no hay nada seleccionado en el panel activo, salir
+        If quePanel.SelectedIndices.Count = 0 Then Return
+
+        Dim lvDest As ListView
+        If quePanel Is lvDirIzq Then
+            lvDest = lvDirDer
+        Else
+            lvDest = lvDirIzq
+        End If
+        Dim diDest = TryCast(lvDest.Tag, DirectoryInfo)
+        If diDest Is Nothing Then Return
+
+        Dim copiarTodos = False
+
+        ' Copiar todos los directorios seleccionados
+        For i = 0 To quePanel.SelectedIndices.Count - 1
+            ' El directorio (DirectoryInfo) seleccionado
+            Dim di = TryCast(quePanel.Items(quePanel.SelectedIndices(i)).Tag, DirectoryInfo)
+            ' Si no es un directorio, continuar
+            If di Is Nothing Then Continue For
+
+            Dim dDest = Path.Combine(diDest.FullName, di.Name)
+            If Directory.Exists(dDest) Then
+                Dim s = $"Ya existe un directorio con el nombre {di.Name} en el destino." & vbCrLf & vbCrLf &
+                    $"{dDest}" & vbCrLf & vbCrLf &
+                    "¿Quieres sobrescribir todos los ficheros que contenga?"
+                Dim sTit = "Copiar directorio"
+
+                Dim ret As DialogConfirmResult
+
+                ' Si se debe volver a mostrar el diálogo de confirmación
+                If Not copiarTodos Then
+                    ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Warning)
+                    If ret = DialogConfirmResult.NoToAll Then
+                        Return
+                    ElseIf ret = DialogConfirmResult.No Then
+                        Continue For
+                    ElseIf ret = DialogConfirmResult.YesToAll Then
+                        copiarTodos = True
+                    End If
+                End If
+                'Else
+                '    ' Crear el directorio en el destino
+                '    ' en realidad no es necesario
+                '    ' copiarFiles2Dir lo crea si no existe
+                '    Directory.CreateDirectory(dDest)
+            End If
+
+            ' Copiar cada directorio y ficheros del directorio de origen en el destino
+            ' primero copiar los ficheros
+            Dim files = di.GetFiles
+            copiarFiles2Dir(files, dDest)
+
+            ' a coninuación los directorios y sus ficheros, etc.
+            ' hay que hacerlo recursivo
+            Dim dirs = di.GetDirectories
+            copiarDirs2Dir(dirs, dDest)
+        Next
+
+        ' Releer los dos directorios
+        'MostrarContenidoDirectorio(lvDest.Tag.ToString, lvDest)
+        Releer()
+
+    End Sub
+
+    ''' <summary>
+    ''' Copiar recursivamente los directorios de origen a destino
+    ''' </summary>
+    ''' <param name="dirs">Array de tipo DirectoryInfo con los directorios a del origen</param>
+    ''' <param name="dDest">Directorio de destino, si no existe se creará</param>
+    Private Sub copiarDirs2Dir(dirs As DirectoryInfo(), dDest As String)
+        ' si no existe, crear el directorio de destino
+        If Not Directory.Exists(dDest) Then
+            Directory.CreateDirectory(dDest)
+        End If
+
+        For Each di In dirs
+            Dim dDest2 = Path.Combine(dDest, di.Name)
+            If Not Directory.Exists(dDest2) Then
+                Directory.CreateDirectory(dDest2)
+            End If
+            LabelInfo.Text = $"Copiando el directorio {di.Name} en {dDest2}..."
+            Application.DoEvents()
+
+            ' Copiar todos los ficheros
+            Dim files = di.GetFiles
+            copiarFiles2Dir(files, dDest2)
+
+            ' comprobar si hay más directorios
+            ' y copiarlos recursivamente
+            Dim dirs2 = di.GetDirectories
+            copiarDirs2Dir(dirs2, dDest2)
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Copiar los ficheros indicados en el directorio de destino.
+    ''' </summary>
+    ''' <param name="files">Array del tipo FileInfo con los ficheros de origen a copiar</param>
+    ''' <param name="dDest">Directorio de destino, si no existe se creará</param>
+    Private Sub copiarFiles2Dir(files As FileInfo(), dDest As String)
+        ' si no existe, crear el directorio de destino
+        If Not Directory.Exists(dDest) Then
+            Directory.CreateDirectory(dDest)
+        End If
+        ' copiar todos los ficheros indicados
+        For Each fi In files
+            Dim fDest = Path.Combine(dDest, fi.Name)
+            Try
+                LabelInfo.Text = $"Copiando {fi.Name} en {dDest}..."
+                Application.DoEvents()
+
+                'fi.CopyTo(fDest, True)
+                File.Copy(fi.FullName, fDest, True)
+            Catch ex As Exception
+                LabelInfo.Text = ex.Message
+                Continue For
+            End Try
+        Next
+    End Sub
+
+    Private Sub MoverDirectorios()
+
+    End Sub
+
+    Private Sub BorrarDirectorios()
+
+    End Sub
+
     ''' <summary>
     ''' Seleccionar la carpeta a abrir en el ListView (panel) indicado
     ''' </summary>
@@ -88,6 +338,7 @@ Public Class Form1
         If lv.Tag IsNot Nothing Then
             sDir = lv.Tag.ToString
         End If
+
         Dim fb As New FolderBrowserDialog With {
             .Description = "Selecciona el directorio a mostrar",
             .SelectedPath = Environment.SpecialFolder.MyDocuments.ToString
@@ -296,55 +547,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub LvDirIzq_Click(sender As Object, e As EventArgs) Handles lvDirIzq.Click
-        ' comprobar si es un fichero
-        If lvDirIzq.SelectedItems.Count > 0 Then
-            Dim fi = TryCast(lvDirIzq.SelectedItems(0).Tag, FileInfo)
-            If fi Is Nothing Then Return
-
-            If lvDirDer.SelectedItems.Count > 0 Then
-                lvDirDer.SelectedItems.Clear()
-            End If
-
-            ' Buscar el elemento en la otra lista
-            Dim nombre = lvDirIzq.SelectedItems(0).SubItems(1).Text
-            For i = 0 To lvDirDer.Items.Count - 1
-                Dim nombreDer = lvDirDer.Items(i).SubItems(1).Text
-                If String.IsNullOrEmpty(nombreDer) Then Continue For
-                If nombre = nombreDer Then
-                    lvDirDer.Items(i).Selected = True
-                    Exit For
-                End If
-            Next
-        End If
-    End Sub
-
-    Private Sub LvDirIzq_DoubleClick(sender As Object, e As EventArgs) Handles lvDirIzq.DoubleClick ', lvDirIzq.Click
-        IrParentDir(lvDirIzq)
-    End Sub
-
-    Private Sub LvDirDer_DoubleClick(sender As Object, e As EventArgs) Handles lvDirDer.DoubleClick
-        IrParentDir(lvDirDer)
-    End Sub
-
-    Private Sub IrParentDir(lv As ListView)
-        ' Comprobar si es un elemento con directorio
-        If lv.SelectedItems.Count > 0 Then
-            ' ir a ese directorio
-            Dim di = TryCast(lv.SelectedItems(0).Tag, DirectoryInfo)
-            If di Is Nothing Then Return
-
-            Dim sDir = di.FullName
-            If Not String.IsNullOrEmpty(sDir) Then
-                MostrarContenidoDirectorio(sDir, lv)
-            End If
-        End If
-    End Sub
-
-    Private Sub BtnComparar_Click(sender As Object, e As EventArgs) Handles btnComparar.Click
-        CompararDirectorios()
-    End Sub
-
     ''' <summary>
     ''' Comparar el contenido de los ficheros de los dos directorios mostrados
     ''' </summary>
@@ -441,8 +643,207 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub BtnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
+    ''' <summary>
+    ''' Copiar un fichero del panel activo al otro panel
+    ''' </summary>
+    Private Sub CopiarFicheros()
+        ' Si no está asignado el panel activo, salir
+        If quePanel Is Nothing Then Return
+        ' Si no hay fichero seleccionado en el panel activo, salir
+        If quePanel.SelectedIndices.Count = 0 Then Return
+
+        Dim lvDest As ListView
+        If quePanel Is lvDirIzq Then
+            lvDest = lvDirDer
+        Else
+            lvDest = lvDirIzq
+        End If
+        Dim diDest = TryCast(lvDest.Tag, DirectoryInfo)
+        If diDest Is Nothing Then Return
+
+        Dim copiarTodos = False
+
+        ' Copiar todos los ficheros seleccionados
+        For i = 0 To quePanel.SelectedIndices.Count - 1
+            ' El fichero (FileInfo) seleccionado
+            Dim fi = TryCast(quePanel.Items(quePanel.SelectedIndices(i)).Tag, FileInfo)
+            ' Si no es un fichero, continuar
+            If fi Is Nothing Then Continue For
+
+            Dim fDest = Path.Combine(diDest.FullName, fi.Name)
+            If File.Exists(fDest) Then
+                Dim s = $"Ya existe un fichero con el nombre {fi.Name} en el destino." & vbCrLf & vbCrLf &
+                    $"{diDest.FullName}" & vbCrLf & vbCrLf &
+                    "¿Quieres sobrescribirlo?"
+                Dim sTit = "Copiar fichero"
+
+                Dim ret As DialogConfirmResult
+
+                ' Si se debe volver a mostrar el diálogo de confirmación
+                If Not copiarTodos Then
+                    ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Question)
+                    If ret = DialogConfirmResult.NoToAll Then
+                        Return
+                    ElseIf ret = DialogConfirmResult.No Then
+                        Continue For
+                    ElseIf ret = DialogConfirmResult.YesToAll Then
+                        copiarTodos = True
+                    End If
+                End If
+
+            End If
+            Try
+                File.Copy(fi.FullName, fDest, True)
+            Catch ex As Exception
+                LabelInfo.Text = ex.Message
+                Return
+            End Try
+        Next
+
+        ' Releer el directorio de destino
+        'MostrarContenidoDirectorio(lvDest.Tag.ToString, lvDest)
         Releer()
+    End Sub
+
+    ''' <summary>
+    ''' Mover los ficheros seleccionados del panel activo al otro panel
+    ''' </summary>
+    Private Sub MoverFicheros()
+        ' Si no está asignado el panel activo, salir
+        If quePanel Is Nothing Then Return
+        ' Si no hay fichero seleccionado en el panel activo, salir
+        If quePanel.SelectedIndices.Count = 0 Then Return
+
+        Dim lvDest As ListView
+        If quePanel Is lvDirIzq Then
+            lvDest = lvDirDer
+        Else
+            lvDest = lvDirIzq
+        End If
+        Dim diDest = TryCast(lvDest.Tag, DirectoryInfo)
+        If diDest Is Nothing Then Return
+
+        Dim moverTodos = False
+        Dim sobrescribirTodos = False
+
+        ' Mover todos los ficheros seleccionados
+        For i = quePanel.SelectedIndices.Count - 1 To 0 Step -1
+            ' El fichero (FileInfo) seleccionado
+            Dim fi = TryCast(quePanel.Items(quePanel.SelectedIndices(i)).Tag, FileInfo)
+            ' Si no es un fichero, continuar
+            If fi Is Nothing Then Continue For
+
+            Dim fOri = fi.FullName
+
+            ' Preguntar si lo quiere mover
+            Dim s = $"¿Quieres mover el fichero {fi.Name}?{vbCrLf}{vbCrLf}{fi.FullName}{vbCrLf}"
+            Dim sTit = "Mover fichero"
+
+            Dim ret As DialogConfirmResult
+            ' Si se debe volver a mostrar el diálogo de confirmación
+            If Not moverTodos Then
+                ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Warning)
+                If ret = DialogConfirmResult.NoToAll Then
+                    Return
+                ElseIf ret = DialogConfirmResult.No Then
+                    Continue For
+                ElseIf ret = DialogConfirmResult.YesToAll Then
+                    moverTodos = True
+                End If
+            End If
+
+            ' Comprobar si ya existe y lo quiere sobrescribir
+            Dim fDest = Path.Combine(diDest.FullName, fi.Name)
+            If File.Exists(fDest) Then
+                s = $"Ya existe un fichero con el nombre '{fi.Name}' en el directorio de destino." & vbCrLf & vbCrLf &
+                    $"{diDest.FullName}" & vbCrLf & vbCrLf &
+                    "¿Quieres sobrescribirlo?"
+                sTit = "Mover fichero"
+
+                'ret = DialogConfirmResult.None
+
+                ' Si se debe volver a mostrar el diálogo de confirmación
+                If Not sobrescribirTodos Then
+                    ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Warning)
+                    If ret = DialogConfirmResult.NoToAll Then
+                        Return
+                    ElseIf ret = DialogConfirmResult.No Then
+                        Continue For
+                    ElseIf ret = DialogConfirmResult.YesToAll Then
+                        sobrescribirTodos = True
+                    End If
+                End If
+            End If
+            Try
+                ' Antes de moverlo, hay que borrar el de destino
+                ' si no dará error de que no se puede mover un fichero que ya existe
+                If File.Exists(fDest) Then
+                    File.Delete(fDest)
+                End If
+                ' Mover el fichero, en realidad es copiar
+                File.Move(fOri, fDest)
+            Catch ex As Exception
+                LabelInfo.Text = ex.Message
+                Continue For
+            End Try
+
+        Next
+
+        ' Releer los dos directorios
+        Releer()
+
+    End Sub
+
+    ''' <summary>
+    ''' Borrar el fichero seleccionado en el panel activo
+    ''' </summary>
+    Private Sub BorrarFicheros()
+        ' Si no está asignado el panel activo, salir
+        If quePanel Is Nothing Then Return
+        ' Si no hay fichero seleccionado en el panel activo, salir
+        If quePanel.SelectedIndices.Count = 0 Then Return
+
+        Dim borrarTodos = False
+
+        ' Borrar todos los ficheros seleccionados
+        For i = 0 To quePanel.SelectedIndices.Count - 1
+            ' El fichero (FileInfo) seleccionado
+            Dim fi = TryCast(quePanel.Items(quePanel.SelectedIndices(i)).Tag, FileInfo)
+            ' Si no es un fichero, continuar
+            If fi Is Nothing Then Continue For
+
+            ' Confirmar solo si existe
+            If fi.Exists Then
+                Dim s = $"¿Quieres borrar el fichero{vbCrLf}{vbCrLf}{fi.FullName}?"
+                Dim sTit = "Borrar fichero"
+
+                Dim ret As DialogConfirmResult
+
+                ' Si se debe volver a mostrar el diálogo de confirmación
+                If Not borrarTodos Then
+                    ret = ConfirmDialog.Show(s, sTit, DialogConfirmButtons.All, DialogConfirmIcon.Question)
+                    If ret = DialogConfirmResult.NoToAll Then
+                        Return
+                    ElseIf ret = DialogConfirmResult.No Then
+                        Continue For
+                    ElseIf ret = DialogConfirmResult.YesToAll Then
+                        borrarTodos = True
+                    End If
+                End If
+
+                Try
+                    fi.Delete()
+                Catch ex As Exception
+                    LabelInfo.Text = ex.Message
+                    Return
+                End Try
+            End If
+
+        Next
+
+        ' Releer el directorio de destino
+        MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
+
     End Sub
 
     ''' <summary>
@@ -451,14 +852,6 @@ Public Class Form1
     Private Sub Releer()
         MostrarContenidoDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
         MostrarContenidoDirectorio(lvDirDer.Tag.ToString, lvDirDer)
-    End Sub
-
-    Private Sub LvDirIzq_Enter(sender As Object, e As EventArgs) Handles lvDirIzq.Enter, lvDirDer.Enter
-        quePanel = TryCast(sender, ListView)
-    End Sub
-
-    Private Sub BtnMostrar_Click(sender As Object, e As EventArgs) Handles btnMostrar.Click
-        VerFichero()
     End Sub
 
     ''' <summary>
@@ -481,110 +874,4 @@ Public Class Form1
 
     End Sub
 
-    Private Sub BtnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
-        CopiarFichero()
-    End Sub
-
-    ''' <summary>
-    ''' Copiar un fichero del panel activo al otro panel
-    ''' </summary>
-    Private Sub CopiarFichero()
-        ' Si no está asignado el panel activo, salir
-        If quePanel Is Nothing Then Return
-        ' Si no hay fichero seleccionado en el panel activo, salir
-        If quePanel.SelectedItems.Count = 0 Then Return
-        ' El fichero (FileInfo) del primer fichero seleccionado
-        Dim fi = TryCast(quePanel.SelectedItems(0).Tag, FileInfo)
-        If fi Is Nothing Then Return
-
-        Dim lvDest As ListView
-        If quePanel Is lvDirIzq Then
-            lvDest = lvDirDer
-        Else
-            lvDest = lvDirIzq
-        End If
-        Dim diDest = TryCast(lvDest.Tag, DirectoryInfo)
-        If diDest Is Nothing Then Return
-        Dim fDest = Path.Combine(diDest.FullName, fi.Name)
-        If File.Exists(fDest) Then
-            Dim s = "Ya existe un fichero con ese nombre en el destino." & vbCrLf &
-                    $"{diDest.FullName}" & vbCrLf &
-                    "¿Quieres sobre escribirlo?"
-            Dim sTit = "Copiar fichero"
-
-            If MessageBox.Show(s, sTit,
-                               MessageBoxButtons.YesNo,
-                               MessageBoxIcon.Question) = DialogResult.No Then
-                Return
-            End If
-            Try
-                File.Delete(fDest)
-            Catch ex As Exception
-                LabelInfo.Text = ex.Message
-                Return
-            End Try
-        End If
-        File.Copy(fi.FullName, fDest)
-
-        ' Releer el directorio de destino
-        MostrarContenidoDirectorio(lvDest.Tag.ToString, lvDest)
-    End Sub
-
-    Private Sub BtnBorrar_Click(sender As Object, e As EventArgs) Handles btnBorrar.Click
-        BorrarFichero()
-    End Sub
-
-    ''' <summary>
-    ''' Borrar el fichero seleccionado en el panel activo
-    ''' </summary>
-    Private Sub BorrarFichero()
-        ' Si no está asignado el panel activo, salir
-        If quePanel Is Nothing Then Return
-        ' Si no hay fichero seleccionado en el panel activo, salir
-        If quePanel.SelectedItems.Count = 0 Then Return
-        ' El fichero (FileInfo) del primer fichero seleccionado
-        Dim fi = TryCast(quePanel.SelectedItems(0).Tag, FileInfo)
-        If fi Is Nothing Then Return
-
-        If fi.Exists Then
-            Dim s = "¿Quieres borrar el fichero" & vbCrLf & $"{fi.FullName}?"
-            Dim sTit = "Borrar fichero"
-
-            If MessageBox.Show(s, sTit,
-                               MessageBoxButtons.YesNo,
-                               MessageBoxIcon.Question) = DialogResult.No Then
-                Return
-            End If
-            Try
-                fi.Delete()
-            Catch ex As Exception
-                LabelInfo.Text = ex.Message
-                Return
-            End Try
-        End If
-
-        ' Releer el directorio de destino
-        MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
-
-    End Sub
-
-    Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click
-
-    End Sub
-
-    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles btnMkDir.Click
-
-    End Sub
-
-    Private Sub BtnCopiarDir_Click(sender As Object, e As EventArgs) Handles btnCopiarDir.Click
-
-    End Sub
-
-    Private Sub BtnMoverDir_Click(sender As Object, e As EventArgs) Handles btnMoverDir.Click
-
-    End Sub
-
-    Private Sub BtnBorrarDir_Click(sender As Object, e As EventArgs) Handles btnBorrarDir.Click
-
-    End Sub
 End Class

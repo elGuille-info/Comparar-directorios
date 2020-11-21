@@ -76,6 +76,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfirmDialog.Designer.vb">
+      <DependentUpon>ConfirmDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +107,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ConfirmDialog.resx">
+      <DependentUpon>ConfirmDialog.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
@@ -125,6 +134,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Folder_stuffed.WinVista.ico" />
+    <None Include="Resources\Warning.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\info.png" />
+    <None Include="Resources\error.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
