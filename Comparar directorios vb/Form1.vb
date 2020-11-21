@@ -53,6 +53,12 @@ Public Class Form1
         If diDer IsNot Nothing Then s &= $"{vbCrLf}y{vbCrLf}{diDer.FullName}"
         If Not s.Any Then Return
 
+        ' Para probar el alto automático del cuadro de diálogo
+        'For i = 1 To 10
+        '    s &= $"{vbCrLf}Línea {7 + i}"
+        'Next
+        's &= $"{vbCrLf}Última línea."
+
         Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
                                      s,
                                      "Comparar directorios",
@@ -60,13 +66,15 @@ Public Class Form1
                                      DialogConfirmIcon.Information)
         If ret = DialogConfirmResult.Yes Then
             CompararDirectorios()
+            'ElseIf ret = DialogConfirmResult.Cancel Then
+            '    Application.Exit()
         End If
 
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        LabelIzq1.Width = ToolStripIzq.Width - (btnAbrirDirIzq.Width + 24)
-        LabelDer1.Width = ToolStripDer.Width - (btnAbrirDirDer.Width + 24)
+        LabelDirIzq.Width = ToolStripIzq.Width - (BtnAbrirDirIzqDropDown.Width + btnAbrirDirIzq.Width + 24)
+        LabelDirDer.Width = ToolStripDer.Width - (btnAbrirDirDer.Width + 24)
 
         Dim sCopyR = "(c) Guillermo Som (elGuille), 2020"
         If Date.Now.Year > 2020 Then
@@ -74,7 +82,7 @@ Public Class Form1
         End If
         LabelInfo.Text = $"{Application.ProductName} v{Application.ProductVersion}, {sCopyR} " &
             $"- Ventana: Width: {Me.Width}, Height: {Me.Height} " &
-            $"- LabelIzq1.Width: {LabelIzq1.Width}, LabelDer1.Width: {LabelDer1.Width}"
+            $"- LabelIzq1.Width: {LabelDirIzq.Width}, LabelDer1.Width: {LabelDirDer.Width}"
 
         If lvDirIzq.Tag IsNot Nothing Then
             MostrarNombreDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
@@ -684,20 +692,20 @@ Public Class Form1
         If lv Is lvDirIzq Then
             Dim s = dir.FullName
             ' El ancho predeterminado es 384 y 70 caracteres
-            Dim maxLeng = CInt(LabelIzq1.Width / 5.6)
+            Dim maxLeng = CInt(LabelDirIzq.Width / 5.6)
             If s.Length > maxLeng Then
                 s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
             End If
-            LabelIzq1.Text = s ' dir.Name 'dir.FullName
-            LabelIzq1.ToolTipText = dir.FullName
+            LabelDirIzq.Text = s ' dir.Name 'dir.FullName
+            LabelDirIzq.ToolTipText = dir.FullName
         Else
             Dim s = dir.FullName
-            Dim maxLeng = CInt(LabelIzq1.Width / 5.6)
+            Dim maxLeng = CInt(LabelDirIzq.Width / 5.6)
             If s.Length > maxLeng Then
                 s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
             End If
-            LabelDer1.Text = s ' dir.Name 'dir.FullName
-            LabelDer1.ToolTipText = dir.FullName
+            LabelDirDer.Text = s ' dir.Name 'dir.FullName
+            LabelDirDer.ToolTipText = dir.FullName
         End If
 
     End Sub

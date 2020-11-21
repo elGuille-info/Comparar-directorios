@@ -134,10 +134,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Folder_stuffed.WinVista.ico" />
-    <None Include="Resources\Warning.png" />
-    <None Include="Resources\help.png" />
-    <None Include="Resources\info.png" />
-    <None Include="Resources\error.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
