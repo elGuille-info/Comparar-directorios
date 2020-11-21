@@ -121,8 +121,8 @@ Public Class ConfirmDialog
         Dim t = lineas.Length
         For i = 0 To lineas.Length - 1
             If lineas(i).Any Then
-                If lineas(i).Length > 40 Then
-                    t += 1 + (lineas(i).Length \ 40)
+                If lineas(i).Length > 38 Then
+                    t += 1 + (lineas(i).Length \ 50) ' 38
                 End If
             End If
         Next

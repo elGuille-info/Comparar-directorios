@@ -20,6 +20,21 @@ Imports System.Diagnostics
 Public Class Form1
 
     ''' <summary>
+    ''' El Directorio donde se guarda la configuración
+    ''' </summary>
+    Private DirConfiguracion As String
+
+    ''' <summary>
+    ''' El nombre del fichero de configuración global
+    ''' </summary>
+    Private FicheroConfiguracion As String
+
+    ''' <summary>
+    ''' La extensión a usar en los ficheros de configuración
+    ''' </summary>
+    Private Const ExtensionConfiguracion As String = ".config.txt"
+
+    ''' <summary>
     ''' El prefijo de los ficheros de configuración
     ''' </summary>
     Const prefijoConfig As String = "CompararDirectorios"
@@ -49,6 +64,11 @@ Public Class Form1
         InitializeComponent()
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+
+        ' Los botones Nuevo y Eliminar están en ToolStripDropDownButton y ToolStripSplitButton
+        ' (el que sean diferentes era para ver si alguno de ellos tenía botones
+        ' pero ninguno en el diseñador lo muestra, pero si los puede tener
+        ' solo que hay que añadirlos a la propiedad DropDown... y de forma manual)
         Me.BtnNuevoDropDown.DropDown = New ToolStripDropDown()
         Me.BtnNuevoDropDown.DropDown.Items.AddRange(New System.Windows.Forms.ToolStripItem() {btnNuevoFichero, BtnNuevoDir})
 
@@ -59,6 +79,16 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lvDirDer.Items.Clear()
         lvDirIzq.Items.Clear()
+        LabelDirIzq.Text = ""
+        LabelDirDer.Text = ""
+
+        Dim DirDocumentos = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        DirConfiguracion = Path.Combine(DirDocumentos, Application.ProductName)
+        If Not Directory.Exists(DirConfiguracion) Then
+            Directory.CreateDirectory(DirConfiguracion)
+        End If
+        FicheroConfiguracion = Path.Combine(DirConfiguracion, Application.ProductName & ExtensionConfiguracion)
+
 
         ' Leer los datos de la configuración
         LeerConfig()
@@ -72,13 +102,25 @@ Public Class Form1
         If diIzq IsNot Nothing Then s = $"{diIzq.FullName}"
         Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
         If diDer IsNot Nothing Then s &= $"{vbCrLf}y{vbCrLf}{diDer.FullName}"
-        If Not s.Any Then Return
 
-        ' Para probar el alto automático del cuadro de diálogo
-        'For i = 1 To 10
-        '    s &= $"{vbCrLf}Línea {7 + i}"
-        'Next
-        's &= $"{vbCrLf}Última línea."
+        ' Si no hay directorios seleccionados
+        If String.IsNullOrEmpty(s) Then
+            Dim ret1 = ConfirmDialog.Show($"¡ATENCIÓN, no hay directorios seleccionados!{vbCrLf}{vbCrLf}" &
+                                          $"Debes seleccionar un directorio para cada panel.{vbCrLf}{vbCrLf}" &
+                                          "¿Quieres seleccionar el directorio del panel izquierdo y " &
+                                          $"usar el directorio de 'Documentos' en el panel derecho?{vbCrLf}{vbCrLf}" &
+                                          $"Pulsa NO, para seleccionar los directorios más tarde.{vbCrLf}{vbCrLf}" &
+                                          "Si no hay directorios seleccionados en ambos paneles no se podrá hacer copias, etc.",
+                                          "No hay directorios seleccionados",
+                                          DialogConfirmButtons.YesNo,
+                                          DialogConfirmIcon.Information)
+            If ret1 = DialogConfirmResult.Yes Then
+                AbrirCarpeta(lvDirIzq)
+                lvDirDer.Tag = New DirectoryInfo(DirDocumentos)
+                MostrarContenidoDirectorio(lvDirDer.Tag.ToString, lvDirDer)
+            End If
+            Return
+        End If
 
         Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
                                      s,
@@ -87,10 +129,7 @@ Public Class Form1
                                      DialogConfirmIcon.Information)
         If ret = DialogConfirmResult.Yes Then
             CompararDirectorios()
-            'ElseIf ret = DialogConfirmResult.Cancel Then
-            '    Application.Exit()
         End If
-
     End Sub
 
     ''' <summary>
@@ -201,6 +240,9 @@ Public Class Form1
             Dim sDir = di.FullName
             If Not String.IsNullOrEmpty(sDir) Then
                 MostrarContenidoDirectorio(sDir, lv)
+                If comparado Then
+                    CompararDirectorios()
+                End If
             End If
         End If
     End Sub
@@ -264,6 +306,8 @@ Public Class Form1
             lv = lvDirDer
             BtnDropDown = BtnAbrirDirDerDropDown
         End If
+        If lv.Tag Is Nothing Then Return
+
         Dim sDir = lv.Tag.ToString
         For Each m As ToolStripMenuItem In BtnDropDown.DropDownItems
             If m.Text = sDir Then
@@ -312,7 +356,9 @@ Public Class Form1
             End If
         End If
         MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
-
+        If comparado Then
+            CompararDirectorios()
+        End If
     End Sub
 
     ''' <summary>
@@ -348,6 +394,9 @@ Public Class Form1
             End If
         End If
         MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
+        If comparado Then
+            CompararDirectorios()
+        End If
     End Sub
 
     ''' <summary>
@@ -416,9 +465,7 @@ Public Class Form1
         Next
 
         ' Releer los dos directorios
-        'MostrarContenidoDirectorio(lvDest.Tag.ToString, lvDest)
         Releer()
-
     End Sub
 
     ''' <summary>
@@ -646,7 +693,9 @@ Public Class Form1
 
         ' Releer el directorio
         MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
-
+        If comparado Then
+            CompararDirectorios()
+        End If
     End Sub
 
     ''' <summary>
@@ -672,6 +721,9 @@ Public Class Form1
         End If
 
         MostrarContenidoDirectorio(fb.SelectedPath, lv)
+        If comparado Then
+            CompararDirectorios()
+        End If
     End Sub
 
     ''' <summary>
@@ -682,33 +734,30 @@ Public Class Form1
     ''' <param name="sDir">Cadena con el nombre del directorio</param>
     ''' <param name="lv">ListView donde se muestra el contenido del directorio</param>
     Private Sub GuardarConfig(sDir As String, lv As ListView)
-        ' Guardar el nombre del directorio abierto
-        Dim dirCfg = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        Dim cfg = New Config(FicheroConfiguracion)
 
         Dim ficCfg As String
-        If lv Is lvDirIzq Then
-            ficCfg = $"{prefijoConfig}_Izq.config.txt"
-        Else
-            ficCfg = $"{prefijoConfig}_Der.config.txt"
-        End If
-        Dim fic = Path.Combine(dirCfg, ficCfg)
-        Using sw As New StreamWriter(fic, False, Encoding.Default)
-            sw.Write(sDir)
-            sw.Flush()
-            sw.Close()
-        End Using
 
         ' Guardar todos los directorios abiertos
-        If ultimosDirs.Count = 0 Then Return
-
-        ficCfg = $"{prefijoConfig}_UltimosDirectorios.config.txt"
-        fic = Path.Combine(dirCfg, ficCfg)
-        Using sw As New StreamWriter(fic, False, Encoding.Default)
+        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{ExtensionConfiguracion}")
+        Using sw As New StreamWriter(ficCfg, False, Encoding.Default)
             For Each s In ultimosDirs
                 If s.Any Then
                     sw.WriteLine(s)
                 End If
             Next
+            sw.Flush()
+            sw.Close()
+        End Using
+
+        ' Guardar el nombre del directorio abierto
+        If lv Is lvDirIzq Then
+            ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Izq{ExtensionConfiguracion}")
+        Else
+            ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Der{ExtensionConfiguracion}")
+        End If
+        Using sw As New StreamWriter(ficCfg, False, Encoding.Default)
+            sw.Write(sDir)
             sw.Flush()
             sw.Close()
         End Using
@@ -720,16 +769,16 @@ Public Class Form1
     ''' y la lista de los últimos directorios
     ''' </summary>
     Private Sub LeerConfig()
-        Dim dirCfg = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        Dim cfg = New Config(FicheroConfiguracion)
+
         Dim ficCfg As String
 
         ' Leer los últimos directorios abiertos
         ' Leerlos antes de mostrar directorios, si no, los sobrescribe
         ultimosDirs.Clear()
-        ficCfg = $"{prefijoConfig}_UltimosDirectorios.config.txt"
-        Dim fic = Path.Combine(dirCfg, ficCfg)
-        If File.Exists(fic) Then
-            Using sr As New StreamReader(fic, Encoding.Default, True)
+        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{ExtensionConfiguracion}")
+        If File.Exists(ficCfg) Then
+            Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 Do While Not sr.EndOfStream
                     Dim s = sr.ReadLine
                     If s.Any Then
@@ -740,11 +789,10 @@ Public Class Form1
             End Using
         End If
 
-        ficCfg = $"{prefijoConfig}_Izq.config.txt"
-        fic = Path.Combine(dirCfg, ficCfg)
+        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Izq{ExtensionConfiguracion}")
         Dim dIzq As String
-        If File.Exists(fic) Then
-            Using sr As New StreamReader(fic, Encoding.Default, True)
+        If File.Exists(ficCfg) Then
+            Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 dIzq = sr.ReadLine
                 sr.Close()
             End Using
@@ -753,10 +801,9 @@ Public Class Form1
             MostrarContenidoDirectorio(dIzq, lvDirIzq)
         End If
 
-        ficCfg = $"{prefijoConfig}_Der.config.txt"
-        fic = Path.Combine(dirCfg, ficCfg)
-        If File.Exists(fic) Then
-            Using sr As New StreamReader(fic, Encoding.Default, True)
+        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Der{ExtensionConfiguracion}")
+        If File.Exists(ficCfg) Then
+            Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 dIzq = sr.ReadLine
                 sr.Close()
             End Using
@@ -862,13 +909,8 @@ Public Class Form1
         ' Guardar la información del directorio actual y los últimos abiertos
         GuardarConfig(sDir, lv)
 
-        If comparado Then
-            CompararDirectorios()
-        End If
-        'If lv Is lvDirDer AndAlso comparado Then
+        'If comparado Then
         '    CompararDirectorios()
-        'Else
-        '    comparado = False
         'End If
     End Sub
 
@@ -876,8 +918,8 @@ Public Class Form1
     ''' Comparar el contenido de los ficheros de los dos directorios mostrados.
     ''' Devuelve el número de ficheros con fecha más reciente.
     ''' </summary>
-    ''' <returns>Devuelve el número de ficheros más recientes o -1 si no se ha procesado</returns>
-    Private Function CompararDirectorios() As Integer
+    ''' <returns>Devuelve una tupla con el número de ficheros más recientes y los que no existen o -1 si no se ha procesado</returns>
+    Private Function CompararDirectorios() As (FechaMasReciente As Integer, NoExisten As Integer)
         ' Comparar el contenido de los 2 directorios
         ' Recorrer los ficheros del panel izquierdo buscando cambios con el derecho
         ' Comprobar la fecha antes que el tamaño
@@ -889,9 +931,9 @@ Public Class Form1
         '   Son iguales         =
 
         Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
-        If diIzq Is Nothing Then Return -1
+        If diIzq Is Nothing Then Return (-1, -1)
         Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
-        If diDer Is Nothing Then Return -1
+        If diDer Is Nothing Then Return (-1, -1)
 
         LabelInfo.Text = "Comparando los directorios..."
         Application.DoEvents()
@@ -994,7 +1036,7 @@ Public Class Form1
             LabelInfo.Text = $"De {tf} ficheros los {t} son iguales."
         End If
 
-        Return tfma
+        Return (tfma, tn)
     End Function
 
     ''' <summary>
@@ -1054,8 +1096,7 @@ Public Class Form1
             End Try
         Next
 
-        ' Releer el directorio de destino
-        'MostrarContenidoDirectorio(lvDest.Tag.ToString, lvDest)
+        ' Releer los directorios
         Releer()
     End Sub
 
@@ -1197,15 +1238,22 @@ Public Class Form1
 
         ' Releer el directorio
         MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
-
+        If comparado Then
+            CompararDirectorios()
+        End If
     End Sub
 
     ''' <summary>
     ''' Releer el contenido de los dos directorios
     ''' </summary>
     Private Sub Releer()
+        If lvDirIzq.Tag Is Nothing OrElse lvDirDer.Tag Is Nothing Then Return
+
         MostrarContenidoDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
         MostrarContenidoDirectorio(lvDirDer.Tag.ToString, lvDirDer)
+        If comparado Then
+            CompararDirectorios()
+        End If
     End Sub
 
     ''' <summary>
@@ -1236,8 +1284,10 @@ Public Class Form1
         If quePanel Is Nothing Then Return
 
         ' Comparar los directorios
+        ' Cuando lo ponga paa que compare cada panel por separado
+        ' solo comparar el activo con el otro
         Dim tfm = CompararDirectorios()
-        If tfm = -1 Then Return
+        If tfm.FechaMasReciente = -1 Then Return
 
         Dim lvDest As ListView
         If quePanel Is lvDirIzq Then
@@ -1247,7 +1297,22 @@ Public Class Form1
         End If
         Dim dDest = lvDest.Tag.ToString
 
-        Dim ret = ConfirmDialog.Show($"Esto copiará los ficheros más recientes (con fecha más actual) del directorio:{vbCrLf}{vbCrLf}{quePanel.Tag.ToString}{vbCrLf}{vbCrLf}al directorio:{vbCrLf}{vbCrLf}{dDest}{vbCrLf}{vbCrLf}y no se pedirá confirmación individual de sobrescritura{vbCrLf}{vbCrLf}¿Quieres actualizar los {tfm} ficheros más recientes?",
+        Dim sTotales As String = ""
+        If tfm.FechaMasReciente = 1 Then
+            sTotales = $"un fichero más reciente"
+        ElseIf tfm.FechaMasReciente > 1 Then
+
+            sTotales = $"los {tfm.FechaMasReciente} ficheros más recientes"
+        End If
+
+        If tfm.NoExisten = 1 Then
+            sTotales &= $" y el que no existe"
+        ElseIf tfm.NoExisten > 1 Then
+            sTotales &= $" y los {tfm.NoExisten} que no existen"
+            'ElseIf tfm.NoExisten = 0 Then
+        End If
+
+        Dim ret = ConfirmDialog.Show($"Esto copiará los ficheros más recientes (con fecha más actual) y los que no existan del directorio:{vbCrLf}{vbCrLf}{quePanel.Tag.ToString}{vbCrLf}{vbCrLf}al directorio:{vbCrLf}{vbCrLf}{dDest}{vbCrLf}{vbCrLf}y no se pedirá confirmación individual de sobrescritura{vbCrLf}{vbCrLf}¿Quieres actualizar los {tfm.FechaMasReciente} ficheros más recientes y los {tfm.NoExisten}?",
                                      "Actualizar ficheros",
                                      DialogConfirmButtons.YesNo,
                                      DialogConfirmIcon.Information)
@@ -1255,7 +1320,7 @@ Public Class Form1
 
         ' Los ficheros más recientes tendrán f> en el texto del item
         For i = 0 To quePanel.Items.Count - 1
-            If quePanel.Items(i).Text = "f>" Then
+            If quePanel.Items(i).Text = "f>" OrElse quePanel.Items(i).Text = "x" Then
                 Dim fi = TryCast(quePanel.Items(i).Tag, FileInfo)
                 If fi Is Nothing Then Continue For
                 Dim fDest = Path.Combine(dDest, fi.Name)
