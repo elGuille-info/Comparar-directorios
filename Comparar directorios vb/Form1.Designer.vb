@@ -22,7 +22,7 @@ Partial Class Form1
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
@@ -50,19 +50,29 @@ Partial Class Form1
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnLimpiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.BtnIntercambiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnActualizarMasRecientes = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
-        Me.BtnNuevoDropDown = New System.Windows.Forms.ToolStripDropDownButton()
         Me.BtnCambiarNombre = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
-        Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripSplitButton()
+        Me.BtnVer = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.MnuVerEnNotepad = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MnuVerEnElVisor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MnuTemas = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MnuTemaPredeterminado = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MnuTemaOscuro = New System.Windows.Forms.ToolStripMenuItem()
+        Me.NortonCommanderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnCopiarSplit = New System.Windows.Forms.ToolStripSplitButton()
+        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnMoverSplit = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+        Me.BtnNuevoDropDown = New System.Windows.Forms.ToolStripDropDownButton()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
+        Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripSplitButton()
+        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnMover = New System.Windows.Forms.ToolStripButton()
         Me.btnMoverDir = New System.Windows.Forms.ToolStripButton()
         Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
@@ -74,14 +84,6 @@ Partial Class Form1
         Me.StatusStripInfo = New System.Windows.Forms.StatusStrip()
         Me.LabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.TextBox13 = New System.Windows.Forms.TextBox()
-        Me.BtnVer = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.MnuVerEnNotepad = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MnuVerEnElVisor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
-        Me.MnuTemas = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MnuTemaPredeterminado = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MnuTemaOscuro = New System.Windows.Forms.ToolStripMenuItem()
-        Me.NortonCommanderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -123,8 +125,8 @@ Partial Class Form1
         Me.lvDirIzq.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chInfoIzq, Me.chNombreIzq, Me.chTamañoIzq, Me.chFechaIzq})
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem1.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem2.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -286,7 +288,7 @@ Partial Class Form1
         '
         Me.ToolStripComparar.AutoSize = False
         Me.ToolStripComparar.BackColor = System.Drawing.Color.Transparent
-        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.BtnActualizarMasRecientes, Me.ToolStripSeparator7, Me.BtnCambiarNombre, Me.ToolStripSeparator10, Me.BtnVer, Me.ToolStripSeparator11, Me.BtnCopiarSplit, Me.ToolStripSeparator9, Me.BtnMoverSplit, Me.ToolStripSeparator6, Me.BtnNuevoDropDown, Me.ToolStripSeparator8, Me.BtnEliminarSplit, Me.ToolStripSeparator5})
+        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.BtnActualizarMasRecientes, Me.ToolStripSeparator7, Me.BtnCambiarNombre, Me.ToolStripSeparator10, Me.BtnVer, Me.ToolStripSeparator11, Me.BtnCopiarSplit, Me.ToolStripSeparator9, Me.BtnMoverSplit, Me.ToolStripSeparator6, Me.BtnNuevoDropDown, Me.ToolStripSeparator8, Me.BtnEliminarSplit, Me.ToolStripSeparator13, Me.BtnIntercambiar, Me.ToolStripSeparator5})
         Me.ToolStripComparar.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripComparar.Name = "ToolStripComparar"
         Me.ToolStripComparar.Size = New System.Drawing.Size(1088, 25)
@@ -321,6 +323,17 @@ Partial Class Form1
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
         Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
         '
+        'BtnIntercambiar
+        '
+        Me.BtnIntercambiar.AutoToolTip = False
+        Me.BtnIntercambiar.Image = CType(resources.GetObject("BtnIntercambiar.Image"), System.Drawing.Image)
+        Me.BtnIntercambiar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnIntercambiar.Name = "BtnIntercambiar"
+        Me.BtnIntercambiar.Size = New System.Drawing.Size(94, 22)
+        Me.BtnIntercambiar.Text = "Intercambiar"
+        Me.BtnIntercambiar.ToolTipText = "Intercambiar los directorios de panel" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(por si quieres actualizar, ya que solo ac" &
+    "tualiza del izquierdo al derecho)"
+        '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
@@ -342,17 +355,6 @@ Partial Class Form1
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
         Me.ToolStripSeparator7.Size = New System.Drawing.Size(6, 25)
         '
-        'BtnNuevoDropDown
-        '
-        Me.BtnNuevoDropDown.AutoToolTip = False
-        Me.BtnNuevoDropDown.Image = CType(resources.GetObject("BtnNuevoDropDown.Image"), System.Drawing.Image)
-        Me.BtnNuevoDropDown.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnNuevoDropDown.Name = "BtnNuevoDropDown"
-        Me.BtnNuevoDropDown.Size = New System.Drawing.Size(71, 22)
-        Me.BtnNuevoDropDown.Text = "Nuevo"
-        Me.BtnNuevoDropDown.ToolTipText = "Selecciona la opción para crear un nuevo fichero o un nuevo directorio " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa" &
-    " F7  para crear un directorio o Ctrl+N para crear un fichero)"
-        '
         'BtnCambiarNombre
         '
         Me.BtnCambiarNombre.AutoToolTip = False
@@ -368,16 +370,65 @@ Partial Class Form1
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
         Me.ToolStripSeparator10.Size = New System.Drawing.Size(6, 25)
         '
-        'BtnEliminarSplit
+        'BtnVer
         '
-        Me.BtnEliminarSplit.AutoToolTip = False
-        Me.BtnEliminarSplit.Image = CType(resources.GetObject("BtnEliminarSplit.Image"), System.Drawing.Image)
-        Me.BtnEliminarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnEliminarSplit.Name = "BtnEliminarSplit"
-        Me.BtnEliminarSplit.Size = New System.Drawing.Size(82, 22)
-        Me.BtnEliminarSplit.Text = "Eliminar"
-        Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F8 para elim" &
-    "inar los elementos seleccionados)"
+        Me.BtnVer.AutoToolTip = False
+        Me.BtnVer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuVerEnNotepad, Me.MnuVerEnElVisor, Me.ToolStripSeparator12, Me.MnuTemas})
+        Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
+        Me.BtnVer.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnVer.Name = "BtnVer"
+        Me.BtnVer.Size = New System.Drawing.Size(52, 22)
+        Me.BtnVer.Text = "Ver"
+        Me.BtnVer.ToolTipText = "Abrir en el visor el primer fichero seleccionado del panel activo (F3)"
+        '
+        'MnuVerEnNotepad
+        '
+        Me.MnuVerEnNotepad.Image = CType(resources.GetObject("MnuVerEnNotepad.Image"), System.Drawing.Image)
+        Me.MnuVerEnNotepad.Name = "MnuVerEnNotepad"
+        Me.MnuVerEnNotepad.Size = New System.Drawing.Size(155, 22)
+        Me.MnuVerEnNotepad.Text = "Ver en Notepad"
+        Me.MnuVerEnNotepad.ToolTipText = "Al ver en Notepad no se puede editar, solo guardar con otro nombre"
+        '
+        'MnuVerEnElVisor
+        '
+        Me.MnuVerEnElVisor.Image = CType(resources.GetObject("MnuVerEnElVisor.Image"), System.Drawing.Image)
+        Me.MnuVerEnElVisor.Name = "MnuVerEnElVisor"
+        Me.MnuVerEnElVisor.Size = New System.Drawing.Size(155, 22)
+        Me.MnuVerEnElVisor.Text = "Ver en el visor"
+        Me.MnuVerEnElVisor.ToolTipText = "Mostrar en el visor integrado" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Permite ver textos, textos enroquecido y HTML"
+        '
+        'ToolStripSeparator12
+        '
+        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(152, 6)
+        '
+        'MnuTemas
+        '
+        Me.MnuTemas.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuTemaPredeterminado, Me.MnuTemaOscuro, Me.NortonCommanderToolStripMenuItem})
+        Me.MnuTemas.Image = CType(resources.GetObject("MnuTemas.Image"), System.Drawing.Image)
+        Me.MnuTemas.Name = "MnuTemas"
+        Me.MnuTemas.Size = New System.Drawing.Size(155, 22)
+        Me.MnuTemas.Text = "Temas"
+        '
+        'MnuTemaPredeterminado
+        '
+        Me.MnuTemaPredeterminado.Name = "MnuTemaPredeterminado"
+        Me.MnuTemaPredeterminado.Size = New System.Drawing.Size(182, 22)
+        Me.MnuTemaPredeterminado.Text = "Predeterminado"
+        '
+        'MnuTemaOscuro
+        '
+        Me.MnuTemaOscuro.Image = CType(resources.GetObject("MnuTemaOscuro.Image"), System.Drawing.Image)
+        Me.MnuTemaOscuro.Name = "MnuTemaOscuro"
+        Me.MnuTemaOscuro.Size = New System.Drawing.Size(182, 22)
+        Me.MnuTemaOscuro.Text = "Oscuro"
+        '
+        'NortonCommanderToolStripMenuItem
+        '
+        Me.NortonCommanderToolStripMenuItem.Image = CType(resources.GetObject("NortonCommanderToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.NortonCommanderToolStripMenuItem.Name = "NortonCommanderToolStripMenuItem"
+        Me.NortonCommanderToolStripMenuItem.Size = New System.Drawing.Size(182, 22)
+        Me.NortonCommanderToolStripMenuItem.Text = "Norton Commander"
         '
         'ToolStripSeparator11
         '
@@ -395,6 +446,11 @@ Partial Class Form1
         Me.BtnCopiarSplit.ToolTipText = "Selecciona la opción para copiar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F5 para copiar" &
     " los elementos seleccionados)"
         '
+        'ToolStripSeparator9
+        '
+        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 25)
+        '
         'BtnMoverSplit
         '
         Me.BtnMoverSplit.AutoToolTip = False
@@ -411,15 +467,37 @@ Partial Class Form1
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
         Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
         '
+        'BtnNuevoDropDown
+        '
+        Me.BtnNuevoDropDown.AutoToolTip = False
+        Me.BtnNuevoDropDown.Image = CType(resources.GetObject("BtnNuevoDropDown.Image"), System.Drawing.Image)
+        Me.BtnNuevoDropDown.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnNuevoDropDown.Name = "BtnNuevoDropDown"
+        Me.BtnNuevoDropDown.Size = New System.Drawing.Size(71, 22)
+        Me.BtnNuevoDropDown.Text = "Nuevo"
+        Me.BtnNuevoDropDown.ToolTipText = "Selecciona la opción para crear un nuevo fichero o un nuevo directorio " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa" &
+    " F7  para crear un directorio o Ctrl+N para crear un fichero)"
+        '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
         Me.ToolStripSeparator8.Size = New System.Drawing.Size(6, 25)
         '
-        'ToolStripSeparator9
+        'BtnEliminarSplit
         '
-        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 25)
+        Me.BtnEliminarSplit.AutoToolTip = False
+        Me.BtnEliminarSplit.Image = CType(resources.GetObject("BtnEliminarSplit.Image"), System.Drawing.Image)
+        Me.BtnEliminarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnEliminarSplit.Name = "BtnEliminarSplit"
+        Me.BtnEliminarSplit.Size = New System.Drawing.Size(82, 22)
+        Me.BtnEliminarSplit.Text = "Eliminar"
+        Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F8 para elim" &
+    "inar los elementos seleccionados)"
+        '
+        'ToolStripSeparator13
+        '
+        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
+        Me.ToolStripSeparator13.Size = New System.Drawing.Size(6, 25)
         '
         'btnMover
         '
@@ -428,7 +506,7 @@ Partial Class Form1
         Me.btnMover.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnMover.Name = "btnMover"
         Me.btnMover.Size = New System.Drawing.Size(61, 22)
-        Me.btnMover.Text = "Mover"
+        Me.btnMover.Text = "Mover fichero"
         Me.btnMover.ToolTipText = "Mover los ficheros seleccionados del panel activo al otro panel (directorio)"
         '
         'btnMoverDir
@@ -438,7 +516,7 @@ Partial Class Form1
         Me.btnMoverDir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnMoverDir.Name = "btnMoverDir"
         Me.btnMoverDir.Size = New System.Drawing.Size(61, 22)
-        Me.btnMoverDir.Text = "Mover"
+        Me.btnMoverDir.Text = "Mover directorio"
         Me.btnMoverDir.ToolTipText = "Mover los directorios seleccionados del panel activo al otro panel (directorio)"
         '
         'btnCopiar
@@ -448,7 +526,7 @@ Partial Class Form1
         Me.btnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnCopiar.Name = "btnCopiar"
         Me.btnCopiar.Size = New System.Drawing.Size(62, 22)
-        Me.btnCopiar.Text = "Copiar"
+        Me.btnCopiar.Text = "Copiar fichero"
         Me.btnCopiar.ToolTipText = "Copiar los ficheros seleccionados del panel activo al otro panel (directorio)"
         '
         'btnCopiarDir
@@ -458,7 +536,7 @@ Partial Class Form1
         Me.btnCopiarDir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnCopiarDir.Name = "btnCopiarDir"
         Me.btnCopiarDir.Size = New System.Drawing.Size(62, 22)
-        Me.btnCopiarDir.Text = "Copiar"
+        Me.btnCopiarDir.Text = "Copiar directorio"
         Me.btnCopiarDir.ToolTipText = "Copiar los directorios seleccionados del panel activo al otro panel (directorio)"
         '
         'btnEliminar
@@ -528,66 +606,6 @@ Partial Class Form1
         Me.TextBox13.TabIndex = 4
         Me.TextBox13.Visible = False
         '
-        'BtnVer
-        '
-        Me.BtnVer.AutoToolTip = False
-        Me.BtnVer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuVerEnNotepad, Me.MnuVerEnElVisor, Me.ToolStripSeparator12, Me.MnuTemas})
-        Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
-        Me.BtnVer.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnVer.Name = "BtnVer"
-        Me.BtnVer.Size = New System.Drawing.Size(52, 22)
-        Me.BtnVer.Text = "Ver"
-        Me.BtnVer.ToolTipText = "Abrir en el visor el primer fichero seleccionado del panel activo (F3)"
-        '
-        'MnuVerEnNotepad
-        '
-        Me.MnuVerEnNotepad.Image = CType(resources.GetObject("MnuVerEnNotepad.Image"), System.Drawing.Image)
-        Me.MnuVerEnNotepad.Name = "MnuVerEnNotepad"
-        Me.MnuVerEnNotepad.Size = New System.Drawing.Size(180, 22)
-        Me.MnuVerEnNotepad.Text = "Ver en Notepad"
-        Me.MnuVerEnNotepad.ToolTipText = "Al ver en Notepad no se puede editar, solo guardar con otro nombre"
-        '
-        'MnuVerEnElVisor
-        '
-        Me.MnuVerEnElVisor.Image = CType(resources.GetObject("MnuVerEnElVisor.Image"), System.Drawing.Image)
-        Me.MnuVerEnElVisor.Name = "MnuVerEnElVisor"
-        Me.MnuVerEnElVisor.Size = New System.Drawing.Size(180, 22)
-        Me.MnuVerEnElVisor.Text = "Ver en el visor"
-        Me.MnuVerEnElVisor.ToolTipText = "Mostrar en el visor integrado" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Permite ver textos, textos enroquecido y HTML"
-        '
-        'ToolStripSeparator12
-        '
-        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(177, 6)
-        '
-        'MnuTemas
-        '
-        Me.MnuTemas.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuTemaPredeterminado, Me.MnuTemaOscuro, Me.NortonCommanderToolStripMenuItem})
-        Me.MnuTemas.Image = CType(resources.GetObject("MnuTemas.Image"), System.Drawing.Image)
-        Me.MnuTemas.Name = "MnuTemas"
-        Me.MnuTemas.Size = New System.Drawing.Size(180, 22)
-        Me.MnuTemas.Text = "Temas"
-        '
-        'MnuTemaPredeterminado
-        '
-        Me.MnuTemaPredeterminado.Name = "MnuTemaPredeterminado"
-        Me.MnuTemaPredeterminado.Size = New System.Drawing.Size(182, 22)
-        Me.MnuTemaPredeterminado.Text = "Predeterminado"
-        '
-        'MnuTemaOscuro
-        '
-        Me.MnuTemaOscuro.Image = CType(resources.GetObject("MnuTemaOscuro.Image"), System.Drawing.Image)
-        Me.MnuTemaOscuro.Name = "MnuTemaOscuro"
-        Me.MnuTemaOscuro.Size = New System.Drawing.Size(182, 22)
-        Me.MnuTemaOscuro.Text = "Oscuro"
-        '
-        'NortonCommanderToolStripMenuItem
-        '
-        Me.NortonCommanderToolStripMenuItem.Image = CType(resources.GetObject("NortonCommanderToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.NortonCommanderToolStripMenuItem.Name = "NortonCommanderToolStripMenuItem"
-        Me.NortonCommanderToolStripMenuItem.Size = New System.Drawing.Size(182, 22)
-        Me.NortonCommanderToolStripMenuItem.Text = "Norton Commander"
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -598,6 +616,7 @@ Partial Class Form1
         Me.Controls.Add(Me.StatusStripInfo)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.KeyPreview = True
         Me.MinimumSize = New System.Drawing.Size(1040, 500)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -674,9 +693,11 @@ Partial Class Form1
     Private WithEvents BtnVer As ToolStripDropDownButton
     Private WithEvents MnuVerEnNotepad As ToolStripMenuItem
     Private WithEvents MnuVerEnElVisor As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator12 As ToolStripSeparator
+    Private WithEvents ToolStripSeparator12 As ToolStripSeparator
     Private WithEvents MnuTemas As ToolStripMenuItem
     Private WithEvents MnuTemaPredeterminado As ToolStripMenuItem
     Private WithEvents MnuTemaOscuro As ToolStripMenuItem
     Private WithEvents NortonCommanderToolStripMenuItem As ToolStripMenuItem
+    Private WithEvents BtnIntercambiar As ToolStripButton
+    Private WithEvents ToolStripSeparator13 As ToolStripSeparator
 End Class

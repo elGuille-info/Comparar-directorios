@@ -42,7 +42,7 @@ Partial Class ConfirmDialog
         'BtnNo
         '
         Me.BtnNo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnNo.Location = New System.Drawing.Point(265, 6)
+        Me.BtnNo.Location = New System.Drawing.Point(304, 6)
         Me.BtnNo.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
         Me.BtnNo.Name = "BtnNo"
         Me.BtnNo.Size = New System.Drawing.Size(73, 23)
@@ -53,7 +53,7 @@ Partial Class ConfirmDialog
         'BtnSiTodo
         '
         Me.BtnSiTodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnSiTodo.Location = New System.Drawing.Point(180, 6)
+        Me.BtnSiTodo.Location = New System.Drawing.Point(219, 6)
         Me.BtnSiTodo.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
         Me.BtnSiTodo.Name = "BtnSiTodo"
         Me.BtnSiTodo.Size = New System.Drawing.Size(73, 23)
@@ -64,7 +64,7 @@ Partial Class ConfirmDialog
         'BtnSi
         '
         Me.BtnSi.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnSi.Location = New System.Drawing.Point(93, 6)
+        Me.BtnSi.Location = New System.Drawing.Point(132, 6)
         Me.BtnSi.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
         Me.BtnSi.Name = "BtnSi"
         Me.BtnSi.Size = New System.Drawing.Size(75, 23)
@@ -75,7 +75,7 @@ Partial Class ConfirmDialog
         'BtnNoTodo
         '
         Me.BtnNoTodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnNoTodo.Location = New System.Drawing.Point(350, 6)
+        Me.BtnNoTodo.Location = New System.Drawing.Point(389, 6)
         Me.BtnNoTodo.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
         Me.BtnNoTodo.Name = "BtnNoTodo"
         Me.BtnNoTodo.Size = New System.Drawing.Size(73, 23)
@@ -93,7 +93,7 @@ Partial Class ConfirmDialog
         Me.Panel1.Location = New System.Drawing.Point(17, 17)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(8)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(401, 134)
+        Me.Panel1.Size = New System.Drawing.Size(440, 134)
         Me.Panel1.TabIndex = 1
         '
         'LabelMessage
@@ -108,7 +108,7 @@ Partial Class ConfirmDialog
         Me.LabelMessage.Margin = New System.Windows.Forms.Padding(8)
         Me.LabelMessage.Multiline = True
         Me.LabelMessage.Name = "LabelMessage"
-        Me.LabelMessage.Size = New System.Drawing.Size(269, 118)
+        Me.LabelMessage.Size = New System.Drawing.Size(308, 118)
         Me.LabelMessage.TabIndex = 1
         Me.LabelMessage.TabStop = False
         Me.LabelMessage.Text = "LabelMessage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "223456789-123456789-123456789-123456789-123456789-123456789-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "13"
@@ -123,7 +123,7 @@ Partial Class ConfirmDialog
         Me.FlowLayoutPanelBotones.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanelBotones.Location = New System.Drawing.Point(0, 185)
         Me.FlowLayoutPanelBotones.Name = "FlowLayoutPanelBotones"
-        Me.FlowLayoutPanelBotones.Size = New System.Drawing.Size(435, 41)
+        Me.FlowLayoutPanelBotones.Size = New System.Drawing.Size(474, 41)
         Me.FlowLayoutPanelBotones.TabIndex = 2
         '
         'PicIcon
@@ -153,7 +153,7 @@ Partial Class ConfirmDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(435, 226)
+        Me.ClientSize = New System.Drawing.Size(474, 226)
         Me.ControlBox = False
         Me.Controls.Add(Me.ChkOpcion)
         Me.Controls.Add(Me.FlowLayoutPanelBotones)

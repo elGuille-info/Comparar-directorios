@@ -114,11 +114,11 @@ Public Class ConfirmDialog
             If String.IsNullOrEmpty(textoOpcionConfigurable) Then
                 Return Nothing
             End If
-            Return _OpcionConfigurable.Value
+            Return _opcionConfigurable.Value
         End Get
     End Property
 
-    Private Shared _OpcionConfigurable As Boolean?
+    Private Shared _opcionConfigurable As Boolean?
     Private Shared textoOpcionConfigurable As String
 
     Public Sub New(message As String,
@@ -138,8 +138,8 @@ Public Class ConfirmDialog
         Dim t = lineas.Length
         For i = 0 To lineas.Length - 1
             If lineas(i).Any Then
-                If lineas(i).Length > 38 Then
-                    t += 1 + (lineas(i).Length \ 50) ' 38
+                If lineas(i).Length > 40 Then
+                    t += 1 + (lineas(i).Length \ 45) '45 50 38
                 End If
             End If
         Next

@@ -2,7 +2,6 @@
 ' Módulo para los colores de los temas a usar                       (22/Nov/20)
 '
 '
-'
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
 Option Strict On
