@@ -22,19 +22,6 @@ Imports System.Diagnostics
 
 Public Class Form1
 
-    '''' <summary>
-    '''' El título a mostrar en la ventana principal
-    '''' </summary>
-    '''' <returns></returns>
-    'Friend Property Titulo As String
-    '    Get
-    '        Return Me.Text
-    '    End Get
-    '    Set(value As String)
-    '        Me.Text = value
-    '    End Set
-    'End Property
-
     ''' <summary>
     ''' El índice del editor a usar de la colección EditoresTexto
     ''' para editar (F4)
@@ -56,20 +43,6 @@ Public Class Form1
     ''' Avisar si se pulsa en actualizar estando activo el panel derecho
     ''' </summary>
     Private avisarActualizarEnIzquierdo As Boolean = True
-
-    ''' <summary>
-    ''' Enumeración con los tipos de temas a usar
-    ''' </summary>
-    Friend Enum Temas As Integer
-        Predeterminado
-        Oscuro
-        ComandanteNorton
-    End Enum
-
-    ''' <summary>
-    ''' El tema a usar
-    ''' </summary>
-    Friend TemaActual As Temas = Temas.Predeterminado
 
     ''' <summary>
     ''' Si se debe preguntar al iniciar la aplicación si se comparan los directorios
@@ -218,6 +191,13 @@ Public Class Form1
             If e.KeyCode = Keys.F1 Then
                 ' Mostrar acerca de
                 AcercaDe()
+
+            ElseIf e.KeyCode = Keys.F2 Then
+                ' YA NO - Se asigna en el evento KeyDown de los ListView
+                e.Handled = True
+                e.SuppressKeyPress = True
+                EditarSubItem(quePanel, -2)
+
             ElseIf e.KeyCode = Keys.F3 Then
                 ' ver
                 ' inicialmente con el notepad
@@ -353,11 +333,13 @@ Public Class Form1
 
         If quePanel Is lvDirIzq Then
             lvDirDer.GridLines = False
-            SplitContainer1.Panel1.BackColor = PanelBorde(TemaActual) ' Color.DarkGoldenrod
+            'SplitContainer1.Panel1.BackColor = PanelBorde(TemaActual) ' Color.DarkGoldenrod
+            AsignarTema(SplitContainer1.Panel1, PanelBorde, PanelBorde)
             SplitContainer1.Panel2.BackColor = Color.FromKnownColor(KnownColor.Control)
         Else
             lvDirIzq.GridLines = False
-            SplitContainer1.Panel2.BackColor = PanelBorde(TemaActual) 'Color.DarkGoldenrod
+            'SplitContainer1.Panel2.BackColor = PanelBorde(TemaActual) 'Color.DarkGoldenrod
+            AsignarTema(SplitContainer1.Panel2, PanelBorde, PanelBorde)
             SplitContainer1.Panel1.BackColor = Color.FromKnownColor(KnownColor.Control)
         End If
         quePanel.GridLines = True
@@ -843,6 +825,17 @@ Public Class Form1
             Return
         End If
 
+        ' Actualizar las listas de directorios
+        ' Aunque se añade en MostrarContenidoDirectorio
+        ' añadirlo aquí y reasignar las listas
+        If UltimosDirs.Contains(fb.SelectedPath) = False Then
+            UltimosDirs.Add(fb.SelectedPath)
+            ' Ajustar el menú de la lista de últimos directorios
+            ' Asignar los ultimos directorios a los menús
+            AsignarMenuUltimosDir(BtnAbrirDirIzqDropDown)
+            AsignarMenuUltimosDir(BtnAbrirDirDerDropDown)
+        End If
+
         MostrarContenidoDirectorio(fb.SelectedPath, lv)
 
         If comparado Then
@@ -1056,9 +1049,10 @@ Public Class Form1
             it.SubItems.Add($"[..\{dir.Parent.Name.ToUpper}]")
             it.SubItems.Add("[UP--DIR]")
             'it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
-            it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm"))
-            it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
-            it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
+            it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
+            AsignarTema(it, ItemDirBack, ItemDirFore)
+            'it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
+            'it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
             it.Font = New Font(it.Font, FontStyle.Bold)
             it.Tag = dir.Parent '.FullName
             it.Checked = False
@@ -1070,8 +1064,9 @@ Public Class Form1
             it.SubItems.Add(di.Name.ToUpper)
             it.SubItems.Add("[SUB--DIR]")
             it.SubItems.Add(di.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
-            it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
-            it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
+            AsignarTema(it, ItemDirBack, ItemDirFore)
+            'it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
+            'it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
             it.Checked = False
             it.Tag = di '.FullName
             it.ToolTipText = di.FullName
@@ -1079,8 +1074,9 @@ Public Class Form1
         Next
         For Each fi In files
             Dim it = lv.Items.Add("")
-            it.ForeColor = ItemIgual(TemaActual) ' Color.DarkOliveGreen
-            it.BackColor = PanelFondo(TemaActual) ' Color.LightGoldenrodYellow
+            'it.ForeColor = ItemIgual(TemaActual) ' Color.DarkOliveGreen
+            'it.BackColor = PanelFondo(TemaActual) ' Color.LightGoldenrodYellow
+            AsignarTema(it, PanelFondo, ItemIgual)
             it.SubItems.Add(fi.Name)
             it.SubItems.Add(fi.Length.ToString("#,##0"))
             it.SubItems.Add(fi.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
@@ -1618,18 +1614,6 @@ Public Class Form1
         'CompararDirectorios()
     End Sub
 
-    'Private Sub lvDir_AfterLabelEdit(sender As Object, e As LabelEditEventArgs) Handles lvDirIzq.AfterLabelEdit, lvDirDer.AfterLabelEdit
-    '    Dim lv = TryCast(sender, ListView)
-    '    If lv Is Nothing Then
-    '        e.CancelEdit = True
-    '        Return
-    '    End If
-    '    If e.Label <> lv.Items(e.Item).Text Then
-    '        Debug.WriteLine(e.Label)
-    '    End If
-    'End Sub
-
-
     ' Para editar un subitem
     ' de una pregunta en los foros de MSDN:
     ' https://social.msdn.microsoft.com/Forums/vstudio/en-US/fe026b4a-c131-4bb7-81dd-32b8a8d98717/
@@ -1665,13 +1649,13 @@ Public Class Form1
         CambiarNombre()
     End Sub
 
-    Private Sub lvDir_KeyDown(sender As Object, e As KeyEventArgs) Handles lvDirIzq.KeyDown, lvDirDer.KeyDown
-        If e.KeyCode = Keys.F2 Then
-            e.Handled = True
-            e.SuppressKeyPress = True
-            EditarSubItem(quePanel, -2)
-        End If
-    End Sub
+    'Private Sub lvDir_KeyDown(sender As Object, e As KeyEventArgs) Handles lvDirIzq.KeyDown, lvDirDer.KeyDown
+    '    If e.KeyCode = Keys.F2 Then
+    '        e.Handled = True
+    '        e.SuppressKeyPress = True
+    '        EditarSubItem(quePanel, -2)
+    '    End If
+    'End Sub
 
     Private Sub BtnCambiarNombre_Click(sender As Object, e As EventArgs) Handles BtnCambiarNombre.Click
         EditarSubItem(quePanel, -2)
@@ -1779,9 +1763,8 @@ Public Class Form1
         TextBox13.Visible = True
         TextBox13.ReadOnly = False
         subItemTextAnterior = TextBox13.Text
-
+        TextBox13.Focus()
     End Sub
-
 
     ''' <summary>
     ''' Cambia el nombre del fichero o directorio seleccionado (pulsar F2)
@@ -1813,8 +1796,9 @@ Public Class Form1
                     Return
                 End If
                 Try
-                    fi.CopyTo(fNuevo, True)
+                    Dim fiRenombrado = fi.CopyTo(fNuevo, True)
                     fi.Delete()
+                    lvModificado.Items(laFila).Tag = fiRenombrado
                 Catch ex As Exception
                     LabelInfo.Text = ex.Message
                 End Try
@@ -1825,11 +1809,13 @@ Public Class Form1
                     Return
                 End If
                 Try
-                    di.Parent.CreateSubdirectory(nuevoNombre)
+                    Dim diRenombrado = di.Parent.CreateSubdirectory(nuevoNombre)
                     ' eliminar el directorio, eliminando antes el contenido que tenga
                     EliminarContenidoDir(di.FullName)
 
                     di.Delete()
+
+                    lvModificado.Items(laFila).Tag = diRenombrado
                 Catch ex As Exception
                     LabelInfo.Text = ex.Message
                 End Try
@@ -1844,25 +1830,24 @@ Public Class Form1
     ''' Cambiar los colores al tema seleccionado
     ''' </summary>
     Private Sub CambiarTema()
-        lvDirDer.BackColor = PanelFondo(TemaActual)
-        lvDirDer.ForeColor = PanelTexto(TemaActual)
-        lvDirIzq.BackColor = PanelFondo(TemaActual)
-        lvDirIzq.ForeColor = PanelTexto(TemaActual)
+        AsignarTema(lvDirDer, PanelFondo, PanelTexto)
+        AsignarTema(lvDirIzq, PanelFondo, PanelTexto)
         LvDirIzq_Enter(quePanel, Nothing)
 
-        Me.BackColor = VentanaFondo(TemaActual)
-        Me.ForeColor = VentanaTexto(TemaActual)
+        AsignarTema(Me, VentanaFondo, VentanaTexto)
 
-        StatusStripInfo.BackColor = StatusFondo(TemaActual)
-        StatusStripInfo.ForeColor = StatusTexto(TemaActual)
+        AsignarTema(StatusStripInfo, StatusFondo, StatusTexto)
 
-        ToolStripIzq.BackColor = VentanaFondo(TemaActual)
-        ToolStripIzq.ForeColor = VentanaTexto(TemaActual)
-        ToolStripDer.BackColor = VentanaFondo(TemaActual)
-        ToolStripDer.ForeColor = VentanaTexto(TemaActual)
+        AsignarTema(ToolStripIzq, VentanaFondo, VentanaTexto)
+        AsignarTema(ToolStripDer, VentanaFondo, VentanaTexto)
 
-        Releer()
+        AsignarTemaBotones(ToolStripIzq, BotonesFondo, BotonesTexto)
+        AsignarTemaBotones(ToolStripDer, BotonesFondo, BotonesTexto)
+        AsignarTemaBotones(ToolStripComparar, BotonesFondo, BotonesTexto)
+
+        'Releer()
         If comparado Then
+            Releer()
             CompararDirectorios()
         End If
     End Sub

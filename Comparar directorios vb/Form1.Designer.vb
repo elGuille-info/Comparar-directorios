@@ -22,7 +22,7 @@ Partial Class Form1
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"--", "generarClaveSHA1.sln", "4.906.213", "19/11/2020 21:16:30"}, -1)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"DIR", "generarClaveSHA1.sln", "9.108.320.256", "19/11/2020 21:16:30"}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
@@ -112,8 +112,8 @@ Partial Class Form1
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.lvDirDer)
         Me.SplitContainer1.Panel2.Controls.Add(Me.ToolStripDer)
-        Me.SplitContainer1.Size = New System.Drawing.Size(1088, 495)
-        Me.SplitContainer1.SplitterDistance = 541
+        Me.SplitContainer1.Size = New System.Drawing.Size(1155, 495)
+        Me.SplitContainer1.SplitterDistance = 574
         Me.SplitContainer1.TabIndex = 0
         '
         'lvDirIzq
@@ -125,12 +125,12 @@ Partial Class Form1
         Me.lvDirIzq.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chInfoIzq, Me.chNombreIzq, Me.chTamañoIzq, Me.chFechaIzq})
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem2.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 28)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
-        Me.lvDirIzq.Size = New System.Drawing.Size(530, 464)
+        Me.lvDirIzq.Size = New System.Drawing.Size(563, 464)
         Me.lvDirIzq.TabIndex = 1
         Me.lvDirIzq.UseCompatibleStateImageBehavior = False
         Me.lvDirIzq.View = System.Windows.Forms.View.Details
@@ -143,19 +143,19 @@ Partial Class Form1
         'chNombreIzq
         '
         Me.chNombreIzq.Text = "Nombre"
-        Me.chNombreIzq.Width = 250
+        Me.chNombreIzq.Width = 256
         '
         'chTamañoIzq
         '
         Me.chTamañoIzq.Text = "Tamaño bytes"
         Me.chTamañoIzq.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.chTamañoIzq.Width = 100
+        Me.chTamañoIzq.Width = 108
         '
         'chFechaIzq
         '
         Me.chFechaIzq.Text = "Fecha Modificación"
         Me.chFechaIzq.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.chFechaIzq.Width = 120
+        Me.chFechaIzq.Width = 140
         '
         'ToolStripIzq
         '
@@ -163,7 +163,7 @@ Partial Class Form1
         Me.ToolStripIzq.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAbrirDirIzq, Me.BtnAbrirDirIzqDropDown, Me.ToolStripSeparator1, Me.LabelDirIzq})
         Me.ToolStripIzq.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripIzq.Name = "ToolStripIzq"
-        Me.ToolStripIzq.Size = New System.Drawing.Size(541, 25)
+        Me.ToolStripIzq.Size = New System.Drawing.Size(574, 25)
         Me.ToolStripIzq.TabIndex = 0
         Me.ToolStripIzq.Text = "ToolStrip2"
         '
@@ -213,7 +213,7 @@ Partial Class Form1
         Me.lvDirDer.Location = New System.Drawing.Point(6, 28)
         Me.lvDirDer.Name = "lvDirDer"
         Me.lvDirDer.ShowItemToolTips = True
-        Me.lvDirDer.Size = New System.Drawing.Size(532, 464)
+        Me.lvDirDer.Size = New System.Drawing.Size(566, 464)
         Me.lvDirDer.TabIndex = 4
         Me.lvDirDer.UseCompatibleStateImageBehavior = False
         Me.lvDirDer.View = System.Windows.Forms.View.Details
@@ -226,19 +226,19 @@ Partial Class Form1
         'chNombreDer
         '
         Me.chNombreDer.Text = "Nombre"
-        Me.chNombreDer.Width = 250
+        Me.chNombreDer.Width = 256
         '
         'chTamañoDer
         '
         Me.chTamañoDer.Text = "Tamaño bytes"
         Me.chTamañoDer.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.chTamañoDer.Width = 100
+        Me.chTamañoDer.Width = 108
         '
         'chFechaDer
         '
         Me.chFechaDer.Text = "Fecha Modificación"
         Me.chFechaDer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.chFechaDer.Width = 120
+        Me.chFechaDer.Width = 140
         '
         'ToolStripDer
         '
@@ -246,7 +246,7 @@ Partial Class Form1
         Me.ToolStripDer.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAbrirDirDer, Me.BtnAbrirDirDerDropDown, Me.ToolStripSeparator2, Me.LabelDirDer})
         Me.ToolStripDer.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripDer.Name = "ToolStripDer"
-        Me.ToolStripDer.Size = New System.Drawing.Size(543, 25)
+        Me.ToolStripDer.Size = New System.Drawing.Size(577, 25)
         Me.ToolStripDer.TabIndex = 1
         Me.ToolStripDer.Text = "ToolStrip1"
         '
@@ -291,7 +291,7 @@ Partial Class Form1
         Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.BtnActualizarMasRecientes, Me.ToolStripSeparator7, Me.BtnCambiarNombre, Me.ToolStripSeparator10, Me.BtnVer, Me.ToolStripSeparator11, Me.BtnCopiarSplit, Me.ToolStripSeparator9, Me.BtnMoverSplit, Me.ToolStripSeparator6, Me.BtnNuevoDropDown, Me.ToolStripSeparator8, Me.BtnEliminarSplit, Me.ToolStripSeparator13, Me.BtnIntercambiar, Me.ToolStripSeparator5})
         Me.ToolStripComparar.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripComparar.Name = "ToolStripComparar"
-        Me.ToolStripComparar.Size = New System.Drawing.Size(1088, 25)
+        Me.ToolStripComparar.Size = New System.Drawing.Size(1155, 25)
         Me.ToolStripComparar.TabIndex = 3
         Me.ToolStripComparar.Text = "ToolStripComparar"
         '
@@ -370,7 +370,7 @@ Partial Class Form1
         '
         Me.MnuVerEnNotepad.Image = CType(resources.GetObject("MnuVerEnNotepad.Image"), System.Drawing.Image)
         Me.MnuVerEnNotepad.Name = "MnuVerEnNotepad"
-        Me.MnuVerEnNotepad.Size = New System.Drawing.Size(180, 22)
+        Me.MnuVerEnNotepad.Size = New System.Drawing.Size(155, 22)
         Me.MnuVerEnNotepad.Text = "Ver en Notepad"
         Me.MnuVerEnNotepad.ToolTipText = "Al ver en Notepad también se puede editar y guardar"
         '
@@ -378,21 +378,21 @@ Partial Class Form1
         '
         Me.MnuVerEnElVisor.Image = CType(resources.GetObject("MnuVerEnElVisor.Image"), System.Drawing.Image)
         Me.MnuVerEnElVisor.Name = "MnuVerEnElVisor"
-        Me.MnuVerEnElVisor.Size = New System.Drawing.Size(180, 22)
+        Me.MnuVerEnElVisor.Size = New System.Drawing.Size(155, 22)
         Me.MnuVerEnElVisor.Text = "Ver en el visor"
         Me.MnuVerEnElVisor.ToolTipText = "Mostrar en el visor integrado" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Permite ver textos, textos enroquecido y HTML"
         '
         'ToolStripSeparator12
         '
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(152, 6)
         '
         'MnuTemas
         '
         Me.MnuTemas.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuTemaPredeterminado, Me.MnuTemaOscuro, Me.NortonCommanderToolStripMenuItem})
         Me.MnuTemas.Image = CType(resources.GetObject("MnuTemas.Image"), System.Drawing.Image)
         Me.MnuTemas.Name = "MnuTemas"
-        Me.MnuTemas.Size = New System.Drawing.Size(180, 22)
+        Me.MnuTemas.Size = New System.Drawing.Size(155, 22)
         Me.MnuTemas.Text = "Temas"
         '
         'MnuTemaPredeterminado
@@ -586,14 +586,14 @@ Partial Class Form1
         Me.StatusStripInfo.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelInfo})
         Me.StatusStripInfo.Location = New System.Drawing.Point(0, 536)
         Me.StatusStripInfo.Name = "StatusStripInfo"
-        Me.StatusStripInfo.Size = New System.Drawing.Size(1088, 22)
+        Me.StatusStripInfo.Size = New System.Drawing.Size(1155, 22)
         Me.StatusStripInfo.TabIndex = 1
         Me.StatusStripInfo.Text = "StatusStrip1"
         '
         'LabelInfo
         '
         Me.LabelInfo.Name = "LabelInfo"
-        Me.LabelInfo.Size = New System.Drawing.Size(1073, 17)
+        Me.LabelInfo.Size = New System.Drawing.Size(1140, 17)
         Me.LabelInfo.Spring = True
         Me.LabelInfo.Text = "ToolStripStatusLabel1"
         Me.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -601,7 +601,7 @@ Partial Class Form1
         'TextBox13
         '
         Me.TextBox13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox13.Location = New System.Drawing.Point(976, 12)
+        Me.TextBox13.Location = New System.Drawing.Point(1043, 12)
         Me.TextBox13.Name = "TextBox13"
         Me.TextBox13.Size = New System.Drawing.Size(100, 20)
         Me.TextBox13.TabIndex = 4
@@ -611,7 +611,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1088, 558)
+        Me.ClientSize = New System.Drawing.Size(1155, 558)
         Me.Controls.Add(Me.TextBox13)
         Me.Controls.Add(Me.ToolStripComparar)
         Me.Controls.Add(Me.StatusStripInfo)

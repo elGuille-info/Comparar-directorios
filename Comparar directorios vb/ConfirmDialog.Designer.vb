@@ -31,57 +31,65 @@ Partial Class ConfirmDialog
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.LabelMessage = New System.Windows.Forms.TextBox()
-        Me.FlowLayoutPanelBotones = New System.Windows.Forms.FlowLayoutPanel()
         Me.PicIcon = New System.Windows.Forms.PictureBox()
+        Me.FlowLayoutPanelBotones = New System.Windows.Forms.FlowLayoutPanel()
         Me.ChkOpcion = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
-        Me.FlowLayoutPanelBotones.SuspendLayout()
         CType(Me.PicIcon, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.FlowLayoutPanelBotones.SuspendLayout()
         Me.SuspendLayout()
         '
         'BtnNo
         '
         Me.BtnNo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnNo.Location = New System.Drawing.Point(304, 6)
-        Me.BtnNo.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
+        Me.BtnNo.BackColor = System.Drawing.Color.Transparent
+        Me.BtnNo.Location = New System.Drawing.Point(300, 8)
+        Me.BtnNo.Margin = New System.Windows.Forms.Padding(0, 8, 12, 6)
         Me.BtnNo.Name = "BtnNo"
-        Me.BtnNo.Size = New System.Drawing.Size(73, 23)
+        Me.BtnNo.Size = New System.Drawing.Size(75, 25)
         Me.BtnNo.TabIndex = 2
         Me.BtnNo.Text = "No"
         Me.ToolTip1.SetToolTip(Me.BtnNo, "No copiar este y seguir")
+        Me.BtnNo.UseVisualStyleBackColor = True
         '
         'BtnSiTodo
         '
         Me.BtnSiTodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnSiTodo.Location = New System.Drawing.Point(219, 6)
-        Me.BtnSiTodo.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
+        Me.BtnSiTodo.BackColor = System.Drawing.Color.Transparent
+        Me.BtnSiTodo.Location = New System.Drawing.Point(213, 8)
+        Me.BtnSiTodo.Margin = New System.Windows.Forms.Padding(0, 8, 12, 6)
         Me.BtnSiTodo.Name = "BtnSiTodo"
-        Me.BtnSiTodo.Size = New System.Drawing.Size(73, 23)
+        Me.BtnSiTodo.Size = New System.Drawing.Size(75, 25)
         Me.BtnSiTodo.TabIndex = 1
         Me.BtnSiTodo.Text = "Sí a Todo"
         Me.ToolTip1.SetToolTip(Me.BtnSiTodo, "Copiar este y todos los restantes sin pedir más confirmación")
+        Me.BtnSiTodo.UseVisualStyleBackColor = True
         '
         'BtnSi
         '
         Me.BtnSi.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnSi.Location = New System.Drawing.Point(132, 6)
-        Me.BtnSi.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
+        Me.BtnSi.BackColor = System.Drawing.Color.Transparent
+        Me.BtnSi.Location = New System.Drawing.Point(126, 8)
+        Me.BtnSi.Margin = New System.Windows.Forms.Padding(0, 8, 12, 6)
         Me.BtnSi.Name = "BtnSi"
-        Me.BtnSi.Size = New System.Drawing.Size(75, 23)
+        Me.BtnSi.Size = New System.Drawing.Size(75, 25)
         Me.BtnSi.TabIndex = 0
         Me.BtnSi.Text = "Sí"
         Me.ToolTip1.SetToolTip(Me.BtnSi, "Copiar este y seguir preguntando si existen los siguientes")
+        Me.BtnSi.UseVisualStyleBackColor = True
         '
         'BtnNoTodo
         '
         Me.BtnNoTodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BtnNoTodo.Location = New System.Drawing.Point(389, 6)
-        Me.BtnNoTodo.Margin = New System.Windows.Forms.Padding(0, 6, 12, 6)
+        Me.BtnNoTodo.BackColor = System.Drawing.Color.Transparent
+        Me.BtnNoTodo.Location = New System.Drawing.Point(387, 8)
+        Me.BtnNoTodo.Margin = New System.Windows.Forms.Padding(0, 8, 12, 6)
         Me.BtnNoTodo.Name = "BtnNoTodo"
-        Me.BtnNoTodo.Size = New System.Drawing.Size(73, 23)
+        Me.BtnNoTodo.Size = New System.Drawing.Size(75, 25)
         Me.BtnNoTodo.TabIndex = 3
         Me.BtnNoTodo.Text = "No a Todo"
         Me.ToolTip1.SetToolTip(Me.BtnNoTodo, "No copiar este y cancelar la copia")
+        Me.BtnNoTodo.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -104,14 +112,25 @@ Partial Class ConfirmDialog
         Me.LabelMessage.BackColor = System.Drawing.SystemColors.Control
         Me.LabelMessage.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.LabelMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelMessage.Location = New System.Drawing.Point(124, 8)
+        Me.LabelMessage.Location = New System.Drawing.Point(109, 8)
         Me.LabelMessage.Margin = New System.Windows.Forms.Padding(8)
         Me.LabelMessage.Multiline = True
         Me.LabelMessage.Name = "LabelMessage"
-        Me.LabelMessage.Size = New System.Drawing.Size(308, 118)
+        Me.LabelMessage.Size = New System.Drawing.Size(323, 118)
         Me.LabelMessage.TabIndex = 1
         Me.LabelMessage.TabStop = False
-        Me.LabelMessage.Text = "LabelMessage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "223456789-123456789-123456789-123456789-123456789-123456789-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "13"
+        Me.LabelMessage.Text = "LabelMessage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "223456789-123456789-123456789-123456789 1 3 5 7 9 1 3 5 7 9-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "13"
+        '
+        'PicIcon
+        '
+        Me.PicIcon.Image = CType(resources.GetObject("PicIcon.Image"), System.Drawing.Image)
+        Me.PicIcon.Location = New System.Drawing.Point(18, 18)
+        Me.PicIcon.Margin = New System.Windows.Forms.Padding(18, 18, 8, 8)
+        Me.PicIcon.Name = "PicIcon"
+        Me.PicIcon.Size = New System.Drawing.Size(75, 60)
+        Me.PicIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PicIcon.TabIndex = 0
+        Me.PicIcon.TabStop = False
         '
         'FlowLayoutPanelBotones
         '
@@ -125,17 +144,6 @@ Partial Class ConfirmDialog
         Me.FlowLayoutPanelBotones.Name = "FlowLayoutPanelBotones"
         Me.FlowLayoutPanelBotones.Size = New System.Drawing.Size(474, 41)
         Me.FlowLayoutPanelBotones.TabIndex = 2
-        '
-        'PicIcon
-        '
-        Me.PicIcon.Image = CType(resources.GetObject("PicIcon.Image"), System.Drawing.Image)
-        Me.PicIcon.Location = New System.Drawing.Point(8, 27)
-        Me.PicIcon.Margin = New System.Windows.Forms.Padding(8)
-        Me.PicIcon.Name = "PicIcon"
-        Me.PicIcon.Size = New System.Drawing.Size(100, 79)
-        Me.PicIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PicIcon.TabIndex = 0
-        Me.PicIcon.TabStop = False
         '
         'ChkOpcion
         '
@@ -170,8 +178,8 @@ Partial Class ConfirmDialog
         Me.TopMost = True
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        Me.FlowLayoutPanelBotones.ResumeLayout(False)
         CType(Me.PicIcon, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.FlowLayoutPanelBotones.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

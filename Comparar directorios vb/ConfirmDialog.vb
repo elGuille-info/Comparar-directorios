@@ -138,8 +138,8 @@ Public Class ConfirmDialog
         Dim t = lineas.Length
         For i = 0 To lineas.Length - 1
             If lineas(i).Any Then
-                If lineas(i).Length > 40 Then
-                    t += 1 + (lineas(i).Length \ 45) '45 50 38
+                If lineas(i).Length > 50 Then
+                    t += 1 + (lineas(i).Length \ 50) '45 50 38
                 End If
             End If
         Next
@@ -189,7 +189,9 @@ Public Class ConfirmDialog
                                           Optional dialogIcon As DialogConfirmIcon = DialogConfirmIcon.Exclamation,
                                           Optional textoOpcion As String = "",
                                           Optional valorOpcion As Boolean = False) As DialogConfirmResult
+
         Dim fd As New ConfirmDialog(message, caption, buttons, dialogIcon, textoOpcion, valorOpcion)
+        fd.CambiarTema()
         fd.ShowDialog()
 
         ' Si se pulsa en NotAll comprobar si debe ser Cancel
@@ -290,6 +292,27 @@ Public Class ConfirmDialog
         confirmResult = DialogConfirmResult.No
         Me.Close()
     End Sub
+
+    ''' <summary>
+    ''' Cambiar los colores al tema seleccionado
+    ''' </summary>
+    Private Sub CambiarTema()
+        AsignarTema(Me, VentanaFondo, VentanaTexto)
+
+        AsignarTema(Panel1, VentanaFondo, VentanaTexto)
+        AsignarTema(LabelMessage, VentanaFondo, VentanaTexto)
+        AsignarTema(PicIcon, VentanaFondo, VentanaTexto)
+
+        AsignarTema(ChkOpcion, BotonesFondo, BotonesTexto)
+
+        AsignarTema(FlowLayoutPanelBotones, StatusFondo, StatusTexto)
+        For Each btn As Button In FlowLayoutPanelBotones.Controls
+            AsignarTema(btn, BotonesFondo, BotonesTexto)
+        Next
+
+    End Sub
+
+
 
 #Region " Las imágenes (iconos) "
 
@@ -624,10 +647,6 @@ kr8nUPLPihzlvZyXz+U6uV6+J9+XeWS+f4vX/9GQG4rHJM29TAmMdItSNSUcxLMD1cf+lJyXz+U6uV6+
 J9//j4P/3yGPXCCkUoonZb8qcBISPZL3cl4+l+vk+l8YKr/61Z8BvT6m57+Nb9YAAAAASUVORK5CYII="
 
 #End Region
-
-    Private Sub ChkOpcion_CheckedChanged(sender As Object, e As EventArgs) Handles ChkOpcion.CheckedChanged
-        _OpcionConfigurable = ChkOpcion.Checked
-    End Sub
 
 End Class
 
