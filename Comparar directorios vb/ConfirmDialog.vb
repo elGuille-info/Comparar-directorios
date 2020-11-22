@@ -195,12 +195,14 @@ Public Class ConfirmDialog
         ' Si se pulsa en NotAll comprobar si debe ser Cancel
         If confirmResult = DialogConfirmResult.NoToAll Then
             ' Si se muestra OKCancel NotToAll será Cancel
-            If ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.OKCancel OrElse ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.YesNoCancel Then
+            If ConfirmDialog.buttons = DialogConfirmButtons.OKCancel OrElse
+                ConfirmDialog.buttons = DialogConfirmButtons.YesNoCancel Then
                 confirmResult = DialogConfirmResult.Cancel
             End If
             ' Si se pulsa Yes, comprobar si debe ser OK
         ElseIf confirmResult = DialogConfirmResult.Yes Then
-            If ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.OKCancel OrElse ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.OK Then
+            If ConfirmDialog.buttons = DialogConfirmButtons.OKCancel OrElse
+                ConfirmDialog.buttons = DialogConfirmButtons.OK Then
                 confirmResult = DialogConfirmResult.OK
             End If
         End If

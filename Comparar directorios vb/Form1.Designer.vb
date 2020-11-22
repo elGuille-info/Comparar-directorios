@@ -50,8 +50,6 @@ Partial Class Form1
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnLimpiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.BtnIntercambiar = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnActualizarMasRecientes = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnCambiarNombre = New System.Windows.Forms.ToolStripButton()
@@ -73,6 +71,8 @@ Partial Class Form1
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
+        Me.BtnIntercambiar = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnMover = New System.Windows.Forms.ToolStripButton()
         Me.btnMoverDir = New System.Windows.Forms.ToolStripButton()
         Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
@@ -302,7 +302,8 @@ Partial Class Form1
         Me.btnComparar.Name = "btnComparar"
         Me.btnComparar.Size = New System.Drawing.Size(80, 22)
         Me.btnComparar.Text = "Comparar"
-        Me.btnComparar.ToolTipText = "Comparar el contenido de los dos directorios"
+        Me.btnComparar.ToolTipText = "Comparar el contenido de los dos directorios" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(es posible que antes debas pulsar " &
+    "en Releer)"
         '
         'ToolStripSeparator3
         '
@@ -323,22 +324,6 @@ Partial Class Form1
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
         Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
         '
-        'BtnIntercambiar
-        '
-        Me.BtnIntercambiar.AutoToolTip = False
-        Me.BtnIntercambiar.Image = CType(resources.GetObject("BtnIntercambiar.Image"), System.Drawing.Image)
-        Me.BtnIntercambiar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnIntercambiar.Name = "BtnIntercambiar"
-        Me.BtnIntercambiar.Size = New System.Drawing.Size(94, 22)
-        Me.BtnIntercambiar.Text = "Intercambiar"
-        Me.BtnIntercambiar.ToolTipText = "Intercambiar los directorios de panel" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(por si quieres actualizar, ya que solo ac" &
-    "tualiza del izquierdo al derecho)"
-        '
-        'ToolStripSeparator5
-        '
-        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
-        '
         'BtnActualizarMasRecientes
         '
         Me.BtnActualizarMasRecientes.AutoToolTip = False
@@ -347,8 +332,8 @@ Partial Class Form1
         Me.BtnActualizarMasRecientes.Name = "BtnActualizarMasRecientes"
         Me.BtnActualizarMasRecientes.Size = New System.Drawing.Size(79, 22)
         Me.BtnActualizarMasRecientes.Text = "Actualizar"
-        Me.BtnActualizarMasRecientes.ToolTipText = "Actualizar los ficheros más recientes (o no existentes) del panel activo en el ot" &
-    "ro panel (directorio)"
+        Me.BtnActualizarMasRecientes.ToolTipText = "Actualiza los ficheros más recientes (o no existentes) del panel izquierdo y los " &
+    "copia en el derecho (F9)"
         '
         'ToolStripSeparator7
         '
@@ -385,29 +370,29 @@ Partial Class Form1
         '
         Me.MnuVerEnNotepad.Image = CType(resources.GetObject("MnuVerEnNotepad.Image"), System.Drawing.Image)
         Me.MnuVerEnNotepad.Name = "MnuVerEnNotepad"
-        Me.MnuVerEnNotepad.Size = New System.Drawing.Size(155, 22)
+        Me.MnuVerEnNotepad.Size = New System.Drawing.Size(180, 22)
         Me.MnuVerEnNotepad.Text = "Ver en Notepad"
-        Me.MnuVerEnNotepad.ToolTipText = "Al ver en Notepad no se puede editar, solo guardar con otro nombre"
+        Me.MnuVerEnNotepad.ToolTipText = "Al ver en Notepad también se puede editar y guardar"
         '
         'MnuVerEnElVisor
         '
         Me.MnuVerEnElVisor.Image = CType(resources.GetObject("MnuVerEnElVisor.Image"), System.Drawing.Image)
         Me.MnuVerEnElVisor.Name = "MnuVerEnElVisor"
-        Me.MnuVerEnElVisor.Size = New System.Drawing.Size(155, 22)
+        Me.MnuVerEnElVisor.Size = New System.Drawing.Size(180, 22)
         Me.MnuVerEnElVisor.Text = "Ver en el visor"
         Me.MnuVerEnElVisor.ToolTipText = "Mostrar en el visor integrado" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Permite ver textos, textos enroquecido y HTML"
         '
         'ToolStripSeparator12
         '
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(152, 6)
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(177, 6)
         '
         'MnuTemas
         '
         Me.MnuTemas.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuTemaPredeterminado, Me.MnuTemaOscuro, Me.NortonCommanderToolStripMenuItem})
         Me.MnuTemas.Image = CType(resources.GetObject("MnuTemas.Image"), System.Drawing.Image)
         Me.MnuTemas.Name = "MnuTemas"
-        Me.MnuTemas.Size = New System.Drawing.Size(155, 22)
+        Me.MnuTemas.Size = New System.Drawing.Size(180, 22)
         Me.MnuTemas.Text = "Temas"
         '
         'MnuTemaPredeterminado
@@ -444,7 +429,7 @@ Partial Class Form1
         Me.BtnCopiarSplit.Size = New System.Drawing.Size(74, 22)
         Me.BtnCopiarSplit.Text = "Copiar"
         Me.BtnCopiarSplit.ToolTipText = "Selecciona la opción para copiar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F5 para copiar" &
-    " los elementos seleccionados)"
+    " los ficheros y directorios seleccionados)"
         '
         'ToolStripSeparator9
         '
@@ -460,7 +445,7 @@ Partial Class Form1
         Me.BtnMoverSplit.Size = New System.Drawing.Size(73, 22)
         Me.BtnMoverSplit.Text = "Mover"
         Me.BtnMoverSplit.ToolTipText = "Selecciona la opción para mover ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F6 para mover l" &
-    "os elementos seleccionados)"
+    "os ficheros y directorios seleccionados)"
         '
         'ToolStripSeparator6
         '
@@ -492,12 +477,28 @@ Partial Class Form1
         Me.BtnEliminarSplit.Size = New System.Drawing.Size(82, 22)
         Me.BtnEliminarSplit.Text = "Eliminar"
         Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F8 para elim" &
-    "inar los elementos seleccionados)"
+    "inar los ficheros y directorios seleccionados)"
         '
         'ToolStripSeparator13
         '
         Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
         Me.ToolStripSeparator13.Size = New System.Drawing.Size(6, 25)
+        '
+        'BtnIntercambiar
+        '
+        Me.BtnIntercambiar.AutoToolTip = False
+        Me.BtnIntercambiar.Image = CType(resources.GetObject("BtnIntercambiar.Image"), System.Drawing.Image)
+        Me.BtnIntercambiar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnIntercambiar.Name = "BtnIntercambiar"
+        Me.BtnIntercambiar.Size = New System.Drawing.Size(94, 22)
+        Me.BtnIntercambiar.Text = "Intercambiar"
+        Me.BtnIntercambiar.ToolTipText = "Intercambiar los directorios de panel" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(por si quieres actualizar, ya que solo ac" &
+    "tualiza del izquierdo al derecho)"
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
         '
         'btnMover
         '
@@ -620,7 +621,7 @@ Partial Class Form1
         Me.MinimumSize = New System.Drawing.Size(1040, 500)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Mostrar el contenido de 2 directorios y compararlos"
+        Me.Text = "Comparar directorios - Mostrar el contenido de 2 directorios y gestionarlos"
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)

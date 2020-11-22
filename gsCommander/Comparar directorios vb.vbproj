@@ -6,8 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0789A228-981C-4668-8849-4982DD567057}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Comparar_directorios_vb.My.MyApplication</StartupObject>
-    <RootNamespace>Comparar_directorios_vb</RootNamespace>
+    <StartupObject>My.MyApplication</StartupObject>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>Comparar directorios</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
@@ -76,6 +77,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColoresTemas.vb" />
     <Compile Include="ConfirmDialog.Designer.vb">
       <DependentUpon>ConfirmDialog.vb</DependentUpon>
     </Compile>
@@ -95,6 +97,7 @@
       <DependentUpon>Application.myapp</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Config.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -134,10 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Folder_stuffed.WinVista.ico" />
-    <None Include="Resources\Warning.png" />
-    <None Include="Resources\help.png" />
-    <None Include="Resources\info.png" />
-    <None Include="Resources\error.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

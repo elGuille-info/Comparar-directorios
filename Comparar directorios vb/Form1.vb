@@ -1,5 +1,8 @@
 '------------------------------------------------------------------------------
-' Mostrar 2 paneles con ficheros 
+' Mostrar 2 paneles con ficheros                                    (19/Nov/20)
+'
+' App.config:   jueves, ‎19‎ de ‎noviembre‎ de ‎2020, ‏‎20:27:35
+' Form1.vb:     viernes, ‎20‎ de ‎noviembre‎ de ‎2020, ‏‎04:05:12
 '
 '
 ' (c) Guillermo (elGuille) Som, 2020
@@ -19,17 +22,45 @@ Imports System.Diagnostics
 
 Public Class Form1
 
+    '''' <summary>
+    '''' El título a mostrar en la ventana principal
+    '''' </summary>
+    '''' <returns></returns>
+    'Friend Property Titulo As String
+    '    Get
+    '        Return Me.Text
+    '    End Get
+    '    Set(value As String)
+    '        Me.Text = value
+    '    End Set
+    'End Property
+
+    ''' <summary>
+    ''' El índice del editor a usar de la colección EditoresTexto
+    ''' para editar (F4)
+    ''' </summary>
+    Friend EditorTextoIndex As Integer = 0 ' TextPad
+
+    ''' <summary>
+    ''' Lista de editores de texto
+    ''' </summary>
+    ''' <returns></returns>
+    Friend ReadOnly Property EditoresTexto As New HashSet(Of String)
+
     ''' <summary>
     ''' Si se avisa de lo que se va a actualizar
     ''' </summary>
     Private avisarAlActualizar As Boolean = True
 
+    ''' <summary>
+    ''' Avisar si se pulsa en actualizar estando activo el panel derecho
+    ''' </summary>
     Private avisarActualizarEnIzquierdo As Boolean = True
 
     ''' <summary>
     ''' Enumeración con los tipos de temas a usar
     ''' </summary>
-    Private Enum Temas As Integer
+    Friend Enum Temas As Integer
         Predeterminado
         Oscuro
         ComandanteNorton
@@ -38,12 +69,13 @@ Public Class Form1
     ''' <summary>
     ''' El tema a usar
     ''' </summary>
-    Private temaActual As Temas = Temas.Predeterminado
+    Friend TemaActual As Temas = Temas.Predeterminado
 
     ''' <summary>
     ''' Si se debe preguntar al iniciar la aplicación si se comparan los directorios
     ''' </summary>
     Private preguntarAlIniciar As Boolean = True
+
     ''' <summary>
     ''' Si se debe comparar los directorios al iniciar
     ''' </summary>
@@ -62,12 +94,12 @@ Public Class Form1
     ''' <summary>
     ''' La extensión a usar en los ficheros de configuración
     ''' </summary>
-    Private Const extensionConfiguracion As String = ".config.txt"
+    Friend Const ExtensionConfiguracion As String = ".config.txt"
 
     ''' <summary>
     ''' El prefijo de los ficheros de configuración
     ''' </summary>
-    Const prefijoConfig As String = "CompararDirectorios"
+    Friend Property PrefijoConfig As String = "CompararDirectorios"
 
     ''' <summary>
     ''' Colección con los últimos directorios mostrados
@@ -76,7 +108,7 @@ Public Class Form1
     ''' <remarks>
     ''' Se supone que HashSet mejora la comprobación con Contains con respecto a List
     ''' </remarks>
-    Private ReadOnly ultimosDirs As New HashSet(Of String) ' List(Of String)
+    Friend ReadOnly Property UltimosDirs As New HashSet(Of String) ' List(Of String)
 
     ''' <summary>
     ''' El panel en el que se ha pulsado un fichero o directorio
@@ -123,7 +155,7 @@ Public Class Form1
         If Not Directory.Exists(dirConfiguracion) Then
             Directory.CreateDirectory(dirConfiguracion)
         End If
-        ficheroConfiguracion = Path.Combine(dirConfiguracion, Application.ProductName & extensionConfiguracion)
+        ficheroConfiguracion = Path.Combine(dirConfiguracion, Application.ProductName & ExtensionConfiguracion)
 
 
         ' Leer los datos de la configuración
@@ -181,7 +213,39 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
+        If e.Alt = False AndAlso e.Shift = False AndAlso e.Control = False Then
 
+            If e.KeyCode = Keys.F1 Then
+                ' Mostrar acerca de
+                AcercaDe()
+            ElseIf e.KeyCode = Keys.F3 Then
+                ' ver
+                ' inicialmente con el notepad
+                VerFichero()
+            ElseIf e.KeyCode = Keys.F4 Then
+                ' Editar
+                EditarFichero()
+            ElseIf e.KeyCode = Keys.F5 Then
+                CopiarFicheros()
+                CopiarDirectorios()
+            ElseIf e.KeyCode = Keys.F6 Then
+                MoverFicheros()
+                MoverDirectorios()
+            ElseIf e.KeyCode = Keys.F7 Then
+                CrearDirectorio()
+            ElseIf e.KeyCode = Keys.F8 Then
+                EliminarFicheros()
+                EliminarDirectorios()
+            ElseIf e.KeyCode = Keys.F9 Then
+                ActualizarMasRecientes()
+            End If
+        Else
+            If e.Control Then
+                If e.KeyCode = Keys.N Then
+                    NuevoFichero()
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -194,7 +258,7 @@ Public Class Form1
         End If
         LabelInfo.Text = $"{Application.ProductName} v{Application.ProductVersion}, {sCopyR} " &
             $"- Ventana: Width: {Me.Width}, Height: {Me.Height} " &
-            $"- LabelIzq1.Width: {LabelDirIzq.Width}, LabelDer1.Width: {LabelDirDer.Width}"
+            $"- LabelIzq.Width: {LabelDirIzq.Width}, LabelDer.Width: {LabelDirDer.Width}"
 
         If lvDirIzq.Tag IsNot Nothing Then
             MostrarNombreDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
@@ -289,11 +353,11 @@ Public Class Form1
 
         If quePanel Is lvDirIzq Then
             lvDirDer.GridLines = False
-            SplitContainer1.Panel1.BackColor = PanelBorde(temaActual) ' Color.DarkGoldenrod
+            SplitContainer1.Panel1.BackColor = PanelBorde(TemaActual) ' Color.DarkGoldenrod
             SplitContainer1.Panel2.BackColor = Color.FromKnownColor(KnownColor.Control)
         Else
             lvDirIzq.GridLines = False
-            SplitContainer1.Panel2.BackColor = PanelBorde(temaActual) 'Color.DarkGoldenrod
+            SplitContainer1.Panel2.BackColor = PanelBorde(TemaActual) 'Color.DarkGoldenrod
             SplitContainer1.Panel1.BackColor = Color.FromKnownColor(KnownColor.Control)
         End If
         quePanel.GridLines = True
@@ -801,14 +865,25 @@ Public Class Form1
         cfg.SetValue("Opciones", "AvisarActualizarEnIzquierdo", avisarActualizarEnIzquierdo)
         cfg.SetValue("Opciones", "AvisarAlActualizar", avisarAlActualizar)
 
-        cfg.SetValue("Opciones", "TemaActual", temaActual)
+        cfg.SetValue("Opciones", "TemaActual", TemaActual)
+
+        Dim s As String
+        Dim cuantos As Integer
+        cuantos = EditoresTexto.Count
+        cfg.SetKeyValue("Editores texto", "Count", cuantos)
+        For i = 0 To cuantos - 1
+            s = EditoresTexto(i)
+            If s.Any Then
+                cfg.SetKeyValue("Editores texto", $"Editor {i}", s)
+            End If
+        Next
 
         Dim ficCfg As String
 
         ' Guardar todos los directorios abiertos
-        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{extensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_UltimosDirectorios{ExtensionConfiguracion}")
         Using sw As New StreamWriter(ficCfg, False, Encoding.Default)
-            For Each s In ultimosDirs
+            For Each s In UltimosDirs
                 If s.Any Then
                     sw.WriteLine(s)
                 End If
@@ -819,9 +894,9 @@ Public Class Form1
 
         ' Guardar el nombre del directorio abierto
         If lv Is lvDirIzq Then
-            ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Izq{extensionConfiguracion}")
+            ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_Izq{ExtensionConfiguracion}")
         Else
-            ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Der{extensionConfiguracion}")
+            ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_Der{ExtensionConfiguracion}")
         End If
         Using sw As New StreamWriter(ficCfg, False, Encoding.Default)
             sw.Write(sDir)
@@ -843,28 +918,46 @@ Public Class Form1
         compararAlIniciar = cfg.GetValue("Opciones", "CompararAlIniciar", True)
         avisarActualizarEnIzquierdo = cfg.GetValue("Opciones", "AvisarActualizarEnIzquierdo", True)
         avisarAlActualizar = cfg.GetValue("Opciones", "AvisarAlActualizar", True)
+        TemaActual = CType(cfg.GetValue("Opciones", "TemaActual", Temas.Predeterminado), Temas)
 
-        temaActual = CType(cfg.GetValue("Opciones", "TemaActual", Temas.Predeterminado), Temas)
+        Dim s As String
+        Dim cuantos As Integer
+        cuantos = cfg.GetValue("Editores texto", "Count", 3)
+        If cuantos = 0 Then
+            s = "E:\ISOs guilleAcer5930\Instalar (registrados)\TextPad\TextPad portable\TextPad.exe"
+            EditoresTexto.Add(s)
+            s = "E:\gsCodigo_00\VS2008\gsEditor 2008\gsEditor2008\bin\gsEditor2008.exe"
+            EditoresTexto.Add(s)
+            s = "E:\gsCodigo_00\Visual Studio\net core\gsEvaluarColorearCodigoNET\gsEvaluarColorearCodigoNET vb\bin\Debug\net5.0-windows\gsEvaluarColorearCodigoNET.exe"
+            EditoresTexto.Add(s)
+        Else
+            For i = 0 To cuantos - 1
+                s = cfg.GetValue("Editores texto", $"Editor {i}", "")
+                If s.Any AndAlso EditoresTexto.Contains(s) = False Then
+                    EditoresTexto.Add(s)
+                End If
+            Next
+        End If
 
         Dim ficCfg As String
 
         ' Leer los últimos directorios abiertos
         ' Leerlos antes de mostrar directorios, si no, los sobrescribe
-        ultimosDirs.Clear()
-        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{extensionConfiguracion}")
+        UltimosDirs.Clear()
+        ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_UltimosDirectorios{ExtensionConfiguracion}")
         If File.Exists(ficCfg) Then
             Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 Do While Not sr.EndOfStream
-                    Dim s = sr.ReadLine
+                    s = sr.ReadLine
                     If s.Any Then
-                        ultimosDirs.Add(s)
+                        UltimosDirs.Add(s)
                     End If
                 Loop
                 sr.Close()
             End Using
         End If
 
-        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Izq{extensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_Izq{ExtensionConfiguracion}")
         Dim dIzq As String
         If File.Exists(ficCfg) Then
             Using sr As New StreamReader(ficCfg, Encoding.Default, True)
@@ -876,7 +969,7 @@ Public Class Form1
             MostrarContenidoDirectorio(dIzq, lvDirIzq)
         End If
 
-        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Der{extensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_Der{ExtensionConfiguracion}")
         If File.Exists(ficCfg) Then
             Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 dIzq = sr.ReadLine
@@ -929,11 +1022,11 @@ Public Class Form1
                                "Mismo directorio en los 2 paneles",
                                DialogConfirmButtons.OK,
                                DialogConfirmIcon.Information)
-            LabelInfo.BackColor = ItemNoExiste(temaActual) ' Color.Firebrick
-            LabelInfo.ForeColor = VentanaFondo(temaActual) ' Color.White
+            LabelInfo.BackColor = ItemNoExiste(TemaActual) ' Color.Firebrick
+            LabelInfo.ForeColor = VentanaFondo(TemaActual) ' Color.White
         Else
-            LabelInfo.BackColor = VentanaFondo(temaActual) ' Color.FromKnownColor(KnownColor.Control)
-            LabelInfo.ForeColor = VentanaTexto(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
+            LabelInfo.BackColor = StatusFondo(TemaActual) ' Color.FromKnownColor(KnownColor.Control)
+            LabelInfo.ForeColor = StatusTexto(TemaActual) ' Color.FromKnownColor(KnownColor.WindowText)
         End If
     End Sub
 
@@ -964,8 +1057,8 @@ Public Class Form1
             it.SubItems.Add("[UP--DIR]")
             'it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
             it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm"))
-            it.ForeColor = ItemDirFore(temaActual) ' Color.DarkOliveGreen
-            it.BackColor = ItemDirBack(temaActual) ' Color.LightGoldenrodYellow
+            it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
+            it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
             it.Font = New Font(it.Font, FontStyle.Bold)
             it.Tag = dir.Parent '.FullName
             it.Checked = False
@@ -977,8 +1070,8 @@ Public Class Form1
             it.SubItems.Add(di.Name.ToUpper)
             it.SubItems.Add("[SUB--DIR]")
             it.SubItems.Add(di.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
-            it.ForeColor = ItemDirFore(temaActual) ' Color.DarkOliveGreen
-            it.BackColor = ItemDirBack(temaActual) ' Color.LightGoldenrodYellow
+            it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
+            it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
             it.Checked = False
             it.Tag = di '.FullName
             it.ToolTipText = di.FullName
@@ -986,8 +1079,8 @@ Public Class Form1
         Next
         For Each fi In files
             Dim it = lv.Items.Add("")
-            it.ForeColor = ItemIgual(temaActual) ' Color.DarkOliveGreen
-            it.BackColor = PanelFondo(temaActual) ' Color.LightGoldenrodYellow
+            it.ForeColor = ItemIgual(TemaActual) ' Color.DarkOliveGreen
+            it.BackColor = PanelFondo(TemaActual) ' Color.LightGoldenrodYellow
             it.SubItems.Add(fi.Name)
             it.SubItems.Add(fi.Length.ToString("#,##0"))
             it.SubItems.Add(fi.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
@@ -997,8 +1090,8 @@ Public Class Form1
 
         ' Guardar el directorio usado actualmente
         ' y añadirlo a la lista de últimos directorios (si no está ya)
-        If Not ultimosDirs.Contains(sDir) Then
-            ultimosDirs.Add(sDir)
+        If Not UltimosDirs.Contains(sDir) Then
+            UltimosDirs.Add(sDir)
         End If
 
         ' Guardar la información del directorio actual y los últimos abiertos
@@ -1054,7 +1147,7 @@ Public Class Form1
             Dim itDer = lvDirDer.Items(j)
             If String.IsNullOrEmpty(itDer.Text) Then
                 itDer.Text = "x"
-                itDer.ForeColor = ItemNoExiste(temaActual) ' Color.Firebrick
+                itDer.ForeColor = ItemNoExiste(TemaActual) ' Color.Firebrick
                 itDer.ToolTipText = "No existe"
             End If
         Next
@@ -1064,7 +1157,7 @@ Public Class Form1
             Dim fiIzq = TryCast(itIzq.Tag, FileInfo)
             If fiIzq Is Nothing Then Continue For
             ' Asignar el color del texto predeterminado
-            itIzq.ForeColor = ItemIgual(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
+            itIzq.ForeColor = ItemIgual(TemaActual) ' Color.FromKnownColor(KnownColor.WindowText)
             tf += 1
             Dim fiDer As FileInfo
             Dim existe As Boolean = False
@@ -1081,46 +1174,46 @@ Public Class Form1
                     itIzq.ToolTipText = "Son iguales"
                     itDer.Text = "="
                     itDer.ToolTipText = "Son iguales"
-                    itDer.ForeColor = PanelTexto(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
+                    itDer.ForeColor = PanelTexto(TemaActual) ' Color.FromKnownColor(KnownColor.WindowText)
                     If fiIzq.LastWriteTime.ToString("yyyy/MM/dd HH:mm") > fiDer.LastWriteTime.ToString("yyyy/MM/dd HH:mm") Then
                         itIzq.Text = "f>"
-                        itIzq.ForeColor = ItemFechaMayor(temaActual) ' Color.Blue
+                        itIzq.ForeColor = ItemFechaMayor(TemaActual) ' Color.Blue
                         itIzq.ToolTipText = "La fecha es mayor"
                         ' Lo contrario en el otro directorio
                         itDer.Text = "f<"
-                        itDer.ForeColor = ItemFechaMenor(temaActual) ' Color.SlateBlue
+                        itDer.ForeColor = ItemFechaMenor(TemaActual) ' Color.SlateBlue
                         itDer.ToolTipText = "La fecha es menor"
 
                         tfma += 1
                         ti += 1
                     ElseIf fiIzq.LastWriteTime.ToString("yyyy/MM/dd HH:mm") < fiDer.LastWriteTime.ToString("yyyy/MM/dd HH:mm") Then
                         itIzq.Text = "f<"
-                        itIzq.ForeColor = ItemFechaMenor(temaActual) ' Color.SlateBlue
+                        itIzq.ForeColor = ItemFechaMenor(TemaActual) ' Color.SlateBlue
                         itIzq.ToolTipText = "La fecha es menor"
                         '
                         itDer.Text = "f>"
-                        itDer.ForeColor = ItemFechaMayor(temaActual) 'Color.Blue
+                        itDer.ForeColor = ItemFechaMayor(TemaActual) 'Color.Blue
                         itDer.ToolTipText = "La fecha es mayor"
 
                         tfme += 1
                         ti += 1
                     ElseIf fiIzq.Length > fiDer.Length Then
-                        itIzq.ForeColor = ItemTamañoMayor(temaActual) ' Color.Green
+                        itIzq.ForeColor = ItemTamañoMayor(TemaActual) ' Color.Green
                         itIzq.Text = "t>"
                         itIzq.ToolTipText = "El tamaño es mayor"
                         '
-                        itDer.ForeColor = ItemTamañoMenor(temaActual) ' Color.DarkGreen
+                        itDer.ForeColor = ItemTamañoMenor(TemaActual) ' Color.DarkGreen
                         itDer.Text = "t<"
                         itDer.ToolTipText = "El tamaño es menor"
 
                         ttma += 1
                         ti += 1
                     ElseIf fiIzq.Length < fiDer.Length Then
-                        itIzq.ForeColor = ItemTamañoMenor(temaActual) 'Color.DarkGreen
+                        itIzq.ForeColor = ItemTamañoMenor(TemaActual) 'Color.DarkGreen
                         itIzq.Text = "t<"
                         itIzq.ToolTipText = "El tamaño es menor"
                         '
-                        itDer.ForeColor = ItemTamañoMayor(temaActual) 'Color.Green
+                        itDer.ForeColor = ItemTamañoMayor(TemaActual) 'Color.Green
                         itDer.Text = "t>"
                         itDer.ToolTipText = "El tamaño es mayor"
 
@@ -1131,7 +1224,7 @@ Public Class Form1
                 End If
             Next
             If Not existe Then
-                itIzq.ForeColor = ItemNoExiste(temaActual) ' Color.Firebrick
+                itIzq.ForeColor = ItemNoExiste(TemaActual) ' Color.Firebrick
                 itIzq.Text = "x"
                 itIzq.ToolTipText = "No existe"
                 tn += 1
@@ -1395,7 +1488,7 @@ Public Class Form1
         Dim fi = TryCast(quePanel.SelectedItems(0).Tag, FileInfo)
         Dim pi As New ProcessStartInfo With {
             .FileName = "Notepad.exe",
-            .Arguments = fi.FullName,
+            .Arguments = $"{ChrW(34)}{fi.FullName}{ChrW(34)}",
             .UseShellExecute = True,
             .WindowStyle = ProcessWindowStyle.Normal
         }
@@ -1404,6 +1497,7 @@ Public Class Form1
         }
         p.Start()
 
+        MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
     End Sub
 
     ''' <summary>
@@ -1587,17 +1681,17 @@ Public Class Form1
     End Sub
 
     Private Sub MnuTemaPredeterminado_Click(sender As Object, e As EventArgs) Handles MnuTemaPredeterminado.Click
-        temaActual = Temas.Predeterminado
+        TemaActual = Temas.Predeterminado
         CambiarTema()
     End Sub
 
     Private Sub MnuTemaOscuro_Click(sender As Object, e As EventArgs) Handles MnuTemaOscuro.Click
-        temaActual = Temas.Oscuro
+        TemaActual = Temas.Oscuro
         CambiarTema()
     End Sub
 
     Private Sub NortonCommanderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NortonCommanderToolStripMenuItem.Click
-        temaActual = Temas.ComandanteNorton
+        TemaActual = Temas.ComandanteNorton
         CambiarTema()
     End Sub
 
@@ -1750,21 +1844,22 @@ Public Class Form1
     ''' Cambiar los colores al tema seleccionado
     ''' </summary>
     Private Sub CambiarTema()
-        lvDirDer.BackColor = PanelFondo(temaActual)
-        lvDirDer.ForeColor = PanelTexto(temaActual)
-        lvDirIzq.BackColor = PanelFondo(temaActual)
-        lvDirIzq.ForeColor = PanelTexto(temaActual)
+        lvDirDer.BackColor = PanelFondo(TemaActual)
+        lvDirDer.ForeColor = PanelTexto(TemaActual)
+        lvDirIzq.BackColor = PanelFondo(TemaActual)
+        lvDirIzq.ForeColor = PanelTexto(TemaActual)
         LvDirIzq_Enter(quePanel, Nothing)
 
-        Me.BackColor = VentanaFondo(temaActual)
-        Me.ForeColor = VentanaTexto(temaActual)
-        StatusStripInfo.BackColor = VentanaFondo(temaActual)
-        StatusStripInfo.ForeColor = VentanaTexto(temaActual)
+        Me.BackColor = VentanaFondo(TemaActual)
+        Me.ForeColor = VentanaTexto(TemaActual)
 
-        ToolStripIzq.BackColor = VentanaFondo(temaActual)
-        ToolStripIzq.ForeColor = VentanaTexto(temaActual)
-        ToolStripDer.BackColor = VentanaFondo(temaActual)
-        ToolStripDer.ForeColor = VentanaTexto(temaActual)
+        StatusStripInfo.BackColor = StatusFondo(TemaActual)
+        StatusStripInfo.ForeColor = StatusTexto(TemaActual)
+
+        ToolStripIzq.BackColor = VentanaFondo(TemaActual)
+        ToolStripIzq.ForeColor = VentanaTexto(TemaActual)
+        ToolStripDer.BackColor = VentanaFondo(TemaActual)
+        ToolStripDer.ForeColor = VentanaTexto(TemaActual)
 
         Releer()
         If comparado Then
@@ -1785,7 +1880,7 @@ Public Class Form1
             lv = lvDirDer
         End If
 
-        For Each sDir In ultimosDirs
+        For Each sDir In UltimosDirs
             If sDir.Any Then
                 Dim mnu As New ToolStripMenuItem(sDir)
                 AddHandler mnu.Click, Sub(s1 As Object, e1 As EventArgs)
@@ -1802,4 +1897,46 @@ Public Class Form1
         Next
     End Sub
 
+    ''' <summary>
+    ''' Edita el fichero seleccionado (si hay varios, se editará el primero)
+    ''' en el editor indicado por <see cref="EditorTextoIndex"/>
+    ''' </summary>
+    Private Sub EditarFichero()
+        If quePanel Is Nothing Then Return
+        If quePanel.SelectedItems.Count = 0 Then Return
+
+        Dim fi = TryCast(quePanel.SelectedItems(0).Tag, FileInfo)
+        Dim pi As New ProcessStartInfo With {
+            .FileName = $"{ChrW(34)}{EditoresTexto(EditorTextoIndex)}{ChrW(34)}",
+            .Arguments = $"{ChrW(34)}{fi.FullName}{ChrW(34)}",
+            .UseShellExecute = True,
+            .WindowStyle = ProcessWindowStyle.Normal
+        }
+        Dim p As New Process With {
+            .StartInfo = pi
+        }
+        p.Start()
+
+        MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
+    End Sub
+
+    ''' <summary>
+    ''' Mostrar la ventana de Acerca de
+    ''' </summary>
+    Private Sub AcercaDe()
+        Dim sb As New StringBuilder
+        sb.AppendLine(Me.Text)
+        sb.AppendLine()
+        sb.AppendLine(My.Application.Info.Description)
+        sb.AppendLine()
+        sb.AppendLine(My.Application.Info.Copyright)
+        sb.AppendLine()
+        sb.Append("Versión v ")
+        sb.Append(My.Application.Info.Version)
+        sb.Append(" (")
+        sb.Append(Application.ProductVersion)
+        sb.Append(")")
+        sb.AppendLine()
+        ConfirmDialog.Show(sb.ToString, "Acerca de", DialogConfirmButtons.OK, DialogConfirmIcon.Information)
+    End Sub
 End Class
