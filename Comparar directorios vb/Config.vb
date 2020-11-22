@@ -59,7 +59,7 @@ Public Class Config
     ' Los campos y métodos privados
     '----------------------------------------------------------------------
     Private Const configuration As String = "configuration/"
-    Private configXml As New XmlDocument
+    Private ReadOnly configXml As New XmlDocument
 
     '
     ''' <summary>
@@ -151,8 +151,11 @@ Public Class Config
     ''' Cuando es Boolean, se guarda 1 ó 0 según sea True o False.
     ''' </remarks>
     Public Function GetValue(seccion As String, clave As String, predeterminado As Boolean) As Boolean
-        Return If(cfgGetValue(seccion, clave, If(predeterminado, "1", "0")) = "1",
-                    True, False)
+        'Return If(cfgGetValue(seccion, clave, If(predeterminado, "1", "0")) = "1",
+        '            True, False)
+
+        'Mensaje IDE0075 La expresión condicional se puede simplificar
+        Return cfgGetValue(seccion, clave, If(predeterminado, "1", "0")) = "1"
     End Function
 
     ''' <summary>

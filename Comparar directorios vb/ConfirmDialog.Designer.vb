@@ -31,11 +31,12 @@ Partial Class ConfirmDialog
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.LabelMessage = New System.Windows.Forms.TextBox()
-        Me.PicIcon = New System.Windows.Forms.PictureBox()
         Me.FlowLayoutPanelBotones = New System.Windows.Forms.FlowLayoutPanel()
+        Me.PicIcon = New System.Windows.Forms.PictureBox()
+        Me.ChkOpcion = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
-        CType(Me.PicIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.FlowLayoutPanelBotones.SuspendLayout()
+        CType(Me.PicIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BtnNo
@@ -112,17 +113,6 @@ Partial Class ConfirmDialog
         Me.LabelMessage.TabStop = False
         Me.LabelMessage.Text = "LabelMessage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "223456789-123456789-123456789-123456789-123456789-123456789-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "13"
         '
-        'PicIcon
-        '
-        Me.PicIcon.Image = CType(resources.GetObject("PicIcon.Image"), System.Drawing.Image)
-        Me.PicIcon.Location = New System.Drawing.Point(8, 27)
-        Me.PicIcon.Margin = New System.Windows.Forms.Padding(8)
-        Me.PicIcon.Name = "PicIcon"
-        Me.PicIcon.Size = New System.Drawing.Size(100, 79)
-        Me.PicIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PicIcon.TabIndex = 0
-        Me.PicIcon.TabStop = False
-        '
         'FlowLayoutPanelBotones
         '
         Me.FlowLayoutPanelBotones.Controls.Add(Me.BtnNoTodo)
@@ -136,12 +126,36 @@ Partial Class ConfirmDialog
         Me.FlowLayoutPanelBotones.Size = New System.Drawing.Size(435, 41)
         Me.FlowLayoutPanelBotones.TabIndex = 2
         '
+        'PicIcon
+        '
+        Me.PicIcon.Image = CType(resources.GetObject("PicIcon.Image"), System.Drawing.Image)
+        Me.PicIcon.Location = New System.Drawing.Point(8, 27)
+        Me.PicIcon.Margin = New System.Windows.Forms.Padding(8)
+        Me.PicIcon.Name = "PicIcon"
+        Me.PicIcon.Size = New System.Drawing.Size(100, 79)
+        Me.PicIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PicIcon.TabIndex = 0
+        Me.PicIcon.TabStop = False
+        '
+        'ChkOpcion
+        '
+        Me.ChkOpcion.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ChkOpcion.AutoSize = True
+        Me.ChkOpcion.Location = New System.Drawing.Point(17, 162)
+        Me.ChkOpcion.Name = "ChkOpcion"
+        Me.ChkOpcion.Size = New System.Drawing.Size(121, 17)
+        Me.ChkOpcion.TabIndex = 3
+        Me.ChkOpcion.Text = "Opción configurable"
+        Me.ChkOpcion.UseVisualStyleBackColor = True
+        Me.ChkOpcion.Visible = False
+        '
         'ConfirmDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(435, 226)
         Me.ControlBox = False
+        Me.Controls.Add(Me.ChkOpcion)
         Me.Controls.Add(Me.FlowLayoutPanelBotones)
         Me.Controls.Add(Me.Panel1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -156,9 +170,10 @@ Partial Class ConfirmDialog
         Me.TopMost = True
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.PicIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.FlowLayoutPanelBotones.ResumeLayout(False)
+        CType(Me.PicIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents BtnSi As Button
@@ -170,4 +185,5 @@ Partial Class ConfirmDialog
     Private WithEvents LabelMessage As TextBox
     Private WithEvents PicIcon As PictureBox
     Private WithEvents FlowLayoutPanelBotones As FlowLayoutPanel
+    Private WithEvents ChkOpcion As CheckBox
 End Class

@@ -76,6 +76,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColoresTemas.vb" />
     <Compile Include="ConfirmDialog.Designer.vb">
       <DependentUpon>ConfirmDialog.vb</DependentUpon>
     </Compile>

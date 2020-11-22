@@ -20,19 +20,42 @@ Imports System.Diagnostics
 Public Class Form1
 
     ''' <summary>
+    ''' Enumeración con los tipos de temas a usar
+    ''' </summary>
+    Private Enum Temas As Integer
+        Predeterminado
+        Oscuro
+        ComandanteNorton
+    End Enum
+
+    ''' <summary>
+    ''' El tema a usar
+    ''' </summary>
+    Private temaActual As Temas = Temas.Predeterminado
+
+    ''' <summary>
+    ''' Si se debe preguntar al iniciar la aplicación si se comparan los directorios
+    ''' </summary>
+    Private preguntarAlIniciar As Boolean = True
+    ''' <summary>
+    ''' Si se debe comparar los directorios al iniciar
+    ''' </summary>
+    Private compararAlIniciar As Boolean = True
+
+    ''' <summary>
     ''' El Directorio donde se guarda la configuración
     ''' </summary>
-    Private DirConfiguracion As String
+    Private dirConfiguracion As String
 
     ''' <summary>
     ''' El nombre del fichero de configuración global
     ''' </summary>
-    Private FicheroConfiguracion As String
+    Private ficheroConfiguracion As String
 
     ''' <summary>
     ''' La extensión a usar en los ficheros de configuración
     ''' </summary>
-    Private Const ExtensionConfiguracion As String = ".config.txt"
+    Private Const extensionConfiguracion As String = ".config.txt"
 
     ''' <summary>
     ''' El prefijo de los ficheros de configuración
@@ -70,10 +93,16 @@ Public Class Form1
         ' pero ninguno en el diseñador lo muestra, pero si los puede tener
         ' solo que hay que añadirlos a la propiedad DropDown... y de forma manual)
         Me.BtnNuevoDropDown.DropDown = New ToolStripDropDown()
-        Me.BtnNuevoDropDown.DropDown.Items.AddRange(New System.Windows.Forms.ToolStripItem() {btnNuevoFichero, BtnNuevoDir})
+        Me.BtnNuevoDropDown.DropDown.Items.AddRange(New ToolStripItem() {btnNuevoFichero, BtnNuevoDir})
 
         BtnEliminarSplit.DropDown = New ToolStripDropDown()
-        BtnEliminarSplit.DropDown.Items.AddRange(New System.Windows.Forms.ToolStripItem() {btnEliminar, btnEliminarDir})
+        BtnEliminarSplit.DropDown.Items.AddRange(New ToolStripItem() {btnEliminar, btnEliminarDir})
+
+        BtnCopiarSplit.DropDown = New ToolStripDropDown()
+        BtnCopiarSplit.DropDown.Items.AddRange(New ToolStripItem() {btnCopiar, btnCopiarDir})
+
+        BtnMoverSplit.DropDown = New ToolStripDropDown()
+        BtnMoverSplit.DropDown.Items.AddRange(New ToolStripItem() {btnMover, btnMoverDir})
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -83,15 +112,17 @@ Public Class Form1
         LabelDirDer.Text = ""
 
         Dim DirDocumentos = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-        DirConfiguracion = Path.Combine(DirDocumentos, Application.ProductName)
-        If Not Directory.Exists(DirConfiguracion) Then
-            Directory.CreateDirectory(DirConfiguracion)
+        dirConfiguracion = Path.Combine(DirDocumentos, Application.ProductName)
+        If Not Directory.Exists(dirConfiguracion) Then
+            Directory.CreateDirectory(dirConfiguracion)
         End If
-        FicheroConfiguracion = Path.Combine(DirConfiguracion, Application.ProductName & ExtensionConfiguracion)
+        ficheroConfiguracion = Path.Combine(dirConfiguracion, Application.ProductName & extensionConfiguracion)
 
 
         ' Leer los datos de la configuración
         LeerConfig()
+
+        CambiarTema()
 
         ' Asignar los ultimos directorios a los menús
         AsignarMenuUltimosDir(BtnAbrirDirIzqDropDown)
@@ -122,12 +153,48 @@ Public Class Form1
             Return
         End If
 
-        Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
-                                     s,
-                                     "Comparar directorios",
-                                     DialogConfirmButtons.YesNo,
-                                     DialogConfirmIcon.Information)
-        If ret = DialogConfirmResult.Yes Then
+        If preguntarAlIniciar Then
+            Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
+                                         s,
+                                         "Comparar directorios",
+                                         DialogConfirmButtons.YesNo,
+                                         DialogConfirmIcon.Information,
+                                         textoOpcion:="Preguntar siempre al iniciar",
+                                         valorOpcion:=True)
+            If ret = DialogConfirmResult.Yes Then
+                preguntarAlIniciar = ConfirmDialog.OpcionConfigurable.Value
+                compararAlIniciar = True
+            Else
+                compararAlIniciar = False
+            End If
+        End If
+        If compararAlIniciar Then
+            CompararDirectorios()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Cambiar los colores al tema seleccionado
+    ''' </summary>
+    Private Sub CambiarTema()
+        lvDirDer.BackColor = PanelFondo(temaActual)
+        lvDirDer.ForeColor = PanelTexto(temaActual)
+        lvDirIzq.BackColor = PanelFondo(temaActual)
+        lvDirIzq.ForeColor = PanelTexto(temaActual)
+        LvDirIzq_Enter(quePanel, Nothing)
+
+        Me.BackColor = VentanaFondo(temaActual)
+        Me.ForeColor = ventanaTexto(temaActual)
+        StatusStripInfo.BackColor = VentanaFondo(temaActual)
+        StatusStripInfo.ForeColor = ventanaTexto(temaActual)
+
+        ToolStripIzq.BackColor = VentanaFondo(temaActual)
+        ToolStripIzq.ForeColor = VentanaTexto(temaActual)
+        ToolStripDer.BackColor = VentanaFondo(temaActual)
+        ToolStripDer.ForeColor = VentanaTexto(temaActual)
+
+        Releer()
+        If comparado Then
             CompararDirectorios()
         End If
     End Sub
@@ -138,6 +205,12 @@ Public Class Form1
     ''' <param name="BtnDropDown">El botón al que se añaden los menús</param>
     Private Sub AsignarMenuUltimosDir(BtnDropDown As ToolStripDropDownButton)
         BtnDropDown.DropDownItems.Clear()
+        Dim lv As ListView
+        If BtnDropDown Is BtnAbrirDirIzqDropDown Then
+            lv = lvDirIzq
+        Else
+            lv = lvDirDer
+        End If
 
         For Each sDir In ultimosDirs
             If sDir.Any Then
@@ -148,7 +221,7 @@ Public Class Form1
                                           Next
                                           Dim m2 = TryCast(s1, ToolStripMenuItem)
                                           m2.Checked = True
-                                          MostrarContenidoDirectorio(m2.Text, lvDirIzq)
+                                          MostrarContenidoDirectorio(m2.Text, lv)
                                       End Sub
                 mnu.Checked = False
                 BtnDropDown.DropDownItems.Add(mnu)
@@ -257,9 +330,21 @@ Public Class Form1
 
     Private Sub LvDirIzq_Enter(sender As Object, e As EventArgs) Handles lvDirIzq.Enter, lvDirDer.Enter
         quePanel = TryCast(sender, ListView)
+        If quePanel Is Nothing Then Return
+
+        If quePanel Is lvDirIzq Then
+            lvDirDer.GridLines = False
+            SplitContainer1.Panel1.BackColor = PanelBorde(temaActual) ' Color.DarkGoldenrod
+            SplitContainer1.Panel2.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Else
+            lvDirIzq.GridLines = False
+            SplitContainer1.Panel2.BackColor = PanelBorde(temaActual) 'Color.DarkGoldenrod
+            SplitContainer1.Panel1.BackColor = Color.FromKnownColor(KnownColor.Control)
+        End If
+        quePanel.GridLines = True
     End Sub
 
-    Private Sub BtnMostrar_Click(sender As Object, e As EventArgs) Handles btnMostrar.Click
+    Private Sub BtnMostrar_Click(sender As Object, e As EventArgs) Handles MnuVerEnNotepad.Click
         VerFichero()
     End Sub
 
@@ -312,7 +397,9 @@ Public Class Form1
         For Each m As ToolStripMenuItem In BtnDropDown.DropDownItems
             If m.Text = sDir Then
                 m.Checked = True
-                Exit For
+                'Exit For
+            Else
+                m.Checked = False
             End If
         Next
     End Sub
@@ -320,7 +407,6 @@ Public Class Form1
     Private Sub BtnActualizarMasRecientes_Click(sender As Object, e As EventArgs) Handles BtnActualizarMasRecientes.Click
         ActualizarMasRecientes()
     End Sub
-
 
     ''' <summary>
     ''' Crear un nuevo fichero en el panel activo
@@ -678,7 +764,7 @@ Public Class Form1
 
                 Try
                     ' El directorio debe estar vacío antes de eliminarlo
-                    Dim dDest2 = di.FullName
+                    'Dim dDest2 = di.FullName
                     EliminarContenidoDir(di.FullName)
                     If di.Exists Then
                         di.Delete()
@@ -721,6 +807,7 @@ Public Class Form1
         End If
 
         MostrarContenidoDirectorio(fb.SelectedPath, lv)
+
         If comparado Then
             CompararDirectorios()
         End If
@@ -734,12 +821,17 @@ Public Class Form1
     ''' <param name="sDir">Cadena con el nombre del directorio</param>
     ''' <param name="lv">ListView donde se muestra el contenido del directorio</param>
     Private Sub GuardarConfig(sDir As String, lv As ListView)
-        Dim cfg = New Config(FicheroConfiguracion)
+        Dim cfg = New Config(ficheroConfiguracion)
+
+        cfg.SetValue("Opciones", "PreguntarAlIniciar", preguntarAlIniciar)
+        cfg.SetValue("Opciones", "CompararAlIniciar", compararAlIniciar)
+        '
+        cfg.SetValue("Opciones", "TemaActual", temaActual)
 
         Dim ficCfg As String
 
         ' Guardar todos los directorios abiertos
-        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{ExtensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{extensionConfiguracion}")
         Using sw As New StreamWriter(ficCfg, False, Encoding.Default)
             For Each s In ultimosDirs
                 If s.Any Then
@@ -752,9 +844,9 @@ Public Class Form1
 
         ' Guardar el nombre del directorio abierto
         If lv Is lvDirIzq Then
-            ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Izq{ExtensionConfiguracion}")
+            ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Izq{extensionConfiguracion}")
         Else
-            ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Der{ExtensionConfiguracion}")
+            ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Der{extensionConfiguracion}")
         End If
         Using sw As New StreamWriter(ficCfg, False, Encoding.Default)
             sw.Write(sDir)
@@ -762,6 +854,7 @@ Public Class Form1
             sw.Close()
         End Using
 
+        cfg.Save()
     End Sub
 
     ''' <summary>
@@ -769,14 +862,18 @@ Public Class Form1
     ''' y la lista de los últimos directorios
     ''' </summary>
     Private Sub LeerConfig()
-        Dim cfg = New Config(FicheroConfiguracion)
+        Dim cfg = New Config(ficheroConfiguracion)
+
+        preguntarAlIniciar = cfg.GetValue("Opciones", "PreguntarAlIniciar", True)
+        compararAlIniciar = cfg.GetValue("Opciones", "CompararAlIniciar", True)
+        temaActual = CType(cfg.GetValue("Opciones", "TemaActual", Temas.Predeterminado), Temas)
 
         Dim ficCfg As String
 
         ' Leer los últimos directorios abiertos
         ' Leerlos antes de mostrar directorios, si no, los sobrescribe
         ultimosDirs.Clear()
-        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{ExtensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_UltimosDirectorios{extensionConfiguracion}")
         If File.Exists(ficCfg) Then
             Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 Do While Not sr.EndOfStream
@@ -789,7 +886,7 @@ Public Class Form1
             End Using
         End If
 
-        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Izq{ExtensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Izq{extensionConfiguracion}")
         Dim dIzq As String
         If File.Exists(ficCfg) Then
             Using sr As New StreamReader(ficCfg, Encoding.Default, True)
@@ -801,7 +898,7 @@ Public Class Form1
             MostrarContenidoDirectorio(dIzq, lvDirIzq)
         End If
 
-        ficCfg = Path.Combine(DirConfiguracion, $"{prefijoConfig}_Der{ExtensionConfiguracion}")
+        ficCfg = Path.Combine(dirConfiguracion, $"{prefijoConfig}_Der{extensionConfiguracion}")
         If File.Exists(ficCfg) Then
             Using sr As New StreamReader(ficCfg, Encoding.Default, True)
                 dIzq = sr.ReadLine
@@ -841,6 +938,25 @@ Public Class Form1
             LabelDirDer.ToolTipText = dir.FullName
         End If
 
+        ' Comprobar si los dos directorios son iguales
+        ' de ser así, avisar
+        Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
+        Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
+        If diIzq Is Nothing OrElse diDer Is Nothing Then
+            Return
+        End If
+        If diIzq.FullName = diDer.FullName Then
+            ConfirmDialog.Show("¡Atención los paneles usan el mismo directorio!" & vbCrLf & vbCrLf &
+                               "Deberían ser directorios diferentes.",
+                               "Mismo directorio en los 2 paneles",
+                               DialogConfirmButtons.OK,
+                               DialogConfirmIcon.Information)
+            LabelInfo.BackColor = ItemNoExiste(temaActual) ' Color.Firebrick
+            LabelInfo.ForeColor = VentanaFondo(temaActual) ' Color.White
+        Else
+            LabelInfo.BackColor = VentanaFondo(temaActual) ' Color.FromKnownColor(KnownColor.Control)
+            LabelInfo.ForeColor = VentanaTexto(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
+        End If
     End Sub
 
     ''' <summary>
@@ -870,9 +986,8 @@ Public Class Form1
             it.SubItems.Add("[UP--DIR]")
             'it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
             it.SubItems.Add(dir.Parent.LastWriteTime.ToString("dd/MM/yyyy HH:mm"))
-            it.ForeColor = Color.DarkOliveGreen
-            'it.BackColor = Color.Yellow
-            it.BackColor = Color.LightGoldenrodYellow
+            it.ForeColor = ItemDirFore(temaActual) ' Color.DarkOliveGreen
+            it.BackColor = ItemDirBack(temaActual) ' Color.LightGoldenrodYellow
             it.Font = New Font(it.Font, FontStyle.Bold)
             it.Tag = dir.Parent '.FullName
             it.Checked = False
@@ -884,8 +999,8 @@ Public Class Form1
             it.SubItems.Add(di.Name.ToUpper)
             it.SubItems.Add("[SUB--DIR]")
             it.SubItems.Add(di.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
-            it.ForeColor = Color.DarkOliveGreen
-            it.BackColor = Color.LightGoldenrodYellow
+            it.ForeColor = ItemDirFore(temaActual) ' Color.DarkOliveGreen
+            it.BackColor = ItemDirBack(temaActual) ' Color.LightGoldenrodYellow
             it.Checked = False
             it.Tag = di '.FullName
             it.ToolTipText = di.FullName
@@ -893,6 +1008,8 @@ Public Class Form1
         Next
         For Each fi In files
             Dim it = lv.Items.Add("")
+            it.ForeColor = ItemIgual(temaActual) ' Color.DarkOliveGreen
+            it.BackColor = PanelFondo(temaActual) ' Color.LightGoldenrodYellow
             it.SubItems.Add(fi.Name)
             it.SubItems.Add(fi.Length.ToString("#,##0"))
             it.SubItems.Add(fi.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
@@ -918,8 +1035,11 @@ Public Class Form1
     ''' Comparar el contenido de los ficheros de los dos directorios mostrados.
     ''' Devuelve el número de ficheros con fecha más reciente.
     ''' </summary>
-    ''' <returns>Devuelve una tupla con el número de ficheros más recientes y los que no existen o -1 si no se ha procesado</returns>
-    Private Function CompararDirectorios() As (FechaMasReciente As Integer, NoExisten As Integer)
+    ''' <returns>Devuelve una tupla con:
+    ''' el número de ficheros más recientes,
+    ''' los que no existen y los de tamaño diferente
+    ''' o -1 si no se ha procesado</returns>
+    Private Function CompararDirectorios() As (FechaMasReciente As Integer, NoExisten As Integer, TamañoDiferente As Integer)
         ' Comparar el contenido de los 2 directorios
         ' Recorrer los ficheros del panel izquierdo buscando cambios con el derecho
         ' Comprobar la fecha antes que el tamaño
@@ -931,9 +1051,9 @@ Public Class Form1
         '   Son iguales         =
 
         Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
-        If diIzq Is Nothing Then Return (-1, -1)
+        If diIzq Is Nothing Then Return (-1, -1, -1)
         Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
-        If diDer Is Nothing Then Return (-1, -1)
+        If diDer Is Nothing Then Return (-1, -1, -1)
 
         LabelInfo.Text = "Comparando los directorios..."
         Application.DoEvents()
@@ -949,20 +1069,33 @@ Public Class Form1
         Dim tfme = 0
         Dim ti = 0
 
+        ' Ponerlos todos como que no existen
+        ' ya que esto no se puede hacer en el otro bucle
+        ' porque si no existe en la derecha nunca llega a ese item
+        For j = 0 To lvDirDer.Items.Count - 1
+            Dim itDer = lvDirDer.Items(j)
+            If String.IsNullOrEmpty(itDer.Text) Then
+                itDer.Text = "x"
+                itDer.ForeColor = ItemNoExiste(temaActual) ' Color.Firebrick
+                itDer.ToolTipText = "No existe"
+            End If
+        Next
+
         For i = 0 To lvDirIzq.Items.Count - 1
             Dim itIzq = lvDirIzq.Items(i)
             Dim fiIzq = TryCast(itIzq.Tag, FileInfo)
             If fiIzq Is Nothing Then Continue For
             ' Asignar el color del texto predeterminado
-            itIzq.ForeColor = Color.FromKnownColor(KnownColor.WindowText)
+            itIzq.ForeColor = ItemIgual(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
             tf += 1
             Dim fiDer As FileInfo
             Dim existe As Boolean = False
             For j = 0 To lvDirDer.Items.Count - 1
-                Dim itDer = lvDirDer.Items(j)
                 fiDer = TryCast(lvDirDer.Items(j).Tag, FileInfo)
                 If fiDer Is Nothing Then Continue For
-                itDer.ForeColor = Color.FromKnownColor(KnownColor.WindowText)
+
+                Dim itDer = lvDirDer.Items(j)
+                'itDer.ForeColor = PanelTexto(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
                 If fiIzq.Name = fiDer.Name Then
                     existe = True
                     t += 1
@@ -970,45 +1103,46 @@ Public Class Form1
                     itIzq.ToolTipText = "Son iguales"
                     itDer.Text = "="
                     itDer.ToolTipText = "Son iguales"
+                    itDer.ForeColor = PanelTexto(temaActual) ' Color.FromKnownColor(KnownColor.WindowText)
                     If fiIzq.LastWriteTime.ToString("yyyy/MM/dd HH:mm") > fiDer.LastWriteTime.ToString("yyyy/MM/dd HH:mm") Then
                         itIzq.Text = "f>"
-                        itIzq.ForeColor = Color.Blue
+                        itIzq.ForeColor = ItemFechaMayor(temaActual) ' Color.Blue
                         itIzq.ToolTipText = "La fecha es mayor"
                         ' Lo contrario en el otro directorio
                         itDer.Text = "f<"
-                        itDer.ForeColor = Color.SlateBlue
+                        itDer.ForeColor = ItemFechaMenor(temaActual) ' Color.SlateBlue
                         itDer.ToolTipText = "La fecha es menor"
 
                         tfma += 1
                         ti += 1
                     ElseIf fiIzq.LastWriteTime.ToString("yyyy/MM/dd HH:mm") < fiDer.LastWriteTime.ToString("yyyy/MM/dd HH:mm") Then
                         itIzq.Text = "f<"
-                        itIzq.ForeColor = Color.SlateBlue
+                        itIzq.ForeColor = ItemFechaMenor(temaActual) ' Color.SlateBlue
                         itIzq.ToolTipText = "La fecha es menor"
                         '
                         itDer.Text = "f>"
-                        itDer.ForeColor = Color.Blue
+                        itDer.ForeColor = ItemFechaMayor(temaActual) 'Color.Blue
                         itDer.ToolTipText = "La fecha es mayor"
 
                         tfme += 1
                         ti += 1
                     ElseIf fiIzq.Length > fiDer.Length Then
-                        itIzq.ForeColor = Color.Green
+                        itIzq.ForeColor = ItemTamañoMayor(temaActual) ' Color.Green
                         itIzq.Text = "t>"
                         itIzq.ToolTipText = "El tamaño es mayor"
                         '
-                        itDer.ForeColor = Color.DarkGreen
+                        itDer.ForeColor = ItemTamañoMenor(temaActual) ' Color.DarkGreen
                         itDer.Text = "t<"
                         itDer.ToolTipText = "El tamaño es menor"
 
                         ttma += 1
                         ti += 1
                     ElseIf fiIzq.Length < fiDer.Length Then
-                        itIzq.ForeColor = Color.DarkGreen
+                        itIzq.ForeColor = ItemTamañoMenor(temaActual) 'Color.DarkGreen
                         itIzq.Text = "t<"
                         itIzq.ToolTipText = "El tamaño es menor"
                         '
-                        itDer.ForeColor = Color.Green
+                        itDer.ForeColor = ItemTamañoMayor(temaActual) 'Color.Green
                         itDer.Text = "t>"
                         itDer.ToolTipText = "El tamaño es mayor"
 
@@ -1019,7 +1153,7 @@ Public Class Form1
                 End If
             Next
             If Not existe Then
-                itIzq.ForeColor = Color.Firebrick
+                itIzq.ForeColor = ItemNoExiste(temaActual) ' Color.Firebrick
                 itIzq.Text = "x"
                 itIzq.ToolTipText = "No existe"
                 tn += 1
@@ -1036,7 +1170,7 @@ Public Class Form1
             LabelInfo.Text = $"De {tf} ficheros los {t} son iguales."
         End If
 
-        Return (tfma, tn)
+        Return (tfma, tn, ttma + ttme)
     End Function
 
     ''' <summary>
@@ -1286,6 +1420,7 @@ Public Class Form1
         ' Comparar los directorios
         ' Cuando lo ponga paa que compare cada panel por separado
         ' solo comparar el activo con el otro
+        Releer()
         Dim tfm = CompararDirectorios()
         If tfm.FechaMasReciente = -1 Then Return
 
@@ -1298,27 +1433,57 @@ Public Class Form1
         Dim dDest = lvDest.Tag.ToString
 
         Dim sTotales As String = ""
-        If tfm.FechaMasReciente = 1 Then
-            sTotales = $"un fichero más reciente"
-        ElseIf tfm.FechaMasReciente > 1 Then
+        Dim sInicio As String = ""
+        Dim sTamaño As String = ""
 
-            sTotales = $"los {tfm.FechaMasReciente} ficheros más recientes"
+        If tfm.FechaMasReciente = 1 Then
+            sTotales = $"un fichero más reciente "
+            sInicio = "un fichero más reciente (con fecha más actual) "
+        ElseIf tfm.FechaMasReciente > 1 Then
+            sTotales = $"los {tfm.FechaMasReciente} ficheros más recientes "
+            sInicio = "los ficheros más recientes (con fecha más actual) "
         End If
 
         If tfm.NoExisten = 1 Then
-            sTotales &= $" y el que no existe"
+            If String.IsNullOrEmpty(sTotales) Then
+                sTotales = "uno que no existe"
+                sInicio = "uno que no existe"
+            Else
+                sTotales &= "y uno que no existe"
+                sInicio &= "y uno que no existe"
+            End If
         ElseIf tfm.NoExisten > 1 Then
-            sTotales &= $" y los {tfm.NoExisten} que no existen"
-            'ElseIf tfm.NoExisten = 0 Then
+            If String.IsNullOrEmpty(sTotales) Then
+                sTotales = $"los {tfm.NoExisten} que no existen"
+                sInicio = "los que no existen"
+            Else
+                sTotales &= $"y los {tfm.NoExisten} que no existen"
+                sInicio &= "y los que no existen"
+            End If
         End If
 
-        Dim ret = ConfirmDialog.Show($"Esto copiará los ficheros más recientes (con fecha más actual) y los que no existan del directorio:{vbCrLf}{vbCrLf}{quePanel.Tag.ToString}{vbCrLf}{vbCrLf}al directorio:{vbCrLf}{vbCrLf}{dDest}{vbCrLf}{vbCrLf}y no se pedirá confirmación individual de sobrescritura{vbCrLf}{vbCrLf}¿Quieres actualizar los {tfm.FechaMasReciente} ficheros más recientes y los {tfm.NoExisten}?",
+        If tfm.TamañoDiferente = 1 Then
+            sTamaño = $"{vbCrLf}(hay 1 fichero con tamaño diferente que no se copiará)"
+        ElseIf tfm.TamañoDiferente > 1 Then
+            sTamaño = $"{vbCrLf}(hay {tfm.TamañoDiferente} ficheros con tamaños diferentes que no se copiarán)"
+        End If
+
+        If String.IsNullOrEmpty(sTotales) Then
+            ConfirmDialog.Show($"No hay ficheros más recientes ni que no existan{sTotales}{sTamaño}.",
+                               "Actualizar ficheros",
+                               DialogConfirmButtons.OK,
+                               DialogConfirmIcon.Information)
+            Return
+        End If
+
+        Dim ret = ConfirmDialog.Show($"Esto copiará {sInicio} del directorio:{vbCrLf}{vbCrLf}{quePanel.Tag},{vbCrLf}{vbCrLf}al directorio:{vbCrLf}{vbCrLf}{dDest}{vbCrLf}{vbCrLf}y no se pedirá confirmación individual de sobrescritura.{vbCrLf}{vbCrLf}¿Quieres actualizar {sTotales}?{sTamaño}",
                                      "Actualizar ficheros",
                                      DialogConfirmButtons.YesNo,
                                      DialogConfirmIcon.Information)
         If ret = DialogConfirmResult.No Then Return
 
-        ' Los ficheros más recientes tendrán f> en el texto del item
+        ' Los ficheros más recientes tendrán "f>" en el texto del item
+        ' y los que no existen tendrán "x"
         For i = 0 To quePanel.Items.Count - 1
             If quePanel.Items(i).Text = "f>" OrElse quePanel.Items(i).Text = "x" Then
                 Dim fi = TryCast(quePanel.Items(i).Tag, FileInfo)
@@ -1329,7 +1494,228 @@ Public Class Form1
         Next
 
         Releer()
-        CompararDirectorios()
+        'CompararDirectorios()
+    End Sub
+
+    'Private Sub lvDir_AfterLabelEdit(sender As Object, e As LabelEditEventArgs) Handles lvDirIzq.AfterLabelEdit, lvDirDer.AfterLabelEdit
+    '    Dim lv = TryCast(sender, ListView)
+    '    If lv Is Nothing Then
+    '        e.CancelEdit = True
+    '        Return
+    '    End If
+    '    If e.Label <> lv.Items(e.Item).Text Then
+    '        Debug.WriteLine(e.Label)
+    '    End If
+    'End Sub
+
+
+    ' Para editar un subitem
+    ' de una pregunta en los foros de MSDN:
+    ' https://social.msdn.microsoft.com/Forums/vstudio/en-US/fe026b4a-c131-4bb7-81dd-32b8a8d98717/
+    '   edit-listview-subitem?forum=vbgeneral
+    Private lvModificado As ListView
+    Private laFila, laColumna As Integer
+    Private subItemTextAnterior As String = ""
+
+    Private Sub TextBox13_TextChanged(sender As Object, e As EventArgs) Handles TextBox13.TextChanged
+        lvModificado.Items(laFila).SubItems(laColumna).Text = TextBox13.Text
+    End Sub
+
+    'Private Sub TextBox13_Validating(sender As Object, e As ComponentModel.CancelEventArgs) Handles TextBox13.Validating
+    '    ' Comprobar si se ha cambiado lo que había antes
+    '    If subItemTextAnterior <> TextBox13.Text Then
+    '        ' ha cambiado el texto
+    '        Debug.WriteLine(subItemTextAnterior)
+    '    End If
+    '    TextBox13.Visible = False
+    'End Sub
+
+    Private Sub TextBox13_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox13.KeyPress
+        If e.KeyChar = ChrW(13) Then
+            e.Handled = True
+
+            CambiarNombre()
+        End If
+    End Sub
+
+    Private Sub TextBox13_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox13.KeyDown
+        If e.KeyCode = Keys.Escape Then
+            TextBox13.Visible = False
+            lvModificado.Items(laFila).SubItems(laColumna).Text = subItemTextAnterior
+            e.Handled = True
+            e.SuppressKeyPress = True
+        End If
+    End Sub
+
+    Private Sub TextBox13_Leave(sender As Object, e As EventArgs) Handles TextBox13.Leave
+        If TextBox13.Visible = False Then Return
+
+        CambiarNombre()
+    End Sub
+
+    Private Sub lvDir_KeyDown(sender As Object, e As KeyEventArgs) Handles lvDirIzq.KeyDown, lvDirDer.KeyDown
+        If e.KeyCode = Keys.F2 Then
+            e.Handled = True
+            e.SuppressKeyPress = True
+            EditarSubItem(quePanel, -2)
+        End If
+    End Sub
+
+    Private Sub BtnCambiarNombre_Click(sender As Object, e As EventArgs) Handles BtnCambiarNombre.Click
+        EditarSubItem(quePanel, -2)
+    End Sub
+
+#Region " No borrar esto, dejarlo comentado "
+
+    'Private Sub ListView1_MouseClick(sender As Object, e As MouseEventArgs) Handles lvDirIzq.MouseClick, lvDirDer.MouseClick
+    '    Dim lv = TryCast(sender, ListView)
+    '    If lv Is Nothing Then Return
+
+    '    lvModificado = lv
+
+    '    Dim hit As ListViewHitTestInfo = lv.HitTest(e.X, e.Y)
+    '    'Dim iWidth As Integer
+    '    For iCol = 0 To hit.Item.SubItems.Count - 1
+    '        If hit.Item.SubItems(iCol).Bounds.Left <= e.X Then
+    '            If iCol = 0 AndAlso hit.Item.SubItems.Count > 1 Then
+    '                If e.X <= hit.Item.SubItems(1).Bounds.Left Then
+    '                    'iWidth = hit.Item.SubItems(1).Bounds.Left
+    '                    laColumna = iCol
+    '                    Exit For
+    '                End If
+    '            ElseIf e.X <= hit.Item.SubItems(iCol).Bounds.Right Then
+    '                'iWidth = hit.Item.SubItems(iCol).Bounds.Width
+    '                laColumna = iCol
+    '                Exit For
+    '            End If
+    '        End If
+    '    Next
+    '    ' Solo permitir modificar el nombre (subItem(1))
+    '    If laColumna <> 1 Then Return
+
+    '    laFila = hit.Item.Index
+
+    '    EditarSubItem(lv, laFila)
+
+    '    'If lvModificado Is lvDirIzq Then
+    '    '    TextBox13.Left = lv.Left + hit.SubItem.Bounds.Left + 3
+    '    'Else
+    '    '    TextBox13.Left = SplitContainer1.Left + SplitContainer1.SplitterDistance + lv.Left + hit.SubItem.Bounds.Left + 3 + 5
+    '    'End If
+    '    'TextBox13.Top = SplitContainer1.Top + lv.Top + hit.SubItem.Bounds.Top
+    '    'TextBox13.Width = iWidth
+    '    'TextBox13.Height = 18
+    '    'TextBox13.Text = hit.SubItem.Text
+    '    'TextBox13.Visible = True
+    '    'TextBox13.ReadOnly = False
+    '    'subItemTextAnterior = TextBox13.Text
+    'End Sub
+
+#End Region
+
+    ''' <summary>
+    ''' Editar el nombre del item seleccionado
+    ''' </summary>
+    ''' <param name="lv">El panel en el que se edita</param>
+    ''' <param name="index">El índice del item a modificar (-2 para usar el primero seleccionado)</param>
+    Private Sub EditarSubItem(lv As ListView, index As Integer)
+        lvModificado = lv
+
+        If index = -2 Then
+            index = lv.SelectedIndices(0)
+        End If
+        Dim it = lv.Items(index)
+        laFila = index
+
+        If lvModificado Is lvDirIzq Then
+            TextBox13.Left = lv.Left + it.SubItems(1).Bounds.Left + 3
+        Else
+            TextBox13.Left = SplitContainer1.Left + SplitContainer1.SplitterDistance + lv.Left + it.SubItems(1).Bounds.Left + 3 + 5
+        End If
+        TextBox13.Top = SplitContainer1.Top + lv.Top + it.SubItems(1).Bounds.Top
+        TextBox13.Width = it.SubItems(1).Bounds.Width
+        TextBox13.Height = it.SubItems(1).Bounds.Height ' 18
+        TextBox13.Text = it.SubItems(1).Text
+        TextBox13.Visible = True
+        TextBox13.ReadOnly = False
+        subItemTextAnterior = TextBox13.Text
+
+    End Sub
+
+    Private Sub MnuVerEnElVisor_Click(sender As Object, e As EventArgs) Handles MnuVerEnElVisor.Click
+
+    End Sub
+
+    Private Sub MnuTemaPredeterminado_Click(sender As Object, e As EventArgs) Handles MnuTemaPredeterminado.Click
+        temaActual = Temas.Predeterminado
+        CambiarTema()
+    End Sub
+
+    Private Sub MnuTemaOscuro_Click(sender As Object, e As EventArgs) Handles MnuTemaOscuro.Click
+        temaActual = Temas.Oscuro
+        CambiarTema()
+    End Sub
+
+    Private Sub NortonCommanderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NortonCommanderToolStripMenuItem.Click
+        temaActual = Temas.ComandanteNorton
+        CambiarTema()
+    End Sub
+
+    ''' <summary>
+    ''' Cambia el nombre del fichero o directorio seleccionado (pulsar F2)
+    ''' </summary>
+    Private Sub CambiarNombre()
+        ' Comprobar si se ha cambiado lo que había antes
+        TextBox13.Visible = False
+        If subItemTextAnterior <> TextBox13.Text Then
+            ' ha cambiado el texto
+            'Debug.WriteLine(subItemTextAnterior)
+
+            Dim fi = TryCast(lvModificado.Items(laFila).Tag, FileInfo)
+            Dim di As DirectoryInfo = Nothing
+            If fi Is Nothing Then
+                di = TryCast(lvModificado.Items(laFila).Tag, DirectoryInfo)
+            End If
+            If fi Is Nothing AndAlso di Is Nothing Then
+                lvModificado.Items(laFila).SubItems(laColumna).Text = subItemTextAnterior
+                Return
+            End If
+
+            Dim nuevoNombre = TextBox13.Text
+
+            If fi IsNot Nothing Then
+                Dim fNuevo = Path.Combine(fi.DirectoryName, nuevoNombre)
+                ' Si el fichero ya existe, cancelar
+                If File.Exists(fNuevo) Then
+                    lvModificado.Items(laFila).SubItems(laColumna).Text = subItemTextAnterior
+                    Return
+                End If
+                Try
+                    fi.CopyTo(fNuevo, True)
+                    fi.Delete()
+                Catch ex As Exception
+                    LabelInfo.Text = ex.Message
+                End Try
+            ElseIf di IsNot Nothing Then
+                Dim dNuevo = Path.Combine(di.Parent.FullName, nuevoNombre)
+                If Directory.Exists(dNuevo) Then
+                    lvModificado.Items(laFila).SubItems(laColumna).Text = subItemTextAnterior
+                    Return
+                End If
+                Try
+                    di.Parent.CreateSubdirectory(nuevoNombre)
+                    ' eliminar el directorio, eliminando antes el contenido que tenga
+                    EliminarContenidoDir(di.FullName)
+
+                    di.Delete()
+                Catch ex As Exception
+                    LabelInfo.Text = ex.Message
+                End Try
+            End If
+
+            Releer()
+            CompararDirectorios()
+        End If
     End Sub
 
 End Class

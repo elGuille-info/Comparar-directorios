@@ -1,8 +1,7 @@
 ﻿'------------------------------------------------------------------------------
-' ConfirmDialog formulario de cuadro de diálogo de confiramción     (20/Nov/20)
+' ConfirmDialog formulario de cuadro de diálogo de confirmación     (20/Nov/20)
 '
 ' Para confirmar la copia, borrado, etc. de los ficheros y directorios
-'
 '
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
@@ -106,10 +105,28 @@ End Enum
 
 Public Class ConfirmDialog
 
+    ''' <summary>
+    ''' El valor de la opción configurable.
+    ''' </summary>
+    ''' <returns>Si no se ha indicado el texto a mostrar, devuelve Nothing, si no, devuelve True o False</returns>
+    Public Shared ReadOnly Property OpcionConfigurable As Boolean?
+        Get
+            If String.IsNullOrEmpty(textoOpcionConfigurable) Then
+                Return Nothing
+            End If
+            Return _OpcionConfigurable.Value
+        End Get
+    End Property
+
+    Private Shared _OpcionConfigurable As Boolean?
+    Private Shared textoOpcionConfigurable As String
+
     Public Sub New(message As String,
                    caption As String,
                    buttons As DialogConfirmButtons,
-                   dialogIcon As DialogConfirmIcon)
+                   dialogIcon As DialogConfirmIcon,
+                   Optional textoOpcion As String = "",
+                   Optional valorOpcion As Boolean = False)
 
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
@@ -135,19 +152,28 @@ Public Class ConfirmDialog
             Case DialogConfirmIcon.Error,
                  DialogConfirmIcon.Hand, DialogConfirmIcon.Stop
                 'PicIcon.Image = My.Resources._error
-                Me.PicIcon.Image = ImageConvert.Base64ToImage(Error_Ico)
+                Me.PicIcon.Image = ImageConvert.Base64ToImage(error_Ico)
             Case DialogConfirmIcon.Information, DialogConfirmIcon.Asterisk
                 'PicIcon.Image = My.Resources.info
-                Me.PicIcon.Image = ImageConvert.Base64ToImage(Information_Ico)
+                Me.PicIcon.Image = ImageConvert.Base64ToImage(information_Ico)
             Case DialogConfirmIcon.Question
                 'PicIcon.Image = My.Resources.help
-                Me.PicIcon.Image = ImageConvert.Base64ToImage(Question_Ico)
+                Me.PicIcon.Image = ImageConvert.Base64ToImage(question_Ico)
             Case DialogConfirmIcon.Exclamation, DialogConfirmIcon.Warning
                 'PicIcon.Image = My.Resources.Warning
-                Me.PicIcon.Image = ImageConvert.Base64ToImage(Warning_Ico)
+                Me.PicIcon.Image = ImageConvert.Base64ToImage(warning_Ico)
             Case Else 'DialogConfirmIcon.None
                 PicIcon.Image = Nothing
         End Select
+
+        textoOpcionConfigurable = textoOpcion
+        _OpcionConfigurable = valorOpcion
+        If textoOpcion.Any Then
+            ChkOpcion.Text = textoOpcion
+            ChkOpcion.Visible = True
+            ChkOpcion.Checked = valorOpcion
+        End If
+
     End Sub
 
     ''' <summary>
@@ -160,29 +186,30 @@ Public Class ConfirmDialog
     Public Overloads Shared Function Show(message As String,
                                           Optional caption As String = "Diálogo de confirmación",
                                           Optional buttons As DialogConfirmButtons = DialogConfirmButtons.All,
-                                          Optional dialogIcon As DialogConfirmIcon = DialogConfirmIcon.Exclamation) As DialogConfirmResult
-        Dim fd As New ConfirmDialog(message, caption, buttons, dialogIcon)
+                                          Optional dialogIcon As DialogConfirmIcon = DialogConfirmIcon.Exclamation,
+                                          Optional textoOpcion As String = "",
+                                          Optional valorOpcion As Boolean = False) As DialogConfirmResult
+        Dim fd As New ConfirmDialog(message, caption, buttons, dialogIcon, textoOpcion, valorOpcion)
         fd.ShowDialog()
 
         ' Si se pulsa en NotAll comprobar si debe ser Cancel
-        If _ConfirmResult = DialogConfirmResult.NoToAll Then
+        If confirmResult = DialogConfirmResult.NoToAll Then
             ' Si se muestra OKCancel NotToAll será Cancel
-            If _Buttons = DialogConfirmButtons.OKCancel OrElse _Buttons = DialogConfirmButtons.YesNoCancel Then
-                _ConfirmResult = DialogConfirmResult.Cancel
+            If ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.OKCancel OrElse ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.YesNoCancel Then
+                confirmResult = DialogConfirmResult.Cancel
             End If
             ' Si se pulsa Yes, comprobar si debe ser OK
-        ElseIf _ConfirmResult = DialogConfirmResult.Yes Then
-            If _Buttons = DialogConfirmButtons.OKCancel OrElse _Buttons = DialogConfirmButtons.OK Then
-                _ConfirmResult = DialogConfirmResult.OK
+        ElseIf confirmResult = DialogConfirmResult.Yes Then
+            If ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.OKCancel OrElse ConfirmDialog.buttons = Global.Comparar_directorios_vb.DialogConfirmButtons.OK Then
+                confirmResult = DialogConfirmResult.OK
             End If
         End If
 
-        Return _ConfirmResult
+        Return confirmResult
     End Function
 
-    'Private Shared _Icon As DialogConfirmIcon = DialogConfirmIcon.None
-    Private Shared _ConfirmResult As DialogConfirmResult = DialogConfirmResult.Cancel
-    Private Shared _Buttons As DialogConfirmButtons
+    Private Shared confirmResult As DialogConfirmResult = DialogConfirmResult.Cancel
+    Private Shared buttons As DialogConfirmButtons
 
     ''' <summary>
     ''' Mostrar los botones según el valor de buttons
@@ -193,7 +220,7 @@ Public Class ConfirmDialog
     ''' según los botones y el texto a mostar
     ''' </param>
     Private Sub SetButtons(buttons As DialogConfirmButtons)
-        _Buttons = buttons
+        ConfirmDialog.buttons = buttons
 
         ' Asignar y mostrar el texto adecuado
         If buttons = DialogConfirmButtons.All Then Return
@@ -243,28 +270,28 @@ Public Class ConfirmDialog
     End Sub
 
     Private Sub BtnSi_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSi.Click
-        _ConfirmResult = DialogConfirmResult.Yes
+        confirmResult = DialogConfirmResult.Yes
         Me.Close()
     End Sub
 
     Private Sub BtnNoTodo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNoTodo.Click
-        _ConfirmResult = DialogConfirmResult.NoToAll
+        confirmResult = DialogConfirmResult.NoToAll
         Me.Close()
     End Sub
 
     Private Sub BtnSiTodo_Click(sender As Object, e As EventArgs) Handles BtnSiTodo.Click
-        _ConfirmResult = DialogConfirmResult.YesToAll
+        confirmResult = DialogConfirmResult.YesToAll
         Me.Close()
     End Sub
 
     Private Sub BtnNo_Click(sender As Object, e As EventArgs) Handles BtnNo.Click
-        _ConfirmResult = DialogConfirmResult.No
+        confirmResult = DialogConfirmResult.No
         Me.Close()
     End Sub
 
 #Region " Las imágenes (iconos) "
 
-    Const Warning_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAADsRJREFUaEPt
+    Const warning_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAADsRJREFUaEPt
 mXlUVNeWxstZxInnPIE4ECMmsR1fXgxp0Y7aSlpDq9iYdJss+jmgEpwSzKQmzhk6CgLKpBQlCggFMhdS
 DCXIjAMOGBmrrKIKqMc86Pe+ewtekrc66yXdGv0jZ63fqgt17znf3ufsffa5Jfm9/d5+b0++eZ3xsQqP
 uBQQHR1d6OPj67tjx845/Hc/0kO84Xlu/n7+fUNkIUdiY+OQnKxARMSlx3v2fPgdv5pA+oo3Pc/Nx+e0
@@ -330,7 +357,7 @@ o+XzIuxLyz4fsu+HHOchx3tILQ83b94ismnTZs2mTZs0GzeaMP29WbNu3X8UjRw58hANWEDETUF4ofQG
 WUVWkzVPAaHfX8K//wIEnQuJ8IOhuCEIRvyBCO8nhfT0WyMc4H8Ngk7hjfaTe3PxbJpE8lcRfxCmLQG1
 ZgAAAABJRU5ErkJggg=="
 
-    Const Information_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+    Const information_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
 YQUAABPZSURBVGhDvVkJVFVXlq2pO1XdSa+ubitWVVRwLDWJJmoUDQqfGRUUB6RAEJxwIIIyKUoURETE
 CUeM4oyITDIjk0REBBxABiUKCKKAY5yN6K593v9fMFa6qpOqOmvtdd97//339j733HPO/f9nP8W8PD37
 E47EWiKVuEQ8IF51gJzLdflc7pP7+2se8a83vvx3hD1xZLGv75XN4eFlaampNZWVlbdoz54/f/7y1atX
@@ -418,7 +445,7 @@ xH9ICBl9Qsq+5O+xhPyzIqOcy3X5XO6T++V78n15jjzvn+L1/8vkheIxSXP/TQgZ6Ralako4iGf7aMae
 hFyXz+U+uV++J9//lxP/vsmUCwmplOJJ2a8KOQkJLeRcrsvncp/c/xND5Wc/+ws4lKdvovOg8AAAAABJ
 RU5ErkJggg=="
 
-    Const Error_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+    Const error_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
 YQUAABL3SURBVGhDvZkHeJRV9sbddV06iqKg7toQVsACClIEIUBQEVT+dhCkCIiACEgVBGMBsdAE6T0o
 JQTSIb33PpMyyaSQEJJAKCGQBEjO/s5kPhxcXPev7t7neZ8v88333fuec99T7uSG3zM+nDWrExgFvgLe
 IAtUgnoH6Ge9r9/rc/p8J/sU//vB4reDEWDvvLlzc9esXp3q4+1tMZvNJxk1tbW1dfX19WJAP+t9/V6f
@@ -502,7 +529,7 @@ S22d+vcfzAFj4ehRo/ZMnDAhRhsuoD/CigE+11LhK8aPG5dCN+k92Nn5+44dO87g/RfAAKDE2+t8QCWj
 ACWj3aJWTZWDeraD/doO6H39Xp/T5/U9ff9/TvznQ7dcSWilVE/qeVXJqSQM6Ge9r9/rc/r875TKDTf8
 E6r1PJkxIJTAAAAAAElFTkSuQmCC"
 
-    Const Question_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+    Const question_Ico As String = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
 YQUAABT9SURBVGhDvZkHWFVntoan3ZuZuam29KoxllgB6b2IUSNNOsTeULHEWOMYY0EkSlXKBaQoFsRI
 R5oUpaM0QUTUKGKLGgtGEb751j6HUe+UzE1m5n+e79nn7LPPv9+19vrXWv85v/ol4/OlS4dQHtRWKo1q
 ou5Q3U9J3st5+Vyuk+uHqKf4zw/evC/lSu1bsXx5S1BgYE16WlpzQ0PDdY4fHz582NXd3Y0eyXs5L5/L
@@ -595,6 +622,11 @@ kr8nUPLPihzlvZyXz+U6uV6+J9+XeWS+f4vX/9GQG4rHJM29TAmMdItSNSUcxLMD1cf+lJyXz+U6uV6+
 J9//j4P/3yGPXCCkUoonZb8qcBISPZL3cl4+l+vk+l8YKr/61Z8BvT6m57+Nb9YAAAAASUVORK5CYII="
 
 #End Region
+
+    Private Sub ChkOpcion_CheckedChanged(sender As Object, e As EventArgs) Handles ChkOpcion.CheckedChanged
+        _OpcionConfigurable = ChkOpcion.Checked
+    End Sub
+
 End Class
 
 ''' <summary>
