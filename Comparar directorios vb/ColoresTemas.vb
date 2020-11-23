@@ -103,8 +103,8 @@ Module ColoresTemas
     End Sub
 
 
-    Public ReadOnly Property BotonesFondo As Color() = {Color.FromKnownColor(KnownColor.Control), Color.Black, Color.MediumBlue}
-    Public ReadOnly Property BotonesTexto As Color() = {Color.Black, Color.LightGray, Color.Yellow}
+    Public ReadOnly Property BotonesFondo As Color() = {Color.FromKnownColor(KnownColor.Control), Color.FromArgb(80, 80, 80), Color.MediumBlue}
+    Public ReadOnly Property BotonesTexto As Color() = {Color.Black, Color.Yellow, Color.Yellow}
     Public ReadOnly Property StatusFondo As Color() = {Color.FloralWhite, Color.LightGray, Color.Cyan}
     Public ReadOnly Property StatusTexto As Color() = {Color.Black, Color.Black, Color.MediumBlue}
     Public ReadOnly Property VentanaFondo As Color() = {Color.FromKnownColor(KnownColor.Control), Color.Black, Color.MediumBlue}
@@ -113,13 +113,28 @@ Module ColoresTemas
     Public ReadOnly Property PanelTexto As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
     Public ReadOnly Property PanelBordeActivo As Color() = {Color.DarkGoldenrod, Color.Yellow, Color.Yellow}
     Public ReadOnly Property PanelBorde As Color() = {Color.FromKnownColor(KnownColor.Control), Color.LightGray, Color.MediumBlue}
+
+    ' Los colores de los elementos
     Public ReadOnly Property ItemIgual As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
     Public ReadOnly Property ItemFechaMayor As Color() = {Color.MediumBlue, Color.Yellow, Color.Yellow}
-    Public ReadOnly Property ItemFechaMenor As Color() = {Color.SlateBlue, Color.LightYellow, Color.LightYellow}
+    Public ReadOnly Property ItemFechaMenor As Color() = {Color.SlateBlue, Color.LightBlue, Color.LightBlue}
     Public ReadOnly Property ItemTamañoMayor As Color() = {Color.Green, Color.LightGreen, Color.LightGreen}
     Public ReadOnly Property ItemTamañoMenor As Color() = {Color.DarkGreen, Color.Green, Color.Green}
     Public ReadOnly Property ItemNoExiste As Color() = {Color.Firebrick, Color.LightCoral, Color.Salmon}
-    Public ReadOnly Property ItemDirBack As Color() = {Color.LightGoldenrodYellow, Color.Gray, Color.DarkCyan}
-    Public ReadOnly Property ItemDirFore As Color() = {Color.DarkOliveGreen, Color.LightGray, Color.LightGoldenrodYellow}
+    ''' <summary>
+    ''' Color para los ficheros indicados en <see cref="ExtensionesBin"/>
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property ItemBin As Color() = {Color.DarkSlateBlue, Color.GreenYellow, Color.YellowGreen}
+    'Public ReadOnly Property ItemBin As Color() = {Color.DarkSlateBlue, Color.GreenYellow, Color.YellowGreen}
+
+    ''' <summary>
+    ''' Las extensiones consideradas como ficheros binarios
+    ''' </summary>
+    Public ReadOnly ExtensionesBin As New HashSet(Of String) From {".zip", ".exe", ".obj", ".pdb", ".dll", ".com", ".bin", ".tlb", ".lnk", ".ocx"}
+
+    ' Los colores de los directorios
+    Public ReadOnly Property ItemDirBack As Color() = {Color.LightGoldenrodYellow, Color.FromArgb(64, 64, 64), Color.DarkCyan}
+    Public ReadOnly Property ItemDirFore As Color() = {Color.DarkOliveGreen, Color.GhostWhite, Color.LightGoldenrodYellow}
 
 End Module

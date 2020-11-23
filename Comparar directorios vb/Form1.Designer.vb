@@ -22,7 +22,7 @@ Partial Class Form1
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"DIR", "generarClaveSHA1.sln", "9.108.320.256", "19/11/2020 21:16:30"}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"DIR", "generarClaveSHA1.sln", "9.108.320.256", "19/11/2020 21:16:30"}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.lvDirIzq = New System.Windows.Forms.ListView()
@@ -61,13 +61,10 @@ Partial Class Form1
         Me.MnuTemaOscuro = New System.Windows.Forms.ToolStripMenuItem()
         Me.NortonCommanderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
-        Me.BtnCopiarSplit = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
-        Me.BtnMoverSplit = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnNuevoDropDown = New System.Windows.Forms.ToolStripDropDownButton()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
-        Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnIntercambiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
@@ -87,6 +84,9 @@ Partial Class Form1
         Me.CboDirIzq = New System.Windows.Forms.ComboBox()
         Me.FlowLayoutPanelDer = New System.Windows.Forms.FlowLayoutPanel()
         Me.CboDirDer = New System.Windows.Forms.ComboBox()
+        Me.BtnCopiarSplit = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.BtnMoverSplit = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripDropDownButton()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -134,8 +134,8 @@ Partial Class Form1
         Me.lvDirIzq.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chInfoIzq, Me.chNombreIzq, Me.chTamañoIzq, Me.chFechaIzq})
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem4.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4})
+        ListViewItem1.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 32)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -395,6 +395,7 @@ Partial Class Form1
         '
         'MnuTemaPredeterminado
         '
+        Me.MnuTemaPredeterminado.Image = CType(resources.GetObject("MnuTemaPredeterminado.Image"), System.Drawing.Image)
         Me.MnuTemaPredeterminado.Name = "MnuTemaPredeterminado"
         Me.MnuTemaPredeterminado.Size = New System.Drawing.Size(182, 22)
         Me.MnuTemaPredeterminado.Text = "Predeterminado"
@@ -418,32 +419,10 @@ Partial Class Form1
         Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
         Me.ToolStripSeparator11.Size = New System.Drawing.Size(6, 25)
         '
-        'BtnCopiarSplit
-        '
-        Me.BtnCopiarSplit.AutoToolTip = False
-        Me.BtnCopiarSplit.Image = CType(resources.GetObject("BtnCopiarSplit.Image"), System.Drawing.Image)
-        Me.BtnCopiarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnCopiarSplit.Name = "BtnCopiarSplit"
-        Me.BtnCopiarSplit.Size = New System.Drawing.Size(97, 22)
-        Me.BtnCopiarSplit.Text = "Copiar (F5)"
-        Me.BtnCopiarSplit.ToolTipText = "Selecciona la opción para copiar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F5 para copiar" &
-    " los ficheros y directorios seleccionados)"
-        '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
         Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 25)
-        '
-        'BtnMoverSplit
-        '
-        Me.BtnMoverSplit.AutoToolTip = False
-        Me.BtnMoverSplit.Image = CType(resources.GetObject("BtnMoverSplit.Image"), System.Drawing.Image)
-        Me.BtnMoverSplit.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnMoverSplit.Name = "BtnMoverSplit"
-        Me.BtnMoverSplit.Size = New System.Drawing.Size(96, 22)
-        Me.BtnMoverSplit.Text = "Mover (F6)"
-        Me.BtnMoverSplit.ToolTipText = "Selecciona la opción para mover ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F6 para mover l" &
-    "os ficheros y directorios seleccionados)"
         '
         'ToolStripSeparator6
         '
@@ -465,17 +444,6 @@ Partial Class Form1
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
         Me.ToolStripSeparator8.Size = New System.Drawing.Size(6, 25)
-        '
-        'BtnEliminarSplit
-        '
-        Me.BtnEliminarSplit.AutoToolTip = False
-        Me.BtnEliminarSplit.Image = CType(resources.GetObject("BtnEliminarSplit.Image"), System.Drawing.Image)
-        Me.BtnEliminarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.BtnEliminarSplit.Name = "BtnEliminarSplit"
-        Me.BtnEliminarSplit.Size = New System.Drawing.Size(105, 22)
-        Me.BtnEliminarSplit.Text = "Eliminar (F8)"
-        Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F8 para elim" &
-    "inar los ficheros y directorios seleccionados)"
         '
         'ToolStripSeparator13
         '
@@ -600,7 +568,7 @@ Partial Class Form1
         'TextBox13
         '
         Me.TextBox13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox13.Location = New System.Drawing.Point(1043, 2)
+        Me.TextBox13.Location = New System.Drawing.Point(1101, 5)
         Me.TextBox13.Name = "TextBox13"
         Me.TextBox13.Size = New System.Drawing.Size(100, 20)
         Me.TextBox13.TabIndex = 4
@@ -661,6 +629,39 @@ Partial Class Form1
         Me.CboDirDer.Name = "CboDirDer"
         Me.CboDirDer.Size = New System.Drawing.Size(457, 21)
         Me.CboDirDer.TabIndex = 2
+        '
+        'BtnCopiarSplit
+        '
+        Me.BtnCopiarSplit.AutoToolTip = False
+        Me.BtnCopiarSplit.Image = CType(resources.GetObject("BtnCopiarSplit.Image"), System.Drawing.Image)
+        Me.BtnCopiarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnCopiarSplit.Name = "BtnCopiarSplit"
+        Me.BtnCopiarSplit.Size = New System.Drawing.Size(94, 22)
+        Me.BtnCopiarSplit.Text = "Copiar (F5)"
+        Me.BtnCopiarSplit.ToolTipText = "Selecciona la opción para copiar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F5 para copiar" &
+    " los ficheros y directorios seleccionados)"
+        '
+        'BtnMoverSplit
+        '
+        Me.BtnMoverSplit.AutoToolTip = False
+        Me.BtnMoverSplit.Image = CType(resources.GetObject("BtnMoverSplit.Image"), System.Drawing.Image)
+        Me.BtnMoverSplit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnMoverSplit.Name = "BtnMoverSplit"
+        Me.BtnMoverSplit.Size = New System.Drawing.Size(93, 22)
+        Me.BtnMoverSplit.Text = "Mover (F6)"
+        Me.BtnMoverSplit.ToolTipText = "Selecciona la opción para mover ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F6 para mover l" &
+    "os ficheros y directorios seleccionados)"
+        '
+        'BtnEliminarSplit
+        '
+        Me.BtnEliminarSplit.AutoToolTip = False
+        Me.BtnEliminarSplit.Image = CType(resources.GetObject("BtnEliminarSplit.Image"), System.Drawing.Image)
+        Me.BtnEliminarSplit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.BtnEliminarSplit.Name = "BtnEliminarSplit"
+        Me.BtnEliminarSplit.Size = New System.Drawing.Size(102, 22)
+        Me.BtnEliminarSplit.Text = "Eliminar (F8)"
+        Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F8 para elim" &
+    "inar los ficheros y directorios seleccionados)"
         '
         'Form1
         '
@@ -740,12 +741,9 @@ Partial Class Form1
     Private WithEvents ToolStripSeparator8 As ToolStripSeparator
     Private WithEvents ToolStripSeparator9 As ToolStripSeparator
     Private WithEvents BtnNuevoDropDown As ToolStripDropDownButton
-    Private WithEvents BtnEliminarSplit As ToolStripSplitButton
     Private WithEvents ToolStripSeparator11 As ToolStripSeparator
     Private WithEvents TextBox13 As TextBox
     Private WithEvents BtnCambiarNombre As ToolStripButton
-    Private WithEvents BtnCopiarSplit As ToolStripSplitButton
-    Private WithEvents BtnMoverSplit As ToolStripSplitButton
     Private WithEvents BtnVer As ToolStripDropDownButton
     Private WithEvents MnuVerEnNotepad As ToolStripMenuItem
     Private WithEvents MnuVerEnElVisor As ToolStripMenuItem
@@ -761,4 +759,7 @@ Partial Class Form1
     Private WithEvents FlowLayoutPanelDer As FlowLayoutPanel
     Private WithEvents CboDirIzq As ComboBox
     Private WithEvents CboDirDer As ComboBox
+    Private WithEvents BtnCopiarSplit As ToolStripDropDownButton
+    Private WithEvents BtnMoverSplit As ToolStripDropDownButton
+    Private WithEvents BtnEliminarSplit As ToolStripDropDownButton
 End Class
