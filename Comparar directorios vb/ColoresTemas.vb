@@ -111,7 +111,8 @@ Module ColoresTemas
     Public ReadOnly Property VentanaTexto As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
     Public ReadOnly Property PanelFondo As Color() = {Color.FromKnownColor(KnownColor.Info), Color.Black, Color.MediumBlue}
     Public ReadOnly Property PanelTexto As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
-    Public ReadOnly Property PanelBorde As Color() = {Color.DarkGoldenrod, Color.Yellow, Color.Yellow}
+    Public ReadOnly Property PanelBordeActivo As Color() = {Color.DarkGoldenrod, Color.Yellow, Color.Yellow}
+    Public ReadOnly Property PanelBorde As Color() = {Color.FromKnownColor(KnownColor.Control), Color.LightGray, Color.MediumBlue}
     Public ReadOnly Property ItemIgual As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
     Public ReadOnly Property ItemFechaMayor As Color() = {Color.MediumBlue, Color.Yellow, Color.Yellow}
     Public ReadOnly Property ItemFechaMenor As Color() = {Color.SlateBlue, Color.LightYellow, Color.LightYellow}

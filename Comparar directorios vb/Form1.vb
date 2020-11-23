@@ -120,8 +120,8 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lvDirDer.Items.Clear()
         lvDirIzq.Items.Clear()
-        LabelDirIzq.Text = ""
-        LabelDirDer.Text = ""
+        'LabelDirIzq.Text = ""
+        'LabelDirDer.Text = ""
 
         Dim DirDocumentos = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         dirConfiguracion = Path.Combine(DirDocumentos, Application.ProductName)
@@ -229,8 +229,8 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        LabelDirIzq.Width = ToolStripIzq.Width - (BtnAbrirDirIzqDropDown.Width + btnAbrirDirIzq.Width + 24)
-        LabelDirDer.Width = ToolStripDer.Width - (BtnAbrirDirDerDropDown.Width + btnAbrirDirDer.Width + 24)
+        'LabelDirIzq.Width = ToolStripIzq.Width - (BtnAbrirDirIzqDropDown.Width + btnAbrirDirIzq.Width + 24)
+        'LabelDirDer.Width = ToolStripDer.Width - (BtnAbrirDirDerDropDown.Width + btnAbrirDirDer.Width + 24)
 
         Dim sCopyR = "(c) Guillermo Som (elGuille), 2020"
         If Date.Now.Year > 2020 Then
@@ -238,7 +238,7 @@ Public Class Form1
         End If
         LabelInfo.Text = $"{Application.ProductName} v{Application.ProductVersion}, {sCopyR} " &
             $"- Ventana: Width: {Me.Width}, Height: {Me.Height} " &
-            $"- LabelIzq.Width: {LabelDirIzq.Width}, LabelDer.Width: {LabelDirDer.Width}"
+            $"- Panel Izq: {lvDirIzq.Items.Count} - Panel Der: {lvDirDer.Items.Count}"
 
         If lvDirIzq.Tag IsNot Nothing Then
             MostrarNombreDirectorio(lvDirIzq.Tag.ToString, lvDirIzq)
@@ -334,13 +334,15 @@ Public Class Form1
         If quePanel Is lvDirIzq Then
             lvDirDer.GridLines = False
             'SplitContainer1.Panel1.BackColor = PanelBorde(TemaActual) ' Color.DarkGoldenrod
-            AsignarTema(SplitContainer1.Panel1, PanelBorde, PanelBorde)
-            SplitContainer1.Panel2.BackColor = Color.FromKnownColor(KnownColor.Control)
+            'SplitContainer1.Panel2.BackColor = Color.FromKnownColor(KnownColor.Control)
+            AsignarTema(SplitContainer1.Panel1, PanelBordeActivo, PanelBorde)
+            AsignarTema(SplitContainer1.Panel2, PanelBorde, PanelBorde)
         Else
             lvDirIzq.GridLines = False
             'SplitContainer1.Panel2.BackColor = PanelBorde(TemaActual) 'Color.DarkGoldenrod
-            AsignarTema(SplitContainer1.Panel2, PanelBorde, PanelBorde)
-            SplitContainer1.Panel1.BackColor = Color.FromKnownColor(KnownColor.Control)
+            'SplitContainer1.Panel1.BackColor = Color.FromKnownColor(KnownColor.Control)
+            AsignarTema(SplitContainer1.Panel2, PanelBordeActivo, PanelBorde)
+            AsignarTema(SplitContainer1.Panel1, PanelBorde, PanelBorde)
         End If
         quePanel.GridLines = True
     End Sub
@@ -984,22 +986,26 @@ Public Class Form1
         Dim dir = New DirectoryInfo(sDir)
 
         If lv Is lvDirIzq Then
-            Dim s = dir.FullName
-            ' El ancho predeterminado es 384 y 70 caracteres
-            Dim maxLeng = CInt(LabelDirIzq.Width / 5.6)
-            If s.Length > maxLeng Then
-                s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
-            End If
-            LabelDirIzq.Text = s ' dir.Name 'dir.FullName
-            LabelDirIzq.ToolTipText = dir.FullName
+            CboDirIzq.Text = dir.FullName
+
+            'Dim s = dir.FullName
+            '' El ancho predeterminado es 384 y 70 caracteres
+            'Dim maxLeng = CInt(LabelDirIzq.Width / 5.6)
+            'If s.Length > maxLeng Then
+            '    s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
+            'End If
+            'LabelDirIzq.Text = s ' dir.Name 'dir.FullName
+            'LabelDirIzq.ToolTipText = dir.FullName
         Else
-            Dim s = dir.FullName
-            Dim maxLeng = CInt(LabelDirIzq.Width / 5.6)
-            If s.Length > maxLeng Then
-                s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
-            End If
-            LabelDirDer.Text = s ' dir.Name 'dir.FullName
-            LabelDirDer.ToolTipText = dir.FullName
+            CboDirDer.Text = dir.FullName
+
+            'Dim s = dir.FullName
+            'Dim maxLeng = CInt(LabelDirIzq.Width / 5.6)
+            'If s.Length > maxLeng Then
+            '    s = s.Substring(0, 10) & "..." & s.Substring(s.Length - (maxLeng - 14))
+            'End If
+            'LabelDirDer.Text = s ' dir.Name 'dir.FullName
+            'LabelDirDer.ToolTipText = dir.FullName
         End If
 
         ' Comprobar si los dos directorios son iguales
@@ -1065,8 +1071,6 @@ Public Class Form1
             it.SubItems.Add("[SUB--DIR]")
             it.SubItems.Add(di.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
             AsignarTema(it, ItemDirBack, ItemDirFore)
-            'it.ForeColor = ItemDirFore(TemaActual) ' Color.DarkOliveGreen
-            'it.BackColor = ItemDirBack(TemaActual) ' Color.LightGoldenrodYellow
             it.Checked = False
             it.Tag = di '.FullName
             it.ToolTipText = di.FullName
@@ -1074,8 +1078,6 @@ Public Class Form1
         Next
         For Each fi In files
             Dim it = lv.Items.Add("")
-            'it.ForeColor = ItemIgual(TemaActual) ' Color.DarkOliveGreen
-            'it.BackColor = PanelFondo(TemaActual) ' Color.LightGoldenrodYellow
             AsignarTema(it, PanelFondo, ItemIgual)
             it.SubItems.Add(fi.Name)
             it.SubItems.Add(fi.Length.ToString("#,##0"))
@@ -1830,11 +1832,17 @@ Public Class Form1
     ''' Cambiar los colores al tema seleccionado
     ''' </summary>
     Private Sub CambiarTema()
-        AsignarTema(lvDirDer, PanelFondo, PanelTexto)
-        AsignarTema(lvDirIzq, PanelFondo, PanelTexto)
+        AsignarTema(Me, VentanaFondo, VentanaTexto)
+
+        ' Los paneles del SplitContainer1 se asignan aquí
         LvDirIzq_Enter(quePanel, Nothing)
 
-        AsignarTema(Me, VentanaFondo, VentanaTexto)
+        AsignarTema(lvDirDer, PanelFondo, PanelTexto)
+        AsignarTema(lvDirIzq, PanelFondo, PanelTexto)
+
+        ' Asignarlo después de llamar a LvDirIzq_Enter
+        AsignarTema(FlowLayoutPanelIzq, PanelFondo, PanelTexto)
+        AsignarTema(FlowLayoutPanelDer, PanelFondo, PanelTexto)
 
         AsignarTema(StatusStripInfo, StatusFondo, StatusTexto)
 
@@ -1844,6 +1852,9 @@ Public Class Form1
         AsignarTemaBotones(ToolStripIzq, BotonesFondo, BotonesTexto)
         AsignarTemaBotones(ToolStripDer, BotonesFondo, BotonesTexto)
         AsignarTemaBotones(ToolStripComparar, BotonesFondo, BotonesTexto)
+
+        AsignarTema(CboDirIzq, BotonesFondo, BotonesTexto)
+        AsignarTema(CboDirDer, BotonesFondo, BotonesTexto)
 
         'Releer()
         If comparado Then
@@ -1923,5 +1934,19 @@ Public Class Form1
         sb.Append(")")
         sb.AppendLine()
         ConfirmDialog.Show(sb.ToString, "Acerca de", DialogConfirmButtons.OK, DialogConfirmIcon.Information)
+    End Sub
+
+    Private Sub CboDirIzq_KeyUp(sender As Object, e As KeyEventArgs) Handles CboDirIzq.KeyUp
+        If e.KeyCode = Keys.Enter Then
+            ' Mostrar el contenido del directorio indicado
+            MostrarContenidoDirectorio(CboDirIzq.Text, lvDirIzq)
+        End If
+    End Sub
+
+    Private Sub CboDirDer_KeyUp(sender As Object, e As KeyEventArgs) Handles CboDirDer.KeyUp
+        If e.KeyCode = Keys.Enter Then
+            ' Mostrar el contenido del directorio indicado
+            MostrarContenidoDirectorio(CboDirDer.Text, lvDirDer)
+        End If
     End Sub
 End Class
