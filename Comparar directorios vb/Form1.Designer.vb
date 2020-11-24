@@ -72,7 +72,7 @@ Partial Class Form1
         Me.BtnNuevoDropDown = New System.Windows.Forms.ToolStripDropDownButton()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnEliminarSplit = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
         Me.BtnIntercambiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnMover = New System.Windows.Forms.ToolStripButton()
@@ -123,8 +123,8 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.Controls.Add(Me.FlowLayoutPanelDer)
         Me.SplitContainer1.Panel2.Controls.Add(Me.lvDirDer)
         Me.SplitContainer1.Panel2.Margin = New System.Windows.Forms.Padding(1)
-        Me.SplitContainer1.Size = New System.Drawing.Size(1135, 497)
-        Me.SplitContainer1.SplitterDistance = 564
+        Me.SplitContainer1.Size = New System.Drawing.Size(1154, 497)
+        Me.SplitContainer1.SplitterDistance = 573
         Me.SplitContainer1.TabIndex = 0
         '
         'FlowLayoutPanelIzq
@@ -135,7 +135,7 @@ Partial Class Form1
         Me.FlowLayoutPanelIzq.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanelIzq.Margin = New System.Windows.Forms.Padding(0)
         Me.FlowLayoutPanelIzq.Name = "FlowLayoutPanelIzq"
-        Me.FlowLayoutPanelIzq.Size = New System.Drawing.Size(562, 26)
+        Me.FlowLayoutPanelIzq.Size = New System.Drawing.Size(571, 26)
         Me.FlowLayoutPanelIzq.TabIndex = 2
         '
         'ToolStripIzq
@@ -202,7 +202,7 @@ Partial Class Form1
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 32)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
-        Me.lvDirIzq.Size = New System.Drawing.Size(551, 460)
+        Me.lvDirIzq.Size = New System.Drawing.Size(560, 460)
         Me.lvDirIzq.TabIndex = 1
         Me.lvDirIzq.UseCompatibleStateImageBehavior = False
         Me.lvDirIzq.View = System.Windows.Forms.View.Details
@@ -237,7 +237,7 @@ Partial Class Form1
         Me.FlowLayoutPanelDer.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanelDer.Margin = New System.Windows.Forms.Padding(0)
         Me.FlowLayoutPanelDer.Name = "FlowLayoutPanelDer"
-        Me.FlowLayoutPanelDer.Size = New System.Drawing.Size(565, 26)
+        Me.FlowLayoutPanelDer.Size = New System.Drawing.Size(575, 26)
         Me.FlowLayoutPanelDer.TabIndex = 5
         '
         'ToolStripDer
@@ -302,7 +302,7 @@ Partial Class Form1
         Me.lvDirDer.Location = New System.Drawing.Point(6, 32)
         Me.lvDirDer.Name = "lvDirDer"
         Me.lvDirDer.ShowItemToolTips = True
-        Me.lvDirDer.Size = New System.Drawing.Size(554, 460)
+        Me.lvDirDer.Size = New System.Drawing.Size(564, 460)
         Me.lvDirDer.TabIndex = 4
         Me.lvDirDer.UseCompatibleStateImageBehavior = False
         Me.lvDirDer.View = System.Windows.Forms.View.Details
@@ -333,11 +333,11 @@ Partial Class Form1
         '
         Me.ToolStripComparar.AutoSize = False
         Me.ToolStripComparar.BackColor = System.Drawing.Color.Transparent
-        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.BtnActualizarMasRecientes, Me.ToolStripSeparator7, Me.BtnCambiarNombre, Me.ToolStripSeparator10, Me.BtnVerEnVisor, Me.BtnEditar, Me.ToolStripSeparator11, Me.BtnCopiarSplit, Me.ToolStripSeparator9, Me.BtnMoverSplit, Me.ToolStripSeparator6, Me.BtnNuevoDropDown, Me.ToolStripSeparator8, Me.BtnEliminarSplit, Me.ToolStripSeparator13, Me.BtnIntercambiar, Me.ToolStripSeparator5})
+        Me.ToolStripComparar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnComparar, Me.ToolStripSeparator3, Me.btnLimpiar, Me.ToolStripSeparator4, Me.BtnCambiarNombre, Me.ToolStripSeparator5, Me.BtnVerEnVisor, Me.BtnEditar, Me.ToolStripSeparator6, Me.BtnCopiarSplit, Me.ToolStripSeparator7, Me.BtnMoverSplit, Me.ToolStripSeparator8, Me.BtnNuevoDropDown, Me.ToolStripSeparator9, Me.BtnEliminarSplit, Me.ToolStripSeparator10, Me.BtnActualizarMasRecientes, Me.ToolStripSeparator11, Me.BtnIntercambiar, Me.ToolStripSeparator12})
         Me.ToolStripComparar.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripComparar.Margin = New System.Windows.Forms.Padding(0, 0, 0, 3)
         Me.ToolStripComparar.Name = "ToolStripComparar"
-        Me.ToolStripComparar.Size = New System.Drawing.Size(1155, 25)
+        Me.ToolStripComparar.Size = New System.Drawing.Size(1174, 25)
         Me.ToolStripComparar.TabIndex = 3
         Me.ToolStripComparar.Text = "ToolStripComparar"
         '
@@ -347,10 +347,10 @@ Partial Class Form1
         Me.btnComparar.Image = CType(resources.GetObject("btnComparar.Image"), System.Drawing.Image)
         Me.btnComparar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnComparar.Name = "btnComparar"
-        Me.btnComparar.Size = New System.Drawing.Size(89, 22)
-        Me.btnComparar.Text = "Comparar"
-        Me.btnComparar.ToolTipText = "Comparar el contenido de los dos directorios" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(es posible que antes debas pulsar " &
-    "en Releer)"
+        Me.btnComparar.Size = New System.Drawing.Size(131, 22)
+        Me.btnComparar.Text = "Comparar (Alt+C)"
+        Me.btnComparar.ToolTipText = "Comparar el contenido de los dos directorios (Alt+C)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(es posible que antes debas" &
+    " pulsar en Releer)"
         '
         'CompararAlReleerMenu
         '
@@ -370,9 +370,9 @@ Partial Class Form1
         Me.btnLimpiar.Image = CType(resources.GetObject("btnLimpiar.Image"), System.Drawing.Image)
         Me.btnLimpiar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnLimpiar.Name = "btnLimpiar"
-        Me.btnLimpiar.Size = New System.Drawing.Size(59, 22)
-        Me.btnLimpiar.Text = "Releer"
-        Me.btnLimpiar.ToolTipText = "Volver a leer el contenido de los dos directorios"
+        Me.btnLimpiar.Size = New System.Drawing.Size(100, 22)
+        Me.btnLimpiar.Text = "Releer (Alt+R)"
+        Me.btnLimpiar.ToolTipText = "Volver a leer el contenido de los dos directorios (Alt+R)"
         '
         'ToolStripSeparator4
         '
@@ -524,10 +524,10 @@ Partial Class Form1
         Me.BtnEliminarSplit.ToolTipText = "Selecciona la opción para eliminar ficheros o directorios " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(o pulsa F8 para elim" &
     "inar los ficheros y directorios seleccionados)"
         '
-        'ToolStripSeparator13
+        'ToolStripSeparator12
         '
-        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
-        Me.ToolStripSeparator13.Size = New System.Drawing.Size(6, 25)
+        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(6, 25)
         '
         'BtnIntercambiar
         '
@@ -633,7 +633,7 @@ Partial Class Form1
         Me.StatusStripInfo.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
         Me.StatusStripInfo.Name = "StatusStripInfo"
         Me.StatusStripInfo.ShowItemToolTips = True
-        Me.StatusStripInfo.Size = New System.Drawing.Size(1155, 24)
+        Me.StatusStripInfo.Size = New System.Drawing.Size(1174, 24)
         Me.StatusStripInfo.TabIndex = 1
         Me.StatusStripInfo.Text = "StatusStrip1"
         '
@@ -642,7 +642,7 @@ Partial Class Form1
         Me.LabelInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.LabelInfo.Image = CType(resources.GetObject("LabelInfo.Image"), System.Drawing.Image)
         Me.LabelInfo.Name = "LabelInfo"
-        Me.LabelInfo.Size = New System.Drawing.Size(1021, 19)
+        Me.LabelInfo.Size = New System.Drawing.Size(1040, 19)
         Me.LabelInfo.Spring = True
         Me.LabelInfo.Text = "ToolStripStatusLabel1"
         Me.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -666,7 +666,7 @@ Partial Class Form1
         'EditarItemTextBox
         '
         Me.EditarItemTextBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.EditarItemTextBox.Location = New System.Drawing.Point(1101, 5)
+        Me.EditarItemTextBox.Location = New System.Drawing.Point(1120, 5)
         Me.EditarItemTextBox.Name = "EditarItemTextBox"
         Me.EditarItemTextBox.Size = New System.Drawing.Size(100, 20)
         Me.EditarItemTextBox.TabIndex = 4
@@ -679,7 +679,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1155, 558)
+        Me.ClientSize = New System.Drawing.Size(1174, 558)
         Me.Controls.Add(Me.EditarItemTextBox)
         Me.Controls.Add(Me.ToolStripComparar)
         Me.Controls.Add(Me.StatusStripInfo)
@@ -761,7 +761,7 @@ Partial Class Form1
     Private WithEvents MnuTemaOscuro As ToolStripMenuItem
     Private WithEvents NortonCommanderToolStripMenuItem As ToolStripMenuItem
     Private WithEvents BtnIntercambiar As ToolStripButton
-    Private WithEvents ToolStripSeparator13 As ToolStripSeparator
+    Private WithEvents ToolStripSeparator12 As ToolStripSeparator
     Private WithEvents BtnEditar As ToolStripButton
     Private WithEvents FlowLayoutPanelIzq As FlowLayoutPanel
     Private WithEvents FlowLayoutPanelDer As FlowLayoutPanel

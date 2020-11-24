@@ -125,8 +125,8 @@ Module ColoresTemas
     ''' Color para los ficheros indicados en <see cref="ExtensionesBin"/>
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property ItemBin As Color() = {Color.DarkSlateBlue, Color.GreenYellow, Color.YellowGreen}
-    Public ReadOnly Property ItemVisor As Color() = {Color.DarkSlateGray, Color.YellowGreen, Color.GreenYellow}
+    Public ReadOnly Property ItemBin As Color() = {Color.SaddleBrown, Color.GreenYellow, Color.YellowGreen}
+    Public ReadOnly Property ItemVisor As Color() = {Color.DarkOrchid, Color.YellowGreen, Color.GreenYellow}
 
     ''' <summary>
     ''' Las extensiones consideradas como ficheros binarios

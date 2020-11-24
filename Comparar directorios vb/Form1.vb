@@ -243,6 +243,14 @@ Public Class Form1
                 If e.KeyCode = Keys.N Then
                     NuevoFichero()
                 End If
+            ElseIf e.Alt Then
+                If e.KeyCode = Keys.C Then
+                    ' Comparar los directorios
+                    CompararDirectorios()
+                ElseIf e.KeyCode = Keys.R Then
+                    ' Releer los directorios
+                    Releer()
+                End If
             End If
         End If
     End Sub
@@ -2014,6 +2022,18 @@ Public Class Form1
         sb.Append(Application.ProductVersion)
         sb.Append(")")
         sb.AppendLine()
+        sb.AppendLine()
+        sb.AppendLine("------------------------------------------------------------")
+        sb.AppendLine()
+        sb.Append("Este programa no tenía la intención de parecerse al Comandante Norton (Norton Commander), ")
+        sb.AppendLine("pero ya que estaba... he usado prácticamente las mismas teclas F1 y F3 a F8 del CN y me decidí a hacer un tema parecido en los colores al del Comandante Norton.")
+        sb.AppendLine()
+        sb.AppendLine("Y como a la gente ahora le gusta eso de usar temas oscuros, pues... también he añadido un tema oscuro, aparte del normal o el que inicialmente empecé a usar.")
+        sb.AppendLine()
+        sb.AppendLine("Para cambiar de tema, en el menú Ver elige Temas y selecciona uno de los temas mostrados.")
+        sb.AppendLine("En una nueva actualización podrás personalizar los colores de los temas.")
+        sb.AppendLine()
+        sb.AppendLine("")
         ConfirmDialog.Show(sb.ToString, "Acerca de", DialogConfirmButtons.OK, DialogConfirmIcon.Information)
     End Sub
 
@@ -2032,6 +2052,7 @@ Public Class Form1
     '
 
     Private Sub BtnComparar_Click(sender As Object, e As EventArgs) Handles btnComparar.Click
+        btnComparar.HideDropDown()
         CompararDirectorios()
     End Sub
 
@@ -2179,6 +2200,7 @@ Public Class Form1
     Private Sub CompararAlReleerMenu_Click(sender As Object, e As EventArgs) Handles CompararAlReleerMenu.Click
         CompararAlReleerMenu.Checked = Not CompararAlReleerMenu.Checked
         compararDirs = CompararAlReleerMenu.Checked
+        btnComparar.HideDropDown()
     End Sub
 
     Private Sub BtnCopiarSplit_Click(sender As Object, e As EventArgs) Handles BtnCopiarSplit.Click
@@ -2200,4 +2222,5 @@ Public Class Form1
     Private Sub BtnVerEnVisor_Click(sender As Object, e As EventArgs) Handles BtnVerEnVisor.Click
         VerFichero()
     End Sub
+
 End Class
