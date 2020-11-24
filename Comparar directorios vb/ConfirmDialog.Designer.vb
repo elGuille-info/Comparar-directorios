@@ -75,7 +75,7 @@ Partial Class ConfirmDialog
         Me.BtnSi.Size = New System.Drawing.Size(75, 25)
         Me.BtnSi.TabIndex = 0
         Me.BtnSi.Text = "Sí"
-        Me.ToolTip1.SetToolTip(Me.BtnSi, "Copiar este y seguir preguntando si existen los siguientes")
+        Me.ToolTip1.SetToolTip(Me.BtnSi, "Aceptar este y seguir preguntando en los siguientes")
         Me.BtnSi.UseVisualStyleBackColor = True
         '
         'BtnNoTodo
@@ -117,7 +117,7 @@ Partial Class ConfirmDialog
         Me.LabelMessage.Multiline = True
         Me.LabelMessage.Name = "LabelMessage"
         Me.LabelMessage.Size = New System.Drawing.Size(323, 118)
-        Me.LabelMessage.TabIndex = 1
+        Me.LabelMessage.TabIndex = 0
         Me.LabelMessage.TabStop = False
         Me.LabelMessage.Text = "LabelMessage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "223456789-123456789-123456789-123456789 1 3 5 7 9 1 3 5 7 9-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "13"
         '
@@ -143,7 +143,7 @@ Partial Class ConfirmDialog
         Me.FlowLayoutPanelBotones.Location = New System.Drawing.Point(0, 185)
         Me.FlowLayoutPanelBotones.Name = "FlowLayoutPanelBotones"
         Me.FlowLayoutPanelBotones.Size = New System.Drawing.Size(474, 41)
-        Me.FlowLayoutPanelBotones.TabIndex = 2
+        Me.FlowLayoutPanelBotones.TabIndex = 0
         '
         'ChkOpcion
         '
@@ -152,7 +152,7 @@ Partial Class ConfirmDialog
         Me.ChkOpcion.Location = New System.Drawing.Point(17, 162)
         Me.ChkOpcion.Name = "ChkOpcion"
         Me.ChkOpcion.Size = New System.Drawing.Size(121, 17)
-        Me.ChkOpcion.TabIndex = 3
+        Me.ChkOpcion.TabIndex = 2
         Me.ChkOpcion.Text = "Opción configurable"
         Me.ChkOpcion.UseVisualStyleBackColor = True
         Me.ChkOpcion.Visible = False

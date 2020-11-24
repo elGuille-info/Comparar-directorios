@@ -126,7 +126,7 @@ Module ColoresTemas
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property ItemBin As Color() = {Color.DarkSlateBlue, Color.GreenYellow, Color.YellowGreen}
-    'Public ReadOnly Property ItemBin As Color() = {Color.DarkSlateBlue, Color.GreenYellow, Color.YellowGreen}
+    Public ReadOnly Property ItemVisor As Color() = {Color.DarkSlateGray, Color.YellowGreen, Color.GreenYellow}
 
     ''' <summary>
     ''' Las extensiones consideradas como ficheros binarios

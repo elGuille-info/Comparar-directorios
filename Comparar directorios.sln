@@ -7,6 +7,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Comparar directorios vb", "
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "gsCommander", "gsCommander\gsCommander.vbproj", "{0789A228-981C-4668-8849-409070601957}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "guilleUtilidadesGZip", "guilleUtilidadesGZip\guilleUtilidadesGZip.vbproj", "{37BA5BEA-BFAE-420E-87F7-2B083676F026}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0789A228-981C-4668-8849-409070601957}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0789A228-981C-4668-8849-409070601957}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0789A228-981C-4668-8849-409070601957}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37BA5BEA-BFAE-420E-87F7-2B083676F026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37BA5BEA-BFAE-420E-87F7-2B083676F026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37BA5BEA-BFAE-420E-87F7-2B083676F026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37BA5BEA-BFAE-420E-87F7-2B083676F026}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
