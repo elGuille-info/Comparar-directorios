@@ -208,6 +208,7 @@ Public Class ConfirmDialog
         fd.CambiarTema()
         'fd.SetButtons(buttons)
         fd.ShowDialog()
+        _opcionConfigurable = fd.ChkOpcion.Checked
 
         ' Si se pulsa en NotAll comprobar si debe ser Cancel
         If confirmResult = DialogConfirmResult.NoToAll Then

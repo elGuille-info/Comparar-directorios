@@ -102,6 +102,17 @@ Module ColoresTemas
         Next
     End Sub
 
+    Public Sub AsignarTemaBotones(elControl As ToolStripMenuItem, fondo As Color(), texto As Color())
+        For Each btn As ToolStripItem In elControl.DropDownItems
+            AsignarTema(btn, fondo, texto)
+        Next
+    End Sub
+    '
+    Public Sub AsignarTemaBotones(elControl As ToolStripDropDownButton, fondo As Color(), texto As Color())
+        For Each btn As ToolStripItem In elControl.DropDownItems
+            AsignarTema(btn, fondo, texto)
+        Next
+    End Sub
 
     Public ReadOnly Property BotonesFondo As Color() = {Color.FromKnownColor(KnownColor.Control), Color.FromArgb(80, 80, 80), Color.MediumBlue}
     Public ReadOnly Property BotonesTexto As Color() = {Color.Black, Color.Yellow, Color.Yellow}
@@ -127,6 +138,11 @@ Module ColoresTemas
     ''' <returns></returns>
     Public ReadOnly Property ItemBin As Color() = {Color.SaddleBrown, Color.GreenYellow, Color.YellowGreen}
     Public ReadOnly Property ItemVisor As Color() = {Color.DarkOrchid, Color.YellowGreen, Color.GreenYellow}
+    Public ReadOnly Property ItemWeb As Color() = {Color.Orchid, Color.DarkGoldenrod, Color.DarkGoldenrod}
+    Public ReadOnly Property ItemImagen As Color() = {Color.MediumVioletRed, Color.MediumOrchid, Color.MediumOrchid}
+    Public ReadOnly Property ItemZip As Color() = {Color.DarkOrchid, Color.YellowGreen, Color.GreenYellow}
+    Public ReadOnly Property ItemTexto As Color() = {Color.Orchid, Color.DarkGoldenrod, Color.DarkGoldenrod}
+    Public ReadOnly Property ItemCodigo As Color() = {Color.MediumOrchid, Color.MediumVioletRed, Color.MediumVioletRed}
 
     ''' <summary>
     ''' Las extensiones consideradas como ficheros binarios

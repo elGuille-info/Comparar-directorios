@@ -29,11 +29,11 @@ Imports System.Text
 
 Public Class visorTexto
 
-    Private Shared ExtensionesWeb As New HashSet(Of String) From {".htm", ".html", ".svg"}
-    Private Shared ExtensionesImagen As New HashSet(Of String) From {".bmp", ".jpg", ".jpeg", ".gif", ".png", ".ico", ".tiff"}
-    Private Shared ExtensionesZip As New HashSet(Of String) From {".zip", ".rar", ".tar", ".gz", ".gzz", ".gzd", ".tar.gz", ".tar.gzz"}
-    Private Shared ExtensionesTexto As New HashSet(Of String) From {".txt", ".rtf", ".ini", ".log", ".md", ".css", ".asp", ".aspx", ".js", ".config", ".resx", ".user"}
-    Private Shared ExtensionesCodigo As New HashSet(Of String) From {".bas", ".frm", ".cls", ".mak", ".vbp", ".sln", ".vbproj", ".csproj", ".cs", ".vb", ".cpp", ".c", ".h", ".vbs"}
+    Public Shared ExtensionesWeb As New HashSet(Of String) From {".htm", ".html", ".svg"}
+    Public Shared ExtensionesImagen As New HashSet(Of String) From {".bmp", ".jpg", ".jpeg", ".gif", ".png", ".ico", ".tiff"}
+    Public Shared ExtensionesZip As New HashSet(Of String) From {".zip", ".rar", ".tar", ".gz", ".gzz", ".gzd", ".tar.gz", ".tar.gzz"}
+    Public Shared ExtensionesTexto As New HashSet(Of String) From {".txt", ".rtf", ".ini", ".log", ".md", ".css", ".asp", ".aspx", ".js", ".config", ".resx", ".user"}
+    Public Shared ExtensionesCodigo As New HashSet(Of String) From {".bas", ".frm", ".cls", ".mak", ".vbp", ".sln", ".vbproj", ".csproj", ".cs", ".vb", ".cpp", ".c", ".h", ".vbs"}
 
     Public Shared ExtensionesVisor As New HashSet(Of String)
 
@@ -314,12 +314,32 @@ Public Class visorTexto
             Dim archs As List(Of Tar) = UtilTar.ArchivosTar(archivo)
 
             For Each th As Tar In archs
-                Dim lvi As ListViewItem = lvTar.Items.Add(th.FileName)
-                lvi.SubItems.Add(th.Size.ToString("#,##0"))
-                lvi.SubItems.Add(th.DateTime.ToString("dd/MM/yyyy HH:mm:ss"))
-                lvi.SubItems.Add(th.DirectoryName)
+                Dim it As ListViewItem = lvTar.Items.Add(th.FileName)
+
+                Dim ext = Path.GetExtension(th.FileName).ToLower
+                If visorTexto.ExtensionesCodigo.Contains(ext) Then
+                    it.ForeColor = ItemCodigo(TemaActual)
+                ElseIf visorTexto.ExtensionesImagen.Contains(ext) Then
+                    it.ForeColor = ItemImagen(TemaActual)
+                ElseIf visorTexto.ExtensionesTexto.Contains(ext) Then
+                    it.ForeColor = ItemTexto(TemaActual)
+                ElseIf visorTexto.ExtensionesWeb.Contains(ext) Then
+                    it.ForeColor = ItemWeb(TemaActual)
+                ElseIf visorTexto.ExtensionesZip.Contains(ext) Then
+                    it.ForeColor = ItemZip(TemaActual)
+                ElseIf visorTexto.ExtensionesVisor.Contains(ext) Then
+                    it.ForeColor = ItemVisor(TemaActual)
+                ElseIf ExtensionesBin.Contains(ext) Then
+                    it.ForeColor = ItemBin(TemaActual)
+                Else
+                    it.ForeColor = ItemIgual(TemaActual)
+                End If
+
+                it.SubItems.Add(th.Size.ToString("#,##0"))
+                it.SubItems.Add(th.DateTime.ToString("dd/MM/yyyy HH:mm:ss"))
+                it.SubItems.Add(th.DirectoryName)
                 ' Guardamos una referencia al objeto de tipo Tar
-                lvi.Tag = th
+                it.Tag = th
             Next
         ElseIf formatoArch = FormatosCompresion.Zip Then
             Dim contZip = UtilCompress.ContenidoZip(archivo)
@@ -327,12 +347,31 @@ Public Class visorTexto
             lvTar.Tag = contZip.ArchivoZip
 
             For Each zipEntry As ZipArchiveEntry In archs
-                Dim lvi As ListViewItem = lvTar.Items.Add(zipEntry.Name)
-                lvi.SubItems.Add(zipEntry.Length.ToString("#,##0"))
-                lvi.SubItems.Add(zipEntry.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
-                lvi.SubItems.Add(Path.GetDirectoryName(zipEntry.FullName))
+                Dim it As ListViewItem = lvTar.Items.Add(zipEntry.Name)
+                Dim ext = Path.GetExtension(zipEntry.Name).ToLower
+                If visorTexto.ExtensionesCodigo.Contains(ext) Then
+                    it.ForeColor = ItemCodigo(TemaActual)
+                ElseIf visorTexto.ExtensionesImagen.Contains(ext) Then
+                    it.ForeColor = ItemImagen(TemaActual)
+                ElseIf visorTexto.ExtensionesTexto.Contains(ext) Then
+                    it.ForeColor = ItemTexto(TemaActual)
+                ElseIf visorTexto.ExtensionesWeb.Contains(ext) Then
+                    it.ForeColor = ItemWeb(TemaActual)
+                ElseIf visorTexto.ExtensionesZip.Contains(ext) Then
+                    it.ForeColor = ItemZip(TemaActual)
+                ElseIf visorTexto.ExtensionesVisor.Contains(ext) Then
+                    it.ForeColor = ItemVisor(TemaActual)
+                ElseIf ExtensionesBin.Contains(ext) Then
+                    it.ForeColor = ItemBin(TemaActual)
+                Else
+                    it.ForeColor = ItemIgual(TemaActual)
+                End If
+
+                it.SubItems.Add(zipEntry.Length.ToString("#,##0"))
+                it.SubItems.Add(zipEntry.LastWriteTime.ToString("dd/MM/yyyy HH:mm:ss"))
+                it.SubItems.Add(Path.GetDirectoryName(zipEntry.FullName))
                 ' Guardamos una referencia al objeto de tipo ZipArchiveEntry
-                lvi.Tag = zipEntry
+                it.Tag = zipEntry
             Next
         End If
 
@@ -426,7 +465,7 @@ Public Class visorTexto
         AsignarTema(Me, VentanaFondo, VentanaTexto)
 
         AsignarTema(Panel1, VentanaFondo, VentanaTexto)
-        AsignarTema(lvTar, VentanaFondo, VentanaTexto)
+        AsignarTema(lvTar, PanelFondo, PanelTexto)
         AsignarTema(rtbTexto, VentanaFondo, VentanaTexto)
         AsignarTema(PictureBox1, VentanaFondo, VentanaTexto)
 

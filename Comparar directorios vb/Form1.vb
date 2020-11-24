@@ -22,6 +22,11 @@ Imports System.Diagnostics
 
 Public Class Form1
 
+    ''' <summary>
+    ''' Si el usuario ha aceptado la responsabilidad de usar el programa
+    ''' </summary>
+    Private AceptaResposabilidad As Boolean = False
+
     Private EscudoOK As Image '= LabelInfo.Image
     Private EscudoExclamation As Image '= picAdmin.Image
 
@@ -47,15 +52,15 @@ Public Class Form1
     ''' </summary>
     Private avisarActualizarEnIzquierdo As Boolean = True
 
-    ''' <summary>
-    ''' Si se debe preguntar al iniciar la aplicación si se comparan los directorios
-    ''' </summary>
-    Private preguntarAlIniciar As Boolean = True
+    '''' <summary>
+    '''' Si se debe preguntar al iniciar la aplicación si se comparan los directorios
+    '''' </summary>
+    'Private preguntarAlIniciar As Boolean = True
 
-    ''' <summary>
-    ''' Si se debe comparar los directorios al iniciar
-    ''' </summary>
-    Private compararAlIniciar As Boolean = True
+    '''' <summary>
+    '''' Si se debe comparar los directorios al iniciar
+    '''' </summary>
+    'Private compararAlIniciar As Boolean = True
 
     ''' <summary>
     ''' El Directorio donde se guarda la configuración
@@ -155,6 +160,54 @@ Public Class Form1
 
         CambiarTema()
 
+        If Not AceptaResposabilidad Then
+            ' Mostrar un aviso de no responsabilidad
+            Dim sb As New StringBuilder
+            sb.AppendLine("DISCLAIMER - DESCARGO DE RESPONSABILIDAD")
+            sb.AppendLine()
+            sb.AppendLine("AVISO IMPORTANTE")
+            sb.AppendLine()
+            sb.AppendLine("EL USO INADECUADO DE ESTE PROGRAMA PUEDE PRODUCIR PÉRDIDA DE INFORMACIÓN")
+            sb.AppendLine("(Eliminación de ficheros y carpetas (directorios con su contenido).")
+            sb.AppendLine()
+            sb.AppendLine("EL AUTOR NO SE HACE RESPONSABLE DE CUALQUIER PÉRDIDA DE INFORMACIÓN.")
+            sb.AppendLine()
+            sb.AppendLine("POR TANTO, LA RESPONSABILIDAD RECAE EN TI COMO USUARIO DE ESTE PROGRAMA.")
+            sb.AppendLine("YA QUE SERÁS TÚ (O CUALQUIER PERSONA QUE TENGA ACCESO A ESTE PROGRAMA EN TU EQUIPO)")
+            sb.AppendLine("EL QUE PUEDE ELIMINAR ESOS FICHEROS O CARPETAS.")
+            sb.AppendLine()
+            sb.AppendLine("DICHO ESTO, SI CONTINÚAS USANDO EL PROGRAMA, YO, EL AUTOR, QUEDO EXIMIDO DE TODA RESPONSABILIDAD.")
+            sb.AppendLine()
+            sb.AppendLine()
+            sb.AppendLine("NOTA:")
+            sb.Append("Todo lo anterior es un aviso para que tengas cuidado al ELIMINAR y MOVER ficheros o carpetas, ")
+            sb.Append("de todas formas, para esas dos acciones (y para el resto) el programa siempre avisa y pide conformidad, ")
+            sb.Append("por tanto, es difícil que hagas alguna 'trastada', pero estoy obligado a avisar.")
+            sb.AppendLine()
+            sb.AppendLine("Por tanto tengo que pedir confirmación de que has leído todo esto y que eres consciente de que debes tener cuidado al suar algunas de las opciones que hay disponibles.")
+            sb.AppendLine("Y para ello debes marcar la casilla de que aceptas la no-responsabilidad del autor en caso de pérdida de información.")
+            sb.AppendLine()
+            sb.AppendLine()
+            sb.AppendLine("¿Quieres usar el programa?")
+            Dim ret = ConfirmDialog.Show(sb.ToString,
+                                     "DISCLAIMER - DESCARGO DE RESPONSABILIDAD",
+                                     DialogConfirmButtons.NoYes,
+                                     DialogConfirmIcon.Warning,
+                                     "DESCARGO DE TODA RESPONSABILIDAD AL AUTOR DEL PROGRAMA", False)
+            If ret = DialogConfirmResult.No Then
+                AceptaResposabilidad = False
+
+                'Application.Exit()
+                End
+            End If
+            ' Si pulsa si y no ha marcado la casilla, terminar
+            If Not ConfirmDialog.OpcionConfigurable Then
+                End
+            End If
+            AceptaResposabilidad = True
+            GuardarConfig(Nothing, Nothing)
+        End If
+
         ' Asignar los ultimos directorios a los menús
         AsignarMenuUltimosDir(BtnAbrirDirIzqDropDown)
         AsignarMenuUltimosDir(BtnAbrirDirDerDropDown)
@@ -184,27 +237,31 @@ Public Class Form1
             Return
         End If
 
-        If preguntarAlIniciar Then
-            Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
-                                         s,
-                                         "Comparar directorios",
-                                         DialogConfirmButtons.YesNo,
-                                         DialogConfirmIcon.Information,
-                                         textoOpcion:="Preguntar siempre al iniciar",
-                                         valorOpcion:=True)
-            If ret = DialogConfirmResult.Yes Then
-                preguntarAlIniciar = ConfirmDialog.OpcionConfigurable.Value
-                compararAlIniciar = True
-                compararDirs = True
-                CompararAlReleerMenu.Checked = compararDirs
-            Else
-                compararAlIniciar = False
-            End If
-        End If
-        ' solo si compararDirs es true
-        If compararDirs AndAlso compararAlIniciar Then
-            CompararDirectorios()
-        End If
+        'If preguntarAlIniciar Then
+        '    Dim ret = ConfirmDialog.Show("¿Quieres comparar los dos directorios?:" & vbCrLf & vbCrLf &
+        '                                 s,
+        '                                 "Comparar directorios",
+        '                                 DialogConfirmButtons.YesNo,
+        '                                 DialogConfirmIcon.Information,
+        '                                 textoOpcion:="Preguntar siempre al iniciar",
+        '                                 valorOpcion:=True)
+        '    If ret = DialogConfirmResult.Yes Then
+        '        preguntarAlIniciar = ConfirmDialog.OpcionConfigurable.Value
+        '        compararAlIniciar = True
+        '        compararDirs = True
+        '        CompararAlReleerMenu.Checked = compararDirs
+        '    Else
+        '        compararAlIniciar = False
+        '    End If
+        'End If
+        '' solo si compararDirs es true
+        'If compararDirs AndAlso compararAlIniciar Then
+        '    CompararDirectorios()
+        'End If
+    End Sub
+
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        GuardarConfig(Nothing, Nothing)
     End Sub
 
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
@@ -250,6 +307,8 @@ Public Class Form1
                 ElseIf e.KeyCode = Keys.R Then
                     ' Releer los directorios
                     Releer()
+                ElseIf e.KeyCode = Keys.i Then
+                    BtnIntercambiar.PerformClick()
                 End If
             End If
         End If
@@ -866,9 +925,10 @@ Public Class Form1
     Private Sub GuardarConfig(sDir As String, lv As ListView)
         Dim cfg = New Config(ficheroConfiguracion)
 
+        cfg.SetValue("Disclaimer", "AceptaResposabilidad", AceptaResposabilidad)
         cfg.SetValue("Opciones", "CompararDirs", compararDirs)
-        cfg.SetValue("Opciones", "PreguntarAlIniciar", preguntarAlIniciar)
-        cfg.SetValue("Opciones", "CompararAlIniciar", compararAlIniciar)
+        'cfg.SetValue("Opciones", "PreguntarAlIniciar", preguntarAlIniciar)
+        'cfg.SetValue("Opciones", "CompararAlIniciar", compararAlIniciar)
         cfg.SetValue("Opciones", "AvisarActualizarEnIzquierdo", avisarActualizarEnIzquierdo)
         cfg.SetValue("Opciones", "AvisarAlActualizar", avisarAlActualizar)
 
@@ -899,6 +959,10 @@ Public Class Form1
             sw.Close()
         End Using
 
+        If lv Is Nothing OrElse String.IsNullOrEmpty(sDir) Then
+            Return
+        End If
+
         ' Guardar el nombre del directorio abierto
         If lv Is lvDirIzq Then
             ficCfg = Path.Combine(dirConfiguracion, $"{PrefijoConfig}_Izq{ExtensionConfiguracion}")
@@ -921,12 +985,20 @@ Public Class Form1
     Private Sub LeerConfig()
         Dim cfg = New Config(ficheroConfiguracion)
 
+        AceptaResposabilidad = cfg.GetValue("Disclaimer", "AceptaResposabilidad", False)
+
         compararDirs = cfg.GetValue("Opciones", "CompararDirs", False)
         CompararAlReleerMenu.Checked = compararDirs
-        preguntarAlIniciar = cfg.GetValue("Opciones", "PreguntarAlIniciar", True)
-        compararAlIniciar = cfg.GetValue("Opciones", "CompararAlIniciar", True)
+        MnuCompararAlCambiar.Checked = compararDirs
+        'preguntarAlIniciar = cfg.GetValue("Opciones", "PreguntarAlIniciar", True)
+        'MnuPreguntarAlIniciar.Checked = preguntarAlIniciar
+        'compararAlIniciar = cfg.GetValue("Opciones", "CompararAlIniciar", True)
+        'MnuCompararAlIniciar.Checked = compararAlIniciar
         avisarActualizarEnIzquierdo = cfg.GetValue("Opciones", "AvisarActualizarEnIzquierdo", True)
+        MnuAvisarActualizarEnIzquierdo.Checked = avisarActualizarEnIzquierdo
         avisarAlActualizar = cfg.GetValue("Opciones", "AvisarAlActualizar", True)
+        MnuAvisarAlActualizar.Checked = avisarAlActualizar
+
         TemaActual = CType(cfg.GetValue("Opciones", "TemaActual", Temas.Predeterminado), Temas)
 
         Dim s As String
@@ -1092,12 +1164,21 @@ Public Class Form1
         Next
         For Each fi In files
             Dim it = lv.Items.Add("")
-            If visorTexto.ExtensionesVisor.Contains(fi.Extension) Then
+            If visorTexto.ExtensionesCodigo.Contains(fi.Extension) Then
+                it.ForeColor = ItemCodigo(TemaActual)
+            ElseIf visorTexto.ExtensionesImagen.Contains(fi.Extension) Then
+                it.ForeColor = ItemImagen(TemaActual)
+            ElseIf visorTexto.ExtensionesTexto.Contains(fi.Extension) Then
+                it.ForeColor = ItemTexto(TemaActual)
+            ElseIf visorTexto.ExtensionesWeb.Contains(fi.Extension) Then
+                it.ForeColor = ItemWeb(TemaActual)
+            ElseIf visorTexto.ExtensionesZip.Contains(fi.Extension) Then
+                it.ForeColor = ItemZip(TemaActual)
+            ElseIf visorTexto.ExtensionesVisor.Contains(fi.Extension) Then
                 it.ForeColor = ItemVisor(TemaActual)
             ElseIf ExtensionesBin.Contains(fi.Extension) Then
                 it.ForeColor = ItemBin(TemaActual)
             Else
-                'AsignarTema(it, PanelFondo, ItemIgual)
                 it.ForeColor = ItemIgual(TemaActual)
             End If
 
@@ -1593,7 +1674,7 @@ Public Class Form1
                                          DialogConfirmButtons.YesNo,
                                          DialogConfirmIcon.Information,
                                          "No volver a mostrar este mensaje y actualizar",
-                                         True)
+                                         False)
             If res = DialogConfirmResult.Yes Then
                 avisarActualizarEnIzquierdo = Not ConfirmDialog.OpcionConfigurable.Value
             Else
@@ -1731,26 +1812,26 @@ Public Class Form1
         CambiarNombre()
     End Sub
 
-    Private Sub BtnCambiarNombre_Click(sender As Object, e As EventArgs) Handles BtnCambiarNombre.Click
+    Private Sub BtnCambiarNombre_Click(sender As Object, e As EventArgs) Handles BtnCambiarNombre.Click, MnuRenombrar.Click
         EditarSubItem(quePanel, -2)
     End Sub
 
-    Private Sub MnuTemaPredeterminado_Click(sender As Object, e As EventArgs) Handles MnuTemaPredeterminado.Click
+    Private Sub MnuTemaPredeterminado_Click(sender As Object, e As EventArgs) Handles MnuTemaPredeterminado.Click, TemaPredeterminado2.Click
         TemaActual = Temas.Predeterminado
         CambiarTema()
     End Sub
 
-    Private Sub MnuTemaOscuro_Click(sender As Object, e As EventArgs) Handles MnuTemaOscuro.Click
+    Private Sub MnuTemaOscuro_Click(sender As Object, e As EventArgs) Handles MnuTemaOscuro.Click, MnuTemaOscuro2.Click
         TemaActual = Temas.Oscuro
         CambiarTema()
     End Sub
 
-    Private Sub NortonCommanderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NortonCommanderToolStripMenuItem.Click
+    Private Sub NortonCommanderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MnuNortonCommander.Click, MnuTemaComandanteNorton2.Click
         TemaActual = Temas.ComandanteNorton
         CambiarTema()
     End Sub
 
-    Private Sub BtnIntercambiar_Click(sender As Object, e As EventArgs) Handles BtnIntercambiar.Click
+    Private Sub BtnIntercambiar_Click(sender As Object, e As EventArgs) Handles BtnIntercambiar.Click, MnuIntercambiarContenido.Click
         Dim dIzq = lvDirIzq.Tag
         Dim dDer = lvDirDer.Tag
         lvDirIzq.Tag = dDer
@@ -1916,6 +1997,7 @@ Public Class Form1
     ''' </summary>
     Private Sub CambiarTema()
         AsignarTema(Me, VentanaFondo, VentanaTexto)
+        AsignarTema(MenuStrip1, VentanaFondo, VentanaTexto)
 
         'AsignarTema(SplitContainer1.Panel1, PanelBorde, PanelBorde)
         'AsignarTema(SplitContainer1.Panel2, PanelBorde, PanelBorde)
@@ -2051,12 +2133,12 @@ Public Class Form1
     ' Métodos de evento
     '
 
-    Private Sub BtnComparar_Click(sender As Object, e As EventArgs) Handles btnComparar.Click
+    Private Sub BtnComparar_Click(sender As Object, e As EventArgs) Handles btnComparar.Click, MnuComparar.Click
         btnComparar.HideDropDown()
         CompararDirectorios()
     End Sub
 
-    Private Sub BtnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
+    Private Sub BtnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click, MnuReleer.Click
         Releer()
     End Sub
 
@@ -2134,23 +2216,23 @@ Public Class Form1
         quePanel.GridLines = True
     End Sub
 
-    Private Sub BtnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
+    Private Sub BtnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click, MnuCopiar.Click
         CopiarFicheros()
     End Sub
 
-    Private Sub BtnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
+    Private Sub BtnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click, MnuEliminar.Click
         EliminarFicheros()
     End Sub
 
-    Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click
+    Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click, MnuNuevoFichero.Click
         NuevoFichero()
     End Sub
 
-    Private Sub BtnMover_Click(sender As Object, e As EventArgs) Handles btnMover.Click
+    Private Sub BtnMover_Click(sender As Object, e As EventArgs) Handles btnMover.Click, MnuMover.Click
         MoverFicheros()
     End Sub
 
-    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles BtnNuevoDir.Click
+    Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles BtnNuevoDir.Click, MnuNuevoDirectorio.Click
         CrearDirectorio()
     End Sub
 
@@ -2189,7 +2271,7 @@ Public Class Form1
             End If
         Next
     End Sub
-    Private Sub BtnActualizarMasRecientes_Click(sender As Object, e As EventArgs) Handles BtnActualizarMasRecientes.Click
+    Private Sub BtnActualizarMasRecientes_Click(sender As Object, e As EventArgs) Handles BtnActualizarMasRecientes.Click, MnuActualizarContenido.Click
         ActualizarMasRecientes()
     End Sub
 
@@ -2197,10 +2279,11 @@ Public Class Form1
         LabelFechaHora.Text = Date.Now.ToString("dd.MMMyy HH:mm")
     End Sub
 
-    Private Sub CompararAlReleerMenu_Click(sender As Object, e As EventArgs) Handles CompararAlReleerMenu.Click
+    Private Sub CompararAlReleerMenu_Click(sender As Object, e As EventArgs) Handles CompararAlReleerMenu.Click, MnuCompararAlCambiar.Click
         CompararAlReleerMenu.Checked = Not CompararAlReleerMenu.Checked
         compararDirs = CompararAlReleerMenu.Checked
         btnComparar.HideDropDown()
+        MnuCompararAlCambiar.Checked = compararDirs
     End Sub
 
     Private Sub BtnCopiarSplit_Click(sender As Object, e As EventArgs) Handles BtnCopiarSplit.Click
@@ -2215,12 +2298,51 @@ Public Class Form1
         EliminarTodosSeleccionados()
     End Sub
 
-    Private Sub BtnEditar_Click(sender As Object, e As EventArgs) Handles BtnEditar.Click
+    Private Sub BtnEditar_Click(sender As Object, e As EventArgs) Handles BtnEditar.Click, MnuEditar.Click
         EditarFichero()
     End Sub
 
-    Private Sub BtnVerEnVisor_Click(sender As Object, e As EventArgs) Handles BtnVerEnVisor.Click
+    Private Sub BtnVerEnVisor_Click(sender As Object, e As EventArgs) Handles BtnVerEnVisor.Click, MnuVer.Click
         VerFichero()
+    End Sub
+
+    Private Sub MnuSalir_Click(sender As Object, e As EventArgs) Handles MnuSalir.Click
+        Me.Close()
+    End Sub
+
+    Private Sub MnuAcercaDe_Click(sender As Object, e As EventArgs) Handles MnuAcercaDe.Click
+        AcercaDe()
+    End Sub
+
+    'Private Sub MnuCompararAlIniciar_Click(sender As Object, e As EventArgs)
+    '    MnuCompararAlIniciar.Checked = Not MnuCompararAlIniciar.Checked
+    '    compararAlIniciar = MnuCompararAlIniciar.Checked
+    'End Sub
+
+    'Private Sub MnuPreguntarAlIniciar_Click(sender As Object, e As EventArgs)
+    '    MnuPreguntarAlIniciar.Checked = Not MnuPreguntarAlIniciar.Checked
+    '    preguntarAlIniciar = MnuPreguntarAlIniciar.Checked
+    'End Sub
+
+    Private Sub MnuAvisarActualizarEnIzquierdo_Click(sender As Object, e As EventArgs) Handles MnuAvisarActualizarEnIzquierdo.Click
+        MnuAvisarActualizarEnIzquierdo.Checked = Not MnuAvisarActualizarEnIzquierdo.Checked
+        avisarActualizarEnIzquierdo = MnuAvisarActualizarEnIzquierdo.Checked
+    End Sub
+
+    Private Sub MnuAvisarAlActualizar_Click(sender As Object, e As EventArgs) Handles MnuAvisarAlActualizar.Click
+        MnuAvisarAlActualizar.Checked = Not MnuAvisarAlActualizar.Checked
+        avisarAlActualizar = MnuAvisarAlActualizar.Checked
+    End Sub
+
+    Private Sub MnuFichero_DropDownOpening(sender As Object, e As EventArgs) Handles MnuFichero.DropDownOpening, MnuVista.DropDownOpening, MnuOpciones.DropDownOpening, MnuTemas.DropDownOpening
+        Dim tsmi = TryCast(sender, ToolStripMenuItem)
+        If tsmi Is Nothing Then Return
+        AsignarTemaBotones(tsmi, VentanaFondo, VentanaTexto)
+    End Sub
+
+    Private Sub MnuBtn_DropDownOpening(sender As Object, e As EventArgs) Handles BtnNuevoDropDown.DropDownOpening, BtnMoverSplit.DropDownOpening, BtnEliminarSplit.DropDownOpening, BtnCopiarSplit.DropDownOpening, BtnVerEnVisor.DropDownOpening, btnComparar.DropDownOpening
+        Dim tsmi = TryCast(sender, ToolStripDropDownButton)
+        AsignarTemaBotones(tsmi, VentanaFondo, VentanaTexto)
     End Sub
 
 End Class
