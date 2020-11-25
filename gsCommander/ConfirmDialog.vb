@@ -48,14 +48,25 @@ End Enum
 '''     OK: el botón Sí con el texto Aceptar/OK
 '''     OKCancel: los botones Sí con el texto Aceptar y No a todo con el texto Cancelar
 ''' </summary>
+''' <remarks>
+''' Si se indica YesNo, el botón predeterminado es Yes
+''' Si se indica NoYes, el botón predeterminado es No
+''' Igual con el resto de opciones
+''' </remarks>
 Public Enum DialogConfirmButtons
     OK = MessageBoxButtons.OK ' 0
+
     OKCancel = MessageBoxButtons.OKCancel ' 1
     'AbortRetryIgnore = MessageBoxButtons.AbortRetryIgnore ' 2
     YesNoCancel = MessageBoxButtons.YesNoCancel ' 3
     YesNo = MessageBoxButtons.YesNo ' 4
     'RetryCancel = MessageBoxButtons.RetryCancel ' 5
-    '
+
+    CancelOK = 128
+    NoYesCancel
+    CancelYesNo
+    NoYes
+
     All = 255 ' 255 (mostrar todos los botones)
 End Enum
 
@@ -132,14 +143,17 @@ Public Class ConfirmDialog
         InitializeComponent()
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+
+        ConfirmDialog.buttons = buttons
+
         Me.Text = caption
         ' Hacer más alto si el texto es largo
         Dim lineas = message.Split(vbCrLf.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
         Dim t = lineas.Length
         For i = 0 To lineas.Length - 1
             If lineas(i).Any Then
-                If lineas(i).Length > 50 Then
-                    t += 1 + (lineas(i).Length \ 50) '45 50 38
+                If lineas(i).Length > 60 Then
+                    t += 1 + (lineas(i).Length \ 60) '45 50 38
                 End If
             End If
         Next
@@ -147,7 +161,7 @@ Public Class ConfirmDialog
             Me.Height += (t - 8) * 17
         End If
         Me.LabelMessage.Text = message
-        SetButtons(buttons)
+        'SetButtons(buttons)
         Select Case dialogIcon
             Case DialogConfirmIcon.Error,
                  DialogConfirmIcon.Hand, DialogConfirmIcon.Stop
@@ -192,7 +206,9 @@ Public Class ConfirmDialog
 
         Dim fd As New ConfirmDialog(message, caption, buttons, dialogIcon, textoOpcion, valorOpcion)
         fd.CambiarTema()
+        'fd.SetButtons(buttons)
         fd.ShowDialog()
+        _opcionConfigurable = fd.ChkOpcion.Checked
 
         ' Si se pulsa en NotAll comprobar si debe ser Cancel
         If confirmResult = DialogConfirmResult.NoToAll Then
@@ -212,7 +228,13 @@ Public Class ConfirmDialog
         Return confirmResult
     End Function
 
+    ''' <summary>
+    ''' El resultado del cuadro de diálogo
+    ''' </summary>
     Private Shared confirmResult As DialogConfirmResult = DialogConfirmResult.Cancel
+    ''' <summary>
+    ''' Los botones a mostrar en el cuadro de diálogo
+    ''' </summary>
     Private Shared buttons As DialogConfirmButtons
 
     ''' <summary>
@@ -225,6 +247,9 @@ Public Class ConfirmDialog
     ''' </param>
     Private Sub SetButtons(buttons As DialogConfirmButtons)
         ConfirmDialog.buttons = buttons
+
+        'Me.AcceptButton = BtnSi
+        'Me.CancelButton = BtnNoTodo
 
         ' Asignar y mostrar el texto adecuado
         If buttons = DialogConfirmButtons.All Then Return
@@ -245,6 +270,14 @@ Public Class ConfirmDialog
             BtnNo.Visible = False
             FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
             FlowLayoutPanelBotones.Controls.Remove(BtnNo)
+        ElseIf buttons = DialogConfirmButtons.CancelOK Then
+            ' mostrar sí, no a todo
+            BtnSi.Text = "Aceptar"
+            BtnNoTodo.Text = "Cancelar"
+            BtnSiTodo.Visible = False
+            BtnNo.Visible = False
+            FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
+            FlowLayoutPanelBotones.Controls.Remove(BtnNo)
         ElseIf buttons = DialogConfirmButtons.YesNo Then
             BtnSi.Text = "Sí"
             BtnNo.Text = "No"
@@ -252,17 +285,45 @@ Public Class ConfirmDialog
             BtnNoTodo.Visible = False
             FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
             FlowLayoutPanelBotones.Controls.Remove(BtnNoTodo)
+        ElseIf buttons = DialogConfirmButtons.NoYes Then
+            BtnSi.Text = "Sí"
+            BtnNo.Text = "No"
+            BtnSiTodo.Visible = False
+            BtnNoTodo.Visible = False
+            FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
+            FlowLayoutPanelBotones.Controls.Remove(BtnNoTodo)
+            BtnNo.TabIndex = 0
+            BtnSi.TabIndex = 1
         ElseIf buttons = DialogConfirmButtons.YesNoCancel Then
             BtnSi.Text = "Sí"
             BtnNo.Text = "No"
             BtnNoTodo.Text = "Cancelar"
             BtnSiTodo.Visible = False
             FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
+        ElseIf buttons = DialogConfirmButtons.NoYesCancel Then
+            BtnSi.Text = "Sí"
+            BtnNo.Text = "No"
+            BtnNoTodo.Text = "Cancelar"
+            BtnSiTodo.Visible = False
+            FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
+            BtnNo.TabIndex = 0
+            BtnSi.TabIndex = 1
+        ElseIf buttons = DialogConfirmButtons.CancelYesNo Then
+            BtnSi.Text = "Sí"
+            BtnNo.Text = "No"
+            BtnNoTodo.Text = "Cancelar"
+            BtnSiTodo.Visible = False
+            FlowLayoutPanelBotones.Controls.Remove(BtnSiTodo)
+            BtnNoTodo.TabIndex = 0
+            BtnSi.TabIndex = 1
+            BtnNo.TabIndex = 2
         End If
     End Sub
 
     Private Sub ConfirmDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.CenterToScreen()
+
+        SetButtons(ConfirmDialog.buttons)
     End Sub
 
     Private Sub ConfirmDialog_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing

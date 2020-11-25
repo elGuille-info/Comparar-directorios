@@ -23,6 +23,19 @@ Imports System.Diagnostics
 Public Class Form1
 
     ''' <summary>
+    ''' Para poder asignar el tema actual desde gsCommander
+    ''' </summary>
+    ''' <returns></returns>
+    Friend Property MiTemaActual As Temas
+        Get
+            Return ColoresTemas.TemaActual
+        End Get
+        Set(value As Temas)
+            ColoresTemas.TemaActual = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Si el usuario ha aceptado la responsabilidad de usar el programa
     ''' </summary>
     Private AceptaResposabilidad As Boolean = False
@@ -2142,7 +2155,7 @@ Public Class Form1
         sb.AppendLine("En una nueva actualización podrás personalizar los colores de los temas.")
         sb.AppendLine()
         sb.AppendLine("")
-        ConfirmDialog.Show(sb.ToString, "Acerca de", DialogConfirmButtons.OK, DialogConfirmIcon.Information)
+        ConfirmDialog.Show(sb.ToString, $"Acerca de {My.Application.Info.ProductName}", DialogConfirmButtons.OK, DialogConfirmIcon.Information)
     End Sub
 
     Private Sub MostrarInfo()

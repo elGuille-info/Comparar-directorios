@@ -29,7 +29,7 @@ Class Program ' Module Program
         Application.SetCompatibleTextRenderingDefault(False)
         Application.Run(New Form1 With {
                         .Text = "gsCommander - Mostrar el contenido de 2 directorios y gestionarlos",
-                        .TemaActual = Form1.Temas.ComandanteNorton
+                        .MiTemaActual = Temas.ComandanteNorton
                         })
     End Sub
 
