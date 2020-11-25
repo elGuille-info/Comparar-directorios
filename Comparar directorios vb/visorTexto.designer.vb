@@ -1,5 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class visorTexto
+Partial Class VisorTexto
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
@@ -19,22 +19,25 @@ Partial Class visorTexto
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(visorTexto))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(VisorTexto))
         Me.rtbTexto = New System.Windows.Forms.RichTextBox()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statusLabelInfo = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.btnGuardarComo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lvTar = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.tsbVerHtml = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.tsLabelDireccion = New System.Windows.Forms.ToolStripLabel()
         Me.tsDireccion = New System.Windows.Forms.ToolStripTextBox()
         Me.tsbIr = New System.Windows.Forms.ToolStripButton()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.StatusStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -45,7 +48,7 @@ Partial Class visorTexto
         '
         Me.rtbTexto.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rtbTexto.HideSelection = False
-        Me.rtbTexto.Location = New System.Drawing.Point(12, 9)
+        Me.rtbTexto.Location = New System.Drawing.Point(318, 325)
         Me.rtbTexto.Name = "rtbTexto"
         Me.rtbTexto.Size = New System.Drawing.Size(300, 111)
         Me.rtbTexto.TabIndex = 0
@@ -54,7 +57,7 @@ Partial Class visorTexto
         '
         'WebBrowser1
         '
-        Me.WebBrowser1.Location = New System.Drawing.Point(323, 12)
+        Me.WebBrowser1.Location = New System.Drawing.Point(349, 196)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Size = New System.Drawing.Size(250, 111)
@@ -62,21 +65,34 @@ Partial Class visorTexto
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.statusLabelInfo})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 493)
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.statusLabelInfo, Me.btnGuardarComo})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 487)
         Me.StatusStrip1.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(640, 22)
+        Me.StatusStrip1.ShowItemToolTips = True
+        Me.StatusStrip1.Size = New System.Drawing.Size(640, 28)
         Me.StatusStrip1.TabIndex = 2
         Me.StatusStrip1.Text = "StatusStrip1"
         '
         'statusLabelInfo
         '
         Me.statusLabelInfo.Name = "statusLabelInfo"
-        Me.statusLabelInfo.Size = New System.Drawing.Size(625, 17)
+        Me.statusLabelInfo.Size = New System.Drawing.Size(566, 23)
         Me.statusLabelInfo.Spring = True
         Me.statusLabelInfo.Text = "ToolStripStatusLabel1"
         Me.statusLabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnGuardarComo
+        '
+        Me.btnGuardarComo.AutoToolTip = True
+        Me.btnGuardarComo.BorderStyle = System.Windows.Forms.Border3DStyle.Raised
+        Me.btnGuardarComo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnGuardarComo.Image = CType(resources.GetObject("btnGuardarComo.Image"), System.Drawing.Image)
+        Me.btnGuardarComo.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnGuardarComo.Name = "btnGuardarComo"
+        Me.btnGuardarComo.Padding = New System.Windows.Forms.Padding(2)
+        Me.btnGuardarComo.Size = New System.Drawing.Size(20, 20)
+        Me.btnGuardarComo.Text = "Guardar como..."
         '
         'lvTar
         '
@@ -88,19 +104,57 @@ Partial Class visorTexto
         Me.lvTar.Location = New System.Drawing.Point(7, 196)
         Me.lvTar.MultiSelect = False
         Me.lvTar.Name = "lvTar"
-        Me.lvTar.Size = New System.Drawing.Size(621, 240)
+        Me.lvTar.Size = New System.Drawing.Size(192, 240)
         Me.lvTar.TabIndex = 3
         Me.lvTar.UseCompatibleStateImageBehavior = False
         Me.lvTar.View = System.Windows.Forms.View.Details
         '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Nombre"
+        Me.ColumnHeader1.Width = 250
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Tamaño"
+        Me.ColumnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader3.Width = 120
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Fecha"
+        Me.ColumnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.ColumnHeader2.Width = 140
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Directorio"
+        Me.ColumnHeader4.Width = 200
+        '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsLabelDireccion, Me.tsDireccion, Me.tsbIr})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbVerHtml, Me.ToolStripSeparator1, Me.tsLabelDireccion, Me.tsDireccion, Me.tsbIr})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(640, 25)
         Me.ToolStrip1.TabIndex = 4
         Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'tsbVerHtml
+        '
+        Me.tsbVerHtml.AutoToolTip = False
+        Me.tsbVerHtml.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tsbVerHtml.Image = CType(resources.GetObject("tsbVerHtml.Image"), System.Drawing.Image)
+        Me.tsbVerHtml.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbVerHtml.Name = "tsbVerHtml"
+        Me.tsbVerHtml.Size = New System.Drawing.Size(23, 22)
+        Me.tsbVerHtml.Text = "ToolStripButton1"
+        Me.tsbVerHtml.ToolTipText = "Ver contenido HTML (código fuente)"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
         'tsLabelDireccion
         '
@@ -118,7 +172,7 @@ Partial Class visorTexto
         '
         'tsbIr
         '
-        Me.tsbIr.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.tsbIr.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.tsbIr.Image = CType(resources.GetObject("tsbIr.Image"), System.Drawing.Image)
         Me.tsbIr.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbIr.Name = "tsbIr"
@@ -127,7 +181,7 @@ Partial Class visorTexto
         '
         'PictureBox1
         '
-        Me.PictureBox1.Location = New System.Drawing.Point(136, 140)
+        Me.PictureBox1.Location = New System.Drawing.Point(212, 386)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(100, 50)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -144,32 +198,10 @@ Partial Class visorTexto
         Me.Panel1.Location = New System.Drawing.Point(0, 25)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Padding = New System.Windows.Forms.Padding(4)
-        Me.Panel1.Size = New System.Drawing.Size(640, 468)
+        Me.Panel1.Size = New System.Drawing.Size(640, 462)
         Me.Panel1.TabIndex = 6
         '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Text = "Nombre"
-        Me.ColumnHeader1.Width = 250
-        '
-        'ColumnHeader2
-        '
-        Me.ColumnHeader2.Text = "Fecha"
-        Me.ColumnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader2.Width = 140
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Tamaño"
-        Me.ColumnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader3.Width = 120
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Text = "Directorio"
-        Me.ColumnHeader4.Width = 200
-        '
-        'visorTexto
+        'VisorTexto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -177,7 +209,8 @@ Partial Class visorTexto
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.StatusStrip1)
-        Me.Name = "visorTexto"
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Name = "VisorTexto"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "visorTexto"
         Me.StatusStrip1.ResumeLayout(False)
@@ -194,7 +227,6 @@ Partial Class visorTexto
     Private WithEvents WebBrowser1 As WebBrowser
     Friend WithEvents tsLabelDireccion As ToolStripLabel
     Private WithEvents tsDireccion As ToolStripTextBox
-    Friend WithEvents tsbIr As ToolStripButton
     Private WithEvents lvTar As ListView
     Private WithEvents ToolStrip1 As ToolStrip
     Private WithEvents StatusStrip1 As StatusStrip
@@ -205,4 +237,8 @@ Partial Class visorTexto
     Private WithEvents ColumnHeader2 As ColumnHeader
     Private WithEvents ColumnHeader3 As ColumnHeader
     Private WithEvents ColumnHeader4 As ColumnHeader
+    Private WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Private WithEvents tsbVerHtml As ToolStripButton
+    Private WithEvents tsbIr As ToolStripButton
+    Private WithEvents btnGuardarComo As ToolStripStatusLabel
 End Class

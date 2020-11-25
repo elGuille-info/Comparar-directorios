@@ -27,7 +27,13 @@ Imports System.IO.Compression
 Imports System.IO
 Imports System.Text
 
-Public Class visorTexto
+Public Class VisorTexto
+
+    Public Event Guardado(fileName As String)
+
+    Private Sub OnGuardado(fileName As String)
+        RaiseEvent Guardado(fileName)
+    End Sub
 
     Public Shared ExtensionesWeb As New HashSet(Of String) From {".htm", ".html", ".svg"}
     Public Shared ExtensionesImagen As New HashSet(Of String) From {".bmp", ".jpg", ".jpeg", ".gif", ".png", ".ico", ".tiff"}
@@ -58,6 +64,7 @@ Public Class visorTexto
         lvTar.Visible = False
         ToolStrip1.Visible = False
         PictureBox1.Visible = False
+        btnGuardarComo.Visible = False
     End Sub
 
     Private Sub MostrarLvTar()
@@ -85,6 +92,7 @@ Public Class visorTexto
         ocultarControles()
         rtbTexto.Dock = DockStyle.Fill
         rtbTexto.Visible = True
+        btnGuardarComo.Visible = True
     End Sub
 
     Public Sub New()
@@ -158,6 +166,23 @@ Public Class visorTexto
         Me.New()
 
         MostrarWeb(url)
+    End Sub
+
+    ''' <summary>
+    ''' Se indica una cadena a mostrar como texto
+    ''' </summary>
+    ''' <param name="texto">El texto a mostrar en el editor</param>
+    ''' <param name="comoRTF">True si es contenido RichText o False si es texto plano</param>
+    Public Sub New(texto As String, comoRTF As Boolean)
+        Me.New
+
+        MostrarRtb()
+
+        If comoRTF Then
+            rtbTexto.Rtf = texto
+        Else
+            rtbTexto.Text = texto
+        End If
     End Sub
 
     ''' <summary>
@@ -267,23 +292,6 @@ Public Class visorTexto
         rtbTexto.Text = UtilCompress.Descomprimir(arch)
     End Sub
 
-    ''' <summary>
-    ''' Mostrar la Uri indicada en el navegador
-    ''' </summary>
-    ''' <param name="url"></param>
-    Public Sub MostrarWeb(url As Uri)
-        ocultarControles()
-        ToolStrip1.Visible = True
-        WebBrowser1.Dock = DockStyle.Fill
-        WebBrowser1.Visible = True
-
-        tsDireccion.Width = ToolStrip1.ClientRectangle.Width - tsLabelDireccion.Width - tsbIr.Width - 60
-
-        Me.tsDireccion.Text = url.AbsolutePath
-        Me.WebBrowser1.Navigate(url)
-    End Sub
-
-
     Public Sub MostrarTexto(th As Tar)
         MostrarRtb()
         Me.statusLabelInfo.Text = "Contenido de: " & th.FileName
@@ -317,17 +325,17 @@ Public Class visorTexto
                 Dim it As ListViewItem = lvTar.Items.Add(th.FileName)
 
                 Dim ext = Path.GetExtension(th.FileName).ToLower
-                If visorTexto.ExtensionesCodigo.Contains(ext) Then
+                If VisorTexto.ExtensionesCodigo.Contains(ext) Then
                     it.ForeColor = ItemCodigo(TemaActual)
-                ElseIf visorTexto.ExtensionesImagen.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesImagen.Contains(ext) Then
                     it.ForeColor = ItemImagen(TemaActual)
-                ElseIf visorTexto.ExtensionesTexto.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesTexto.Contains(ext) Then
                     it.ForeColor = ItemTexto(TemaActual)
-                ElseIf visorTexto.ExtensionesWeb.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesWeb.Contains(ext) Then
                     it.ForeColor = ItemWeb(TemaActual)
-                ElseIf visorTexto.ExtensionesZip.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesZip.Contains(ext) Then
                     it.ForeColor = ItemZip(TemaActual)
-                ElseIf visorTexto.ExtensionesVisor.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesVisor.Contains(ext) Then
                     it.ForeColor = ItemVisor(TemaActual)
                 ElseIf ExtensionesBin.Contains(ext) Then
                     it.ForeColor = ItemBin(TemaActual)
@@ -349,17 +357,17 @@ Public Class visorTexto
             For Each zipEntry As ZipArchiveEntry In archs
                 Dim it As ListViewItem = lvTar.Items.Add(zipEntry.Name)
                 Dim ext = Path.GetExtension(zipEntry.Name).ToLower
-                If visorTexto.ExtensionesCodigo.Contains(ext) Then
+                If VisorTexto.ExtensionesCodigo.Contains(ext) Then
                     it.ForeColor = ItemCodigo(TemaActual)
-                ElseIf visorTexto.ExtensionesImagen.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesImagen.Contains(ext) Then
                     it.ForeColor = ItemImagen(TemaActual)
-                ElseIf visorTexto.ExtensionesTexto.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesTexto.Contains(ext) Then
                     it.ForeColor = ItemTexto(TemaActual)
-                ElseIf visorTexto.ExtensionesWeb.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesWeb.Contains(ext) Then
                     it.ForeColor = ItemWeb(TemaActual)
-                ElseIf visorTexto.ExtensionesZip.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesZip.Contains(ext) Then
                     it.ForeColor = ItemZip(TemaActual)
-                ElseIf visorTexto.ExtensionesVisor.Contains(ext) Then
+                ElseIf VisorTexto.ExtensionesVisor.Contains(ext) Then
                     it.ForeColor = ItemVisor(TemaActual)
                 ElseIf ExtensionesBin.Contains(ext) Then
                     it.ForeColor = ItemBin(TemaActual)
@@ -394,7 +402,7 @@ Public Class visorTexto
         ' comprobar si es un archivo .tar
         Dim th As Tar = TryCast(lvi.Tag, Tar)
         If th IsNot Nothing Then
-            Dim fVT As New visorTexto(th)
+            Dim fVT As New VisorTexto(th)
             fVT.MostrarTexto(th)
             fVT.BringToFront()
             fVT.Show()
@@ -410,24 +418,24 @@ Public Class visorTexto
         Dim ext = Path.GetExtension(zip.Name)
         If ext = ".rtf" Then
             Dim arch = UtilCompress.ExtraerZipPath(archZip, zip)
-            Dim fVT As New visorTexto
+            Dim fVT As New VisorTexto
             fVT.rtbTexto.LoadFile(arch)
             fVT.Show()
             fVT.BringToFront()
         ElseIf ExtensionesImagen.Contains(ext) Then
             Dim arch = UtilCompress.ExtraerZipPath(archZip, zip)
             Dim img As Image = Image.FromFile(arch)
-            Dim fWe As New visorTexto(img)
+            Dim fWe As New VisorTexto(img)
             fWe.Show()
             fWe.BringToFront()
         ElseIf ExtensionesImagen.Contains(ext) Then
             Dim arch = UtilCompress.ExtraerZipPath(archZip, zip)
-            Dim fWe As New visorTexto(New Uri(arch))
+            Dim fWe As New VisorTexto(New Uri(arch))
             fWe.Show()
             fWe.BringToFront()
         Else
             Dim arch = UtilCompress.ExtraerZipPath(archZip, zip)
-            Dim fVT As New visorTexto
+            Dim fVT As New VisorTexto
             fVT.rtbTexto.LoadFile(arch, RichTextBoxStreamType.PlainText)
             fVT.Show()
             fVT.BringToFront()
@@ -439,13 +447,96 @@ Public Class visorTexto
     ' Para el navegador web
     '
 
+    ''' <summary>
+    ''' Mostrar la Uri indicada en el navegador
+    ''' </summary>
+    ''' <param name="url"></param>
+    Public Sub MostrarWeb(url As Uri)
+        ocultarControles()
+        ToolStrip1.Visible = True
+        WebBrowser1.Dock = DockStyle.Fill
+        WebBrowser1.Visible = True
+
+        ' Ajustar el ancho de la caja de direcciones
+        ' Se ajusta en el evento resize
+        'tsDireccion.Width = ToolStrip1.ClientRectangle.Width - tsLabelDireccion.Width - tsbIr.Width - 60
+
+        Me.tsDireccion.Text = url.AbsolutePath
+        Me.WebBrowser1.Navigate(url)
+
+    End Sub
+
     Private Sub tsbIr_Click(sender As System.Object, e As System.EventArgs) Handles tsbIr.Click
         Me.WebBrowser1.Navigate(tsDireccion.Text)
     End Sub
 
+    Private Sub tsbVerHtml_Click(sender As Object, e As EventArgs) Handles tsbVerHtml.Click
+        Dim docWeb = WebBrowser1.Document
+        If docWeb Is Nothing Then Return
+
+        'Dim sb As New StringBuilder
+
+        '' Leer el documento, tag <HTML>
+        'Dim elemColl = docWeb.GetElementsByTagName("HTML")
+        'Dim codigoFuente = PrintDom(elemColl, New StringBuilder(), 0)
+
+        ' Leer el documento, tag <HTML>
+        Dim codigoFuente As String = "<html><body><h1>Sin código fuente</h1></body></html>"
+        Dim elemColl = docWeb.GetElementsByTagName("HTML")
+        For Each elem As HtmlElement In elemColl
+            If elem.TagName = "HTML" Then
+                codigoFuente = elem.OuterHtml
+            End If
+        Next
+
+        ' Mostrarlo como texto
+        Dim fVi As New VisorTexto(codigoFuente, False)
+        fVi.Show()
+    End Sub
+
+    ''' <summary>
+    ''' Recorrer los elementos del documento HTML y darle formato
+    ''' </summary>
+    ''' <param name="elemColl"></param>
+    ''' <param name="returnStr"></param>
+    ''' <param name="depth"></param>
+    ''' <returns></returns>
+    ''' <remarks>De la ayuda de Microsoft:
+    ''' https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.htmlelementcollection?view=netframework-4.8
+    ''' </remarks>
+    Private Function PrintDom(elemColl As HtmlElementCollection, returnStr As StringBuilder, depth As Int32) As String
+        Dim str As New StringBuilder()
+
+        For Each elem As HtmlElement In elemColl
+            Dim elemName As String
+            elemName = elem.GetAttribute("ID")
+
+            If String.IsNullOrEmpty(elemName) Then
+                elemName = elem.GetAttribute("name")
+
+                If String.IsNullOrEmpty(elemName) Then
+                    elemName = "<no name>"
+                End If
+            End If
+
+            str.Append(" "c, depth * 4)
+            str.Append($"<{elemName}> : {elem.TagName} (Level {depth})")
+            returnStr.AppendLine(str.ToString())
+
+            If elem.CanHaveChildren Then
+                PrintDom(elem.Children, returnStr, depth + 1)
+            End If
+
+            str.Remove(0, str.Length)
+        Next
+
+        Return returnStr.ToString()
+    End Function
+
     Private Sub visor_Resize(sender As System.Object, e As System.EventArgs) Handles MyBase.Resize
         If Me.WindowState <> FormWindowState.Minimized Then
-            Me.tsDireccion.Width = Me.ToolStrip1.ClientRectangle.Width - Me.tsLabelDireccion.Width - Me.tsbIr.Width - 60
+            'tsDireccion.Width = ToolStrip1.ClientRectangle.Width - tsLabelDireccion.Width - tsbIr.Width - 60
+            tsDireccion.Width = ToolStrip1.ClientRectangle.Width - tsLabelDireccion.Width - tsbIr.Width - tsbVerHtml.Width - 20
         End If
     End Sub
 
@@ -453,10 +544,39 @@ Public Class visorTexto
         tsDireccion.SelectAll()
     End Sub
 
+    '
+    '
+    '
+
     Private Sub visorTexto_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         CambiarTema()
         AsignarEventos(Me)
     End Sub
+
+    Private Sub btnGuardarComo_Click(sender As Object, e As EventArgs) Handles btnGuardarComo.Click
+        Dim sFD As New SaveFileDialog
+        With sFD
+            .Title = "Guardar como"
+            .Filter = "Todos los ficheros (*.*)|*.*|Texto (*.txt)|*.txt|Rich Text (*.rtf)|*.rtf"
+            .FileName = "SinTitulo"
+            If .ShowDialog() = Windows.Forms.DialogResult.OK Then
+                ' guardarlo
+                Dim ext = Path.GetExtension(.FileName)
+                If ext.ToLower = ".rtf" Then
+                    rtbTexto.SaveFile(.FileName)
+                Else
+                    Using sw As New StreamWriter(.FileName, False, Encoding.UTF8)
+                        sw.Write(rtbTexto.Text)
+                        sw.Flush()
+                        sw.Close()
+                    End Using
+                End If
+                OnGuardado(.FileName)
+            End If
+        End With
+
+    End Sub
+
 
     ''' <summary>
     ''' Cambiar los colores al tema seleccionado
@@ -466,7 +586,7 @@ Public Class visorTexto
 
         AsignarTema(Panel1, VentanaFondo, VentanaTexto)
         AsignarTema(lvTar, PanelFondo, PanelTexto)
-        AsignarTema(rtbTexto, VentanaFondo, VentanaTexto)
+        AsignarTema(rtbTexto, EditorFondo, EditorTexto)
         AsignarTema(PictureBox1, VentanaFondo, VentanaTexto)
 
         AsignarTema(StatusStrip1, StatusFondo, StatusTexto)
@@ -561,5 +681,6 @@ Public Class visorTexto
             'Exit Sub
         End Try
     End Sub
+
 
 End Class

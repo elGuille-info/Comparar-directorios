@@ -120,6 +120,9 @@ Module ColoresTemas
     Public ReadOnly Property StatusTexto As Color() = {Color.Black, Color.Black, Color.MediumBlue}
     Public ReadOnly Property VentanaFondo As Color() = {Color.FromKnownColor(KnownColor.Control), Color.Black, Color.MediumBlue}
     Public ReadOnly Property VentanaTexto As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
+    Public ReadOnly Property EditorFondo As Color() = {Color.White, Color.Black, Color.MediumBlue}
+    Public ReadOnly Property EditorTexto As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
+
     Public ReadOnly Property PanelFondo As Color() = {Color.FromKnownColor(KnownColor.Info), Color.Black, Color.MediumBlue}
     Public ReadOnly Property PanelTexto As Color() = {Color.FromKnownColor(KnownColor.WindowText), Color.LightGray, Color.Cyan}
     Public ReadOnly Property PanelBordeActivo As Color() = {Color.DarkGoldenrod, Color.Yellow, Color.Yellow}
@@ -138,10 +141,10 @@ Module ColoresTemas
     ''' <returns></returns>
     Public ReadOnly Property ItemBin As Color() = {Color.SaddleBrown, Color.GreenYellow, Color.YellowGreen}
     Public ReadOnly Property ItemVisor As Color() = {Color.DarkOrchid, Color.YellowGreen, Color.GreenYellow}
-    Public ReadOnly Property ItemWeb As Color() = {Color.Orchid, Color.DarkGoldenrod, Color.DarkGoldenrod}
+    Public ReadOnly Property ItemWeb As Color() = {Color.CornflowerBlue, Color.DarkGoldenrod, Color.DarkGoldenrod}
     Public ReadOnly Property ItemImagen As Color() = {Color.MediumVioletRed, Color.MediumOrchid, Color.MediumOrchid}
     Public ReadOnly Property ItemZip As Color() = {Color.DarkOrchid, Color.YellowGreen, Color.GreenYellow}
-    Public ReadOnly Property ItemTexto As Color() = {Color.Orchid, Color.DarkGoldenrod, Color.DarkGoldenrod}
+    Public ReadOnly Property ItemTexto As Color() = {Color.SlateGray, Color.DarkGoldenrod, Color.DarkGoldenrod}
     Public ReadOnly Property ItemCodigo As Color() = {Color.MediumOrchid, Color.MediumVioletRed, Color.MediumVioletRed}
 
     ''' <summary>

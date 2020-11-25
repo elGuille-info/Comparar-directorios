@@ -51,6 +51,9 @@
   <PropertyGroup>
     <ApplicationIcon>Folder_stuffed.WinVista.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
