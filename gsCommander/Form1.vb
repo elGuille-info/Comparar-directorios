@@ -19,6 +19,8 @@ Imports Microsoft.VisualBasic
 Imports vb = Microsoft.VisualBasic
 Imports System.IO
 Imports System.Diagnostics
+Imports System.Drawing
+Imports System.Windows.Forms
 
 Public Class Form1
 
