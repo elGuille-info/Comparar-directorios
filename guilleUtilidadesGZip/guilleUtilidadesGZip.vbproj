@@ -9,19 +9,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>MIVB2005.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DefineDebug>false</DefineDebug>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>guilleUtilidadesGZip.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
