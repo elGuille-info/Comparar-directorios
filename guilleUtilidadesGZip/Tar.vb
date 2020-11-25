@@ -14,7 +14,6 @@ Imports vb = Microsoft.VisualBasic
 Imports System
 Imports System.IO
 Imports System.Text
-Imports System.Linq
 
 Public Class Tar
     Implements IComparable
@@ -36,7 +35,7 @@ Public Class Tar
 
         ' Si el nombre es una cadena vacía,
         ' devolver un objeto vacío
-        If String.IsNullOrEmpty(arch) Then
+        If vb.Len(arch) = 0 Then
             Return New Tar
         End If
 
@@ -172,7 +171,7 @@ Public Class Tar
         Do While vb.Left(octNum, 1) = "0"
             octNum = vb.Mid(octNum, 2)
         Loop
-        For i As Integer = 1 To octNum.Length
+        For i As Integer = 1 To vb.Len(octNum)
             'res = CInt(res + CInt(vb.Val(vb.Mid(octNum, i, 1))) * 8 ^ (vb.Len(octNum) - i))
             res = CInt(res + CInt(vb.Mid(octNum, i, 1)) * 8 ^ (vb.Len(octNum) - i))
         Next

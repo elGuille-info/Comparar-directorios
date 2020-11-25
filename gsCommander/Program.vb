@@ -14,6 +14,7 @@ Option Strict On
 Option Infer On
 
 Imports System
+Imports System.Windows.Forms
 Imports System.Collections.Generic
 Imports System.Text
 Imports System.Linq

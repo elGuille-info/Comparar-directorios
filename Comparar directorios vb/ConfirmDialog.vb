@@ -9,6 +9,9 @@ Option Strict On
 Option Infer On
 
 Imports System
+Imports System.Windows.Forms
+Imports System.Drawing
+
 'Imports System.Data
 Imports System.Collections.Generic
 Imports System.Text
@@ -16,10 +19,7 @@ Imports System.Linq
 Imports Microsoft.VisualBasic
 Imports vb = Microsoft.VisualBasic
 
-
-Imports System.Windows.Forms
 Imports System.IO
-Imports System.Drawing
 
 #Region " Enumeraciones para el cuadro de diálogo "
 
@@ -182,7 +182,7 @@ Public Class ConfirmDialog
         End Select
 
         textoOpcionConfigurable = textoOpcion
-        _opcionConfigurable = valorOpcion
+        _OpcionConfigurable = valorOpcion
         If textoOpcion.Any Then
             ChkOpcion.Text = textoOpcion
             ChkOpcion.Visible = True

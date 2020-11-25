@@ -11,6 +11,9 @@ Option Strict On
 Option Infer On
 
 Imports System
+Imports System.Windows.Forms
+Imports System.Drawing
+
 'Imports System.Data
 Imports System.Collections.Generic
 Imports System.Text
@@ -19,8 +22,6 @@ Imports Microsoft.VisualBasic
 Imports vb = Microsoft.VisualBasic
 Imports System.IO
 Imports System.Diagnostics
-Imports System.Drawing
-Imports System.Windows.Forms
 
 Public Class Form1
 
@@ -379,7 +380,7 @@ Public Class Form1
             Return
         End If
 
-        CopiarFicheros()
+        CopiarFicheros(conReleer:=False)
         CopiarDirectorios()
     End Sub
 
@@ -398,7 +399,7 @@ Public Class Form1
                               "Mover todo",
                               DialogConfirmButtons.NoYes,
                               DialogConfirmIcon.Error) = DialogConfirmResult.Yes Then
-            MoverFicheros()
+            MoverFicheros(conReleer:=False)
             MoverDirectorios()
         End If
     End Sub
@@ -418,7 +419,7 @@ Public Class Form1
                               "Eliminar todo",
                               DialogConfirmButtons.NoYes,
                               DialogConfirmIcon.Error) = DialogConfirmResult.Yes Then
-            EliminarFicheros()
+            EliminarFicheros(conReleer:=False)
             EliminarDirectorios()
         End If
     End Sub
@@ -1436,7 +1437,7 @@ Public Class Form1
     ''' <summary>
     ''' Copiar un fichero del panel activo al otro panel
     ''' </summary>
-    Private Sub CopiarFicheros()
+    Private Sub CopiarFicheros(conReleer As Boolean)
         ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
         ' Si no hay fichero seleccionado en el panel activo, salir
@@ -1496,14 +1497,16 @@ Public Class Form1
         LabelInfo.Text = "Fin de la copia de ficheros."
         Application.DoEvents()
 
-        ' Releer los directorios
-        Releer()
+        If conReleer Then
+            ' Releer los directorios
+            Releer()
+        End If
     End Sub
 
     ''' <summary>
     ''' Mover los ficheros seleccionados del panel activo al otro panel
     ''' </summary>
-    Private Sub MoverFicheros()
+    Private Sub MoverFicheros(conReleer As Boolean)
         ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
         ' Si no hay fichero seleccionado en el panel activo, salir
@@ -1590,15 +1593,16 @@ Public Class Form1
         LabelInfo.Text = "Fin de mover ficheros."
         Application.DoEvents()
 
-        ' Releer los dos directorios
-        Releer()
-
+        If conReleer Then
+            ' Releer los dos directorios
+            Releer()
+        End If
     End Sub
 
     ''' <summary>
     ''' Eliminar el fichero seleccionado en el panel activo
     ''' </summary>
-    Private Sub EliminarFicheros()
+    Private Sub EliminarFicheros(conReleer As Boolean)
         ' Si no está asignado el panel activo, salir
         If quePanel Is Nothing Then Return
         ' Si no hay fichero seleccionado en el panel activo, salir
@@ -1648,10 +1652,12 @@ Public Class Form1
         LabelInfo.Text = "Fin de eliminar ficheros."
         Application.DoEvents()
 
-        ' Releer el directorio
-        MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
-        If compararDirs Then
-            CompararDirectorios()
+        If conReleer Then
+            ' Releer el directorio
+            MostrarContenidoDirectorio(quePanel.Tag.ToString, quePanel)
+            If compararDirs Then
+                CompararDirectorios()
+            End If
         End If
     End Sub
 
@@ -2258,11 +2264,11 @@ Public Class Form1
     End Sub
 
     Private Sub BtnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click, MnuFicCopiar.Click
-        CopiarFicheros()
+        CopiarFicheros(conReleer:=True)
     End Sub
 
     Private Sub BtnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click, MnuFicEliminar.Click
-        EliminarFicheros()
+        EliminarFicheros(conReleer:=True)
     End Sub
 
     Private Sub BtnNuevoFichero_Click(sender As Object, e As EventArgs) Handles btnNuevoFichero.Click, MnuFicNuevoFichero.Click
@@ -2270,7 +2276,7 @@ Public Class Form1
     End Sub
 
     Private Sub BtnMover_Click(sender As Object, e As EventArgs) Handles btnMover.Click, MnuFicMover.Click
-        MoverFicheros()
+        MoverFicheros(conReleer:=True)
     End Sub
 
     Private Sub BtnMkDir_Click(sender As Object, e As EventArgs) Handles BtnNuevoDir.Click, MnuFicNuevoDirectorio.Click

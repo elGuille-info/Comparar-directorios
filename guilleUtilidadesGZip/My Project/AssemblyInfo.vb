@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Revisar los valores de los atributos del ensamblado
 
 <Assembly: AssemblyTitle("elGuille.Utilidades.Comprimir")>
-<Assembly: AssemblyDescription("Utilidades para comprimir/descomprimir usando GZip, Deflate y Zip  (revisión del 24/Nov/2020)")>
+<Assembly: AssemblyDescription("Utilidades para comprimir/descomprimir usando GZip, Deflate y Zip  (revisión del 25/Nov/2020)")>
 <Assembly: AssemblyCompany("elGuille")>
 <Assembly: AssemblyProduct("guilleUtilidadesGZip")>
 <Assembly: AssemblyCopyright("©Guillermo Som (elGuille), 2006, 2020")>

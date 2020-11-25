@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.elGuille.Utilidades.Comprimir.My.MySettings
+        Friend ReadOnly Property Settings() As Global.guilleUtilidadesGZIP.My.MySettings
             Get
-                Return Global.elGuille.Utilidades.Comprimir.My.MySettings.Default
+                Return Global.guilleUtilidadesGZIP.My.MySettings.Default
             End Get
         End Property
     End Module

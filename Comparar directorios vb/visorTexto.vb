@@ -11,7 +11,6 @@
 
 Option Strict On
 Option Explicit On
-Option Infer On
 
 Imports Microsoft.VisualBasic
 Imports vb = Microsoft.VisualBasic
@@ -19,9 +18,13 @@ Imports System
 Imports System.Windows.Forms
 Imports System.Drawing
 
+Imports System.Collections.Generic
+
+Imports guilleUtilidadesGZIP ' elGuille.Utilidades.Comprimir
 Imports System.IO.Compression
 Imports System.IO
 Imports System.Text
+Imports System.Linq
 
 Public Class VisorTexto
 
@@ -125,6 +128,19 @@ Public Class VisorTexto
         statusLabelInfo.Text = $"{Application.ProductName} v{Application.ProductVersion}, {sCopyR} "
         Me.Text = statusLabelInfo.Text & " [Visor]"
 
+    End Sub
+
+    ''' <summary>
+    ''' Mostrar el contenido de un fichero .tar
+    ''' </summary>
+    ''' <param name="th"></param>
+    Public Sub New(th As Tar)
+        Me.New()
+
+        MostrarTexto(th)
+
+        Me.statusLabelInfo.Text = String.Format("Archivo {0}, Tamaño: {1:#,##0}, Fecha Modificación: {2:dd/MM/yyyy HH:mm:ss}",
+                                                th.FileName, th.Size, th.DateTime)
     End Sub
 
     ''' <summary>
@@ -275,6 +291,12 @@ Public Class VisorTexto
         rtbTexto.Text = UtilCompress.Descomprimir(arch)
     End Sub
 
+    Public Sub MostrarTexto(th As Tar)
+        MostrarRtb()
+        Me.statusLabelInfo.Text = "Contenido de: " & th.FileName
+        Me.rtbTexto.Text = th.LeerContenido()
+    End Sub
+
     Public Sub MostrarTexto(archZip As ZipArchive, zipEntry As ZipArchiveEntry)
         MostrarRtb()
         Me.statusLabelInfo.Text = "Contenido de: " & zipEntry.Name
@@ -295,7 +317,38 @@ Public Class VisorTexto
 
         Dim formatoArch As FormatosCompresion = UtilCompress.FormatoPorExtension(archivo)
 
-        If formatoArch = FormatosCompresion.Zip Then
+        If formatoArch = FormatosCompresion.Tar Then
+            Dim archs As List(Of Tar) = UtilTar.ArchivosTar(archivo)
+
+            For Each th As Tar In archs
+                Dim it As ListViewItem = lvTar.Items.Add(th.FileName)
+
+                Dim ext = Path.GetExtension(th.FileName).ToLower
+                If VisorTexto.ExtensionesCodigo.Contains(ext) Then
+                    it.ForeColor = ItemCodigo(TemaActual)
+                ElseIf VisorTexto.ExtensionesImagen.Contains(ext) Then
+                    it.ForeColor = ItemImagen(TemaActual)
+                ElseIf VisorTexto.ExtensionesTexto.Contains(ext) Then
+                    it.ForeColor = ItemTexto(TemaActual)
+                ElseIf VisorTexto.ExtensionesWeb.Contains(ext) Then
+                    it.ForeColor = ItemWeb(TemaActual)
+                ElseIf VisorTexto.ExtensionesZip.Contains(ext) Then
+                    it.ForeColor = ItemZip(TemaActual)
+                ElseIf VisorTexto.ExtensionesVisor.Contains(ext) Then
+                    it.ForeColor = ItemVisor(TemaActual)
+                ElseIf ExtensionesBin.Contains(ext) Then
+                    it.ForeColor = ItemBin(TemaActual)
+                Else
+                    it.ForeColor = ItemIgual(TemaActual)
+                End If
+
+                it.SubItems.Add(th.Size.ToString("#,##0"))
+                it.SubItems.Add(th.DateTime.ToString("dd/MM/yyyy HH:mm:ss"))
+                it.SubItems.Add(th.DirectoryName)
+                ' Guardamos una referencia al objeto de tipo Tar
+                it.Tag = th
+            Next
+        ElseIf formatoArch = FormatosCompresion.Zip Then
             Dim contZip = UtilCompress.ContenidoZip(archivo)
             Dim archs As HashSet(Of ZipArchiveEntry) = contZip.ZipEntries
             lvTar.Tag = contZip.ArchivoZip
@@ -345,6 +398,15 @@ Public Class VisorTexto
         Dim lvi As ListViewItem = lvTar.SelectedItems(0)
 
         ' Convertimos la referencia al objeto asociado a este elemento del ListView
+        ' comprobar si es un archivo .tar
+        Dim th As Tar = TryCast(lvi.Tag, Tar)
+        If th IsNot Nothing Then
+            Dim fVT As New VisorTexto(th)
+            fVT.MostrarTexto(th)
+            fVT.BringToFront()
+            fVT.Show()
+            Return
+        End If
 
         Dim zip As ZipArchiveEntry
         zip = TryCast(lvi.Tag, ZipArchiveEntry)

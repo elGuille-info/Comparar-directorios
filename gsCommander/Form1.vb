@@ -11,6 +11,9 @@ Option Strict On
 Option Infer On
 
 Imports System
+Imports System.Windows.Forms
+Imports System.Drawing
+
 'Imports System.Data
 Imports System.Collections.Generic
 Imports System.Text
@@ -19,8 +22,6 @@ Imports Microsoft.VisualBasic
 Imports vb = Microsoft.VisualBasic
 Imports System.IO
 Imports System.Diagnostics
-Imports System.Drawing
-Imports System.Windows.Forms
 
 Public Class Form1
 
