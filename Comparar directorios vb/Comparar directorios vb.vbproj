@@ -137,6 +137,10 @@
     <Content Include="Folder_stuffed.WinVista.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Editar Colores\Editar Colores.csproj">
+      <Project>{6c093207-00fc-4f2e-a8f3-67f3903facf6}</Project>
+      <Name>Editar Colores</Name>
+    </ProjectReference>
     <ProjectReference Include="..\guilleUtilidadesGZip\guilleUtilidadesGZip.vbproj">
       <Project>{37ba5bea-bfae-420e-87f7-2b083676f026}</Project>
       <Name>guilleUtilidadesGZip</Name>

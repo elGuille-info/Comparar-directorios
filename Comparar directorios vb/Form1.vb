@@ -188,6 +188,8 @@ Public Class Form1
         ' Leer los datos de la configuración
         LeerConfig()
 
+        MnuModificarColores.Text = $"Modificar los colores del tema activo ({[Enum].GetName(GetType(Temas), TemaActual)})"
+
         Me.CenterToScreen()
         If VentanaAcoplada = 1 Then ' Izquierda
             VentanaAcoplada = 0
@@ -2043,6 +2045,8 @@ Public Class Form1
     ''' Cambiar los colores al tema seleccionado
     ''' </summary>
     Private Sub CambiarTema()
+        MnuModificarColores.Text = $"Modificar los colores del tema activo ({[Enum].GetName(GetType(Temas), TemaActual)})"
+
         AsignarTema(Me, VentanaFondo, VentanaTexto)
         AsignarTema(MenuStrip1, VentanaFondo, VentanaTexto)
 
@@ -2437,6 +2441,13 @@ Public Class Form1
 
             MnuAcoplarIzquierda.Checked = False
             MnuAcoplarDerecha.Checked = False
+        End If
+    End Sub
+
+    Private Sub MnuModificarColores_Click(sender As Object, e As EventArgs) Handles MnuModificarColores.Click
+        Dim fColores As New Editar_Colores.fEditarColores(PanelFondo(TemaActual), PanelTexto(TemaActual))
+        If fColores.ShowDialog = DialogResult.OK Then
+
         End If
     End Sub
 End Class
