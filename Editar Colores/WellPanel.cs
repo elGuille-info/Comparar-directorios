@@ -472,7 +472,8 @@ namespace Editar_Colores
             }
             set
             {
-                Utilities.CheckValidEnumValue("BorderStyle", value, typeof(BorderStyle));
+                if (!Utilities.CheckValidEnumValue("BorderStyle", value, typeof(BorderStyle)))
+                    value = 0;
 
                 if (borderstyle != value)
                 {
@@ -524,88 +525,60 @@ namespace Editar_Colores
             }
             set
             {
-
                 if (((cwColor != null) && (cwColor.Color
                    != value)) || (cwColor == null))
                 {
-
                     UpdatePickColor(value);
-
                     Refresh();
-
                 }
-
             }
-
         }
 
         public void ResetColor()
         {
-
             Color = dcolor;
-
         }
 
         private void UpdatePickColor()
         {
-
             if (cwColor != null)
             {
-
                 UpdatePickColor(cwColor.Color);
-
             }
             else
             {
-
                 UpdatePickColor(dcolor);
-
             }
-
         }
 
         private void UpdatePickColor(Color c)
         {
-
             cwColor = WellFromColor(c);
-
             if (null == cwColor)
             {
-
                 cwColor = WellFromColor(dcolor);
-
             }
-
             if (null == cwColor)
             {
-
                 cwColor = arrWells[0];
-
             }
         }
 
         [Browsable(true)]
         public Scheme ColorScheme
         {
-
             get
             {
-
                 return colorSet;
-
             }
             set
             {
-
-                Utilities.CheckValidEnumValue("ColorScheme", value,
-                   typeof(Scheme));
+                if( ! Utilities.CheckValidEnumValue("ColorScheme", value, typeof(Scheme)) )
+                    value = 0;
 
                 if (value != colorSet)
                 {
-
-                    arrWells = ColorWellInfo.GetColorWells(value,
-                       sortorder);
-
+                    arrWells = ColorWellInfo.GetColorWells(value, sortorder);
                     colorSet = value;
 
                     UpdatePickColor();
@@ -613,64 +586,47 @@ namespace Editar_Colores
                     FireColorChanged();
 
                     AutoSizePanel();
-
                 }
-
             }
-
         }
 
         [Browsable(true)]
         public Size WellSize
         {
-
             get
             {
-
                 return scolorwell;
-
             }
             set
             {
-
                 if (value.Height > SystemInformation.Border3DSize
                       .Height * 2 + 2 &&
                    value.Width > SystemInformation.Border3DSize
                       .Width * 2 + 2)
                 {
-
                     if (value != WellSize)
                     {
-
                         scolorwell = value;
 
                         AutoSizePanel();
-
                     }
-
                 }
                 else
                 {
-
                     Size min = new Size(SystemInformation.Border3DSize
                        .Height * 2 + 2, SystemInformation.Border3DSize
                        .Width * 2 + 2);
 
                     string msg = string.Format("Too Small", min);
 
-                    throw new ArgumentOutOfRangeException("WellSize",
-                       value, msg);
-
+                    throw new ArgumentOutOfRangeException("WellSize", value, msg);
                 }
-
             }
-
         }
+
         public void ResetWellSize()
         {
-
             WellSize = dwellsize;
-
         }
 
         [Browsable(true)]
@@ -678,73 +634,50 @@ namespace Editar_Colores
         {
             get
             {
-
                 return sortorder;
-
             }
             set
             {
-
-                Utilities.CheckValidEnumValue("SortOrder", value,
-                   typeof(Order));
+                if( ! Utilities.CheckValidEnumValue("SortOrder", value, typeof(Order)) )
+                    value = 0;
 
                 if (value != sortorder)
                 {
-
                     ColorWellInfo.SortWells(arrWells, value);
                     Layout();
 
                     sortorder = value;
-
                     Refresh();
-
                 }
-
             }
-
         }
 
         [Browsable(true)]
         public int Columns
         {
-
             get
             {
-
                 return ccolumns;
-
             }
             set
             {
-
                 if (value > 0)
                 {
-
                     if (value <= arrWells.Length)
                     {
-
                         ccolumns = value;
-
                     }
                     else
                     {
-
                         ccolumns = arrWells.Length;
-
                     }
-
                 }
                 else
                 {
-
                     ccolumns = 0;
-
                 }
-
                 AutoSizePanel();
-
             }
-
         }
 
         public class ColorChangedEventArgs : EventArgs
@@ -762,16 +695,14 @@ namespace Editar_Colores
                 {
                     return color;
                 }
-
             }
-
         }
+
         public delegate void ColorChangedEventHandler(object sender, ColorChangedEventArgs e);
     }
 
     partial class WellPanel : UserControl
     {
-
         internal const Order dorder = Order.Hue;
         internal const Scheme dscheme = Scheme.Web;
         internal const BorderStyle dborder = BorderStyle.FixedSingle;
@@ -805,6 +736,14 @@ namespace Editar_Colores
 
             AutoSizePanel();
         }
+
+        //// Esto no estaba definido, pero lo pongo como en ctrColorPanel
+        //// Le añado que use el nombre para ordenar y los colores Web
+        //private void InitializeComponent()
+        //{
+        //    Name = "WellPanel";
+        //}
+
 
         private class ColorWellInfo
         {

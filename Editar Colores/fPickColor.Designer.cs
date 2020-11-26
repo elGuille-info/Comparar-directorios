@@ -165,7 +165,7 @@ namespace Editar_Colores
             this.btnAceptar.UseVisualStyleBackColor = true;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
             // 
-            // Form1
+            // fPickColor
             // 
             this.AcceptButton = this.btnAceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,11 +180,10 @@ namespace Editar_Colores
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblBackColor);
             this.Controls.Add(this.ctPicker);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(336, 200);
-            this.Name = "Form1";
+            this.Name = "fPickColor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Seleccionar color";
             this.Load += new System.EventHandler(this.Form1_Load);

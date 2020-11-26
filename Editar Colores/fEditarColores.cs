@@ -25,6 +25,9 @@ namespace Editar_Colores
         {
             lblBackColor.BackColor = backColor;
             lblForeColor.BackColor = foreColor;
+
+            Utilities.SetBackColor(lblBackColor, backColor);
+            Utilities.SetForeColor(lblForeColor, backColor);
         }
 
         public fEditarColores()
@@ -64,27 +67,25 @@ namespace Editar_Colores
 
         private void btnSeleccionar_Click(object sender, EventArgs e)
         {
-            fPickColor fPicker = new fPickColor
+            var fPicker = new fPickColorVert
             {
                 ElColor = lblBackColor.BackColor
             };
             if (fPicker.ShowDialog() == DialogResult.OK)
             {
-                lblBackColor.BackColor = fPicker.ElColor;
-                //lblForeColor.ForeColor = fPicker.ElColor;
+                Utilities.SetBackColor(lblBackColor, fPicker.ElColor);
             }
         }
 
         private void btnSeleccionarFore_Click(object sender, EventArgs e)
         {
-            fPickColor fPicker = new fPickColor
+            var fPicker = new fPickColorVert
             {
-                ElColor = lblForeColor.BackColor
+                ElColor = lblForeColor.ForeColor
             };
             if (fPicker.ShowDialog() == DialogResult.OK)
             {
-                //lblBackColor.BackColor = fPicker.ElColor;
-                lblForeColor.ForeColor = fPicker.ElColor;
+                Utilities.SetForeColor(lblForeColor, fPicker.ElColor);
             }
         }
     }

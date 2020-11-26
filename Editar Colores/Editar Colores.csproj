@@ -79,6 +79,12 @@
     <Compile Include="fEditarColores.Designer.cs">
       <DependentUpon>fEditarColores.cs</DependentUpon>
     </Compile>
+    <Compile Include="fPickColorVert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fPickColorVert.Designer.cs">
+      <DependentUpon>fPickColorVert.cs</DependentUpon>
+    </Compile>
     <Compile Include="fPickColor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     </Compile>
     <EmbeddedResource Include="fEditarColores.resx">
       <DependentUpon>fEditarColores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fPickColorVert.resx">
+      <DependentUpon>fPickColorVert.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fPickColor.resx">
       <DependentUpon>fPickColor.cs</DependentUpon>

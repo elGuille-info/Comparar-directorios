@@ -34,8 +34,8 @@ namespace Editar_Colores
         {
             InitializeComponent();
 
-            SetBackColor(lblBackColor, ctPicker.Color);
-            SetForeColor(lblForeColor, ctPicker.Color);
+            Utilities.SetBackColor(lblBackColor, ctPicker.Color, true);
+            Utilities.SetForeColor(lblForeColor, ctPicker.Color, true);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -46,8 +46,8 @@ namespace Editar_Colores
             duScheme.Items.AddRange(Enum.GetValues(typeof(Scheme)));
             duScheme.SelectedIndex = 0;
 
-            SetBackColor(lblBackColor, ctPicker.Color);
-            SetForeColor(lblForeColor, ctPicker.Color);
+            Utilities.SetBackColor(lblBackColor, ctPicker.Color, true);
+            Utilities.SetForeColor(lblForeColor, ctPicker.Color, true);
         }
 
         private void duSort_SelectedItemChanged(object sender, EventArgs e)
@@ -62,31 +62,30 @@ namespace Editar_Colores
 
         private void ctPicker_ColorChanged(object sender, ColorChangedEventArgs e)
         {
-            SetBackColor(lblBackColor, e.Color);
-            SetForeColor(lblForeColor, e.Color);
+            Utilities.SetBackColor(lblBackColor, e.Color, true);
+            Utilities.SetForeColor(lblForeColor, e.Color, true);
 
             //this.ElColor = e.Color;
         }
 
-        private void SetBackColor(Control ctrl, Color col)
-        {
-            ctrl.BackColor = col;
+        //public static void SetBackColor(Control ctrl, Color col)
+        //{
+        //    ctrl.BackColor = col;
 
-            string s = string.Format("{0}\r\n{1:X}", col.Name, col.ToArgb());
-            ctrl.Text = s;
+        //    string s = string.Format("{0}\r\n{1:X}", col.Name, col.ToArgb());
+        //    ctrl.Text = s;
+        //    ctrl.ForeColor = (col.GetBrightness() < 0.6) ? (Color.White) : (Color.Black);
+        //}
 
-            ctrl.ForeColor = (col.GetBrightness() < 0.6) ? (Color.White) : (Color.Black);
-        }
+        //public static void SetForeColor(Control ctrl, Color col)
+        //{
+        //    ctrl.ForeColor = col;
 
-        private void SetForeColor(Control ctrl, Color col)
-        {
-            ctrl.ForeColor = col;
+        //    string s = string.Format("{0}\r\n{1:X}", col.Name, col.ToArgb());
+        //    ctrl.Text = s;
 
-            string s = string.Format("{0}\r\n{1:X}", col.Name, col.ToArgb());
-            ctrl.Text = s;
-
-            ctrl.BackColor = (col.GetBrightness() < 0.6) ? (Color.White) : (Color.Black);
-        }
+        //    ctrl.BackColor = (col.GetBrightness() < 0.6) ? (Color.White) : (Color.Black);
+        //}
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
