@@ -96,7 +96,7 @@ namespace Editar_Colores
             this.lblForeColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblForeColor.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblForeColor.ForeColor = System.Drawing.Color.BurlyWood;
-            this.lblForeColor.Location = new System.Drawing.Point(163, 12);
+            this.lblForeColor.Location = new System.Drawing.Point(648, 23);
             this.lblForeColor.Margin = new System.Windows.Forms.Padding(3);
             this.lblForeColor.Name = "lblForeColor";
             this.lblForeColor.Size = new System.Drawing.Size(145, 84);
@@ -109,7 +109,7 @@ namespace Editar_Colores
             this.lblBackColor.BackColor = System.Drawing.Color.BurlyWood;
             this.lblBackColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblBackColor.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBackColor.Location = new System.Drawing.Point(12, 12);
+            this.lblBackColor.Location = new System.Drawing.Point(497, 23);
             this.lblBackColor.Margin = new System.Windows.Forms.Padding(3);
             this.lblBackColor.Name = "lblBackColor";
             this.lblBackColor.Size = new System.Drawing.Size(145, 84);
@@ -119,7 +119,7 @@ namespace Editar_Colores
             // 
             // btnSeleccionarBack
             // 
-            this.btnSeleccionarBack.Location = new System.Drawing.Point(12, 102);
+            this.btnSeleccionarBack.Location = new System.Drawing.Point(497, 113);
             this.btnSeleccionarBack.Name = "btnSeleccionarBack";
             this.btnSeleccionarBack.Size = new System.Drawing.Size(145, 25);
             this.btnSeleccionarBack.TabIndex = 9;
@@ -129,7 +129,7 @@ namespace Editar_Colores
             // 
             // btnSeleccionarFore
             // 
-            this.btnSeleccionarFore.Location = new System.Drawing.Point(163, 102);
+            this.btnSeleccionarFore.Location = new System.Drawing.Point(648, 113);
             this.btnSeleccionarFore.Name = "btnSeleccionarFore";
             this.btnSeleccionarFore.Size = new System.Drawing.Size(145, 25);
             this.btnSeleccionarFore.TabIndex = 10;

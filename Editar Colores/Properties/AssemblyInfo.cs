@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Editar Colores")]
-[assembly: AssemblyDescription("Editor de colores para el programa de Comparar directorios (gsCommander)  (revisón del 25/Nov/2020)")]
+[assembly: AssemblyDescription("Editor de colores para el programa de Comparar directorios (gsCommander)  (revisón del 26/Nov/2020)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("elGuille")]
 [assembly: AssemblyProduct("Editar Colores")]
@@ -33,4 +33,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.3")]

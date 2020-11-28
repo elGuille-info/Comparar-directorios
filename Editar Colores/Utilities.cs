@@ -29,13 +29,20 @@ namespace Editar_Colores
         /// </summary>
         /// <param name="arg">El nombre de la enumeración</param>
         /// <param name="val">El valor de la enumeración</param>
-        /// <param name="Class">La enumeración que define el valor</param>
-        public static bool CheckValidEnumValue(string arg, object val, Type Class)
+        /// <param name="class">La enumeración que define el valor</param>
+        /// <param name="exception">true si no se lanza una excepción y se devuelve false</param>
+        /// <returns>
+        /// Un valor true si el valor está definido en la enumeración.
+        /// Si no está definido y exception es true lanza una excepción, en otro caso devuelve false.
+        /// </returns>
+        public static bool CheckValidEnumValue(string arg, object val, Type @class, bool exception = true)
         {
-            if (!Enum.IsDefined(Class, val))
+            if (!Enum.IsDefined(@class, val))
             {
-                throw new InvalidEnumArgumentException(arg, (int)val, Class);
-                //return false;
+                if(exception)
+                    throw new InvalidEnumArgumentException(arg, (int)val, @class);
+                else
+                    return false;
             }
             return true;
         }
