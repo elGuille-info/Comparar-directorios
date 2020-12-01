@@ -62,9 +62,24 @@ Module ColoresTemas
     ''' <param name="fondo">Array con los colores del fondo</param>
     ''' <param name="texto">Array con los colores del texto</param>
     Public Sub AsignarTema(btn As ToolStripItem, fondo As Color(), texto As Color())
-        btn.BackColor = fondo(TemaActual)
-        btn.ForeColor = texto(TemaActual)
-        If TemaActual = Temas.ComandanteNorton Then
+        Dim it = TryCast(btn, ToolStripSeparator)
+        'If Not it Is Nothing Then Return
+        'If TypeOf btn Is ToolStripSeparator Then Return
+
+        If it IsNot Nothing Then
+            'btn.BackColor = fondo(TemaActual)
+            'btn.ForeColor = fondo(TemaActual)
+
+            If TemaActual <> Temas.Predeterminado Then
+                btn.Visible = False
+            Else
+                btn.Visible = True
+            End If
+        Else
+            btn.BackColor = fondo(TemaActual)
+            btn.ForeColor = texto(TemaActual)
+        End If
+        If Not it Is Nothing AndAlso TemaActual = Temas.ComandanteNorton Then
             btn.Font = New Font(btn.Font, FontStyle.Bold)
         Else
             btn.Font = New Font(btn.Font, FontStyle.Regular)

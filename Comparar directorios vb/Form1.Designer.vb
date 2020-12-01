@@ -28,7 +28,7 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"DIR", "generarClaveSHA1.sln", "9.108.320.256", "19/11/2020 21:16:30"}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"DIR", "generarClaveSHA1.sln", "9.108.320.256", "19/11/2020 21:16:30"}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.FlowLayoutPanelIzq = New System.Windows.Forms.FlowLayoutPanel()
         Me.ToolStripIzq = New System.Windows.Forms.ToolStrip()
@@ -119,13 +119,15 @@ Partial Class Form1
         Me.ToolStripSeparator18 = New System.Windows.Forms.ToolStripSeparator()
         Me.MnuAvisarActualizarEnIzquierdo = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuAvisarAlActualizar = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator22 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MnuColorearTiposFicheros = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MnuModificarColores = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuVentana = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
         Me.MnuAcoplarIzquierda = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuAcoplarDerecha = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuDesacoplar = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
-        Me.MnuModificarColores = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -234,8 +236,8 @@ Partial Class Form1
         Me.lvDirIzq.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chInfoIzq, Me.chNombreIzq, Me.chTamañoIzq, Me.chFechaIzq})
         Me.lvDirIzq.FullRowSelect = True
         Me.lvDirIzq.HideSelection = False
-        ListViewItem2.StateImageIndex = 0
-        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.StateImageIndex = 0
+        Me.lvDirIzq.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvDirIzq.Location = New System.Drawing.Point(6, 32)
         Me.lvDirIzq.Name = "lvDirIzq"
         Me.lvDirIzq.ShowItemToolTips = True
@@ -551,8 +553,8 @@ Partial Class Form1
         Me.BtnIntercambiar.Name = "BtnIntercambiar"
         Me.BtnIntercambiar.Size = New System.Drawing.Size(23, 22)
         Me.BtnIntercambiar.Text = "Intercambiar"
-        Me.BtnIntercambiar.ToolTipText = "Intercambiar los directorios de panel" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(por si quieres actualizar, ya que solo ac" &
-    "tualiza del izquierdo al derecho)"
+        Me.BtnIntercambiar.ToolTipText = "Intercambiar los directorios de panel (Ctrl+U)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(por si quieres actualizar, ya qu" &
+    "e solo actualiza del izquierdo al derecho)"
         '
         'ToolStripSeparator12
         '
@@ -861,7 +863,7 @@ Partial Class Form1
         '
         'MnuOpciones
         '
-        Me.MnuOpciones.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuCompararAlCambiar, Me.ToolStripSeparator18, Me.MnuAvisarActualizarEnIzquierdo, Me.MnuAvisarAlActualizar, Me.ToolStripSeparator21, Me.MnuModificarColores})
+        Me.MnuOpciones.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuCompararAlCambiar, Me.ToolStripSeparator18, Me.MnuAvisarActualizarEnIzquierdo, Me.MnuAvisarAlActualizar, Me.ToolStripSeparator22, Me.MnuColorearTiposFicheros, Me.ToolStripSeparator21, Me.MnuModificarColores})
         Me.MnuOpciones.Name = "MnuOpciones"
         Me.MnuOpciones.Size = New System.Drawing.Size(69, 20)
         Me.MnuOpciones.Text = "&Opciones"
@@ -869,25 +871,48 @@ Partial Class Form1
         'MnuCompararAlCambiar
         '
         Me.MnuCompararAlCambiar.Name = "MnuCompararAlCambiar"
-        Me.MnuCompararAlCambiar.Size = New System.Drawing.Size(399, 22)
+        Me.MnuCompararAlCambiar.Size = New System.Drawing.Size(331, 22)
         Me.MnuCompararAlCambiar.Text = "Comparar al cambiar de directorio"
         '
         'ToolStripSeparator18
         '
         Me.ToolStripSeparator18.Name = "ToolStripSeparator18"
-        Me.ToolStripSeparator18.Size = New System.Drawing.Size(396, 6)
+        Me.ToolStripSeparator18.Size = New System.Drawing.Size(328, 6)
         '
         'MnuAvisarActualizarEnIzquierdo
         '
         Me.MnuAvisarActualizarEnIzquierdo.Name = "MnuAvisarActualizarEnIzquierdo"
-        Me.MnuAvisarActualizarEnIzquierdo.Size = New System.Drawing.Size(399, 22)
-        Me.MnuAvisarActualizarEnIzquierdo.Text = "Avisar si pulsa actualizar cuando el panel izquierdo está activo"
+        Me.MnuAvisarActualizarEnIzquierdo.Size = New System.Drawing.Size(331, 22)
+        Me.MnuAvisarActualizarEnIzquierdo.Text = "Avisar si al actualizar está activo el panel derecho"
         '
         'MnuAvisarAlActualizar
         '
         Me.MnuAvisarAlActualizar.Name = "MnuAvisarAlActualizar"
-        Me.MnuAvisarAlActualizar.Size = New System.Drawing.Size(399, 22)
+        Me.MnuAvisarAlActualizar.Size = New System.Drawing.Size(331, 22)
         Me.MnuAvisarAlActualizar.Text = "Avisar al actualizar"
+        '
+        'ToolStripSeparator22
+        '
+        Me.ToolStripSeparator22.Name = "ToolStripSeparator22"
+        Me.ToolStripSeparator22.Size = New System.Drawing.Size(328, 6)
+        '
+        'ToolStripSeparator21
+        '
+        Me.ToolStripSeparator21.Name = "ToolStripSeparator21"
+        Me.ToolStripSeparator21.Size = New System.Drawing.Size(328, 6)
+        '
+        'MnuColorearTiposFicheros
+        '
+        Me.MnuColorearTiposFicheros.Name = "MnuColorearTiposFicheros"
+        Me.MnuColorearTiposFicheros.Size = New System.Drawing.Size(331, 22)
+        Me.MnuColorearTiposFicheros.Text = "Colorear los tipos de ficheros"
+        '
+        'MnuModificarColores
+        '
+        Me.MnuModificarColores.Image = CType(resources.GetObject("MnuModificarColores.Image"), System.Drawing.Image)
+        Me.MnuModificarColores.Name = "MnuModificarColores"
+        Me.MnuModificarColores.Size = New System.Drawing.Size(331, 22)
+        Me.MnuModificarColores.Text = "Modificar los colores del tema activo"
         '
         'MnuVentana
         '
@@ -921,18 +946,6 @@ Partial Class Form1
         Me.MnuDesacoplar.Name = "MnuDesacoplar"
         Me.MnuDesacoplar.Size = New System.Drawing.Size(187, 22)
         Me.MnuDesacoplar.Text = "Restaurar posición"
-        '
-        'ToolStripSeparator21
-        '
-        Me.ToolStripSeparator21.Name = "ToolStripSeparator21"
-        Me.ToolStripSeparator21.Size = New System.Drawing.Size(396, 6)
-        '
-        'MnuModificarColores
-        '
-        Me.MnuModificarColores.Image = CType(resources.GetObject("MnuModificarColores.Image"), System.Drawing.Image)
-        Me.MnuModificarColores.Name = "MnuModificarColores"
-        Me.MnuModificarColores.Size = New System.Drawing.Size(399, 22)
-        Me.MnuModificarColores.Text = "Modificar los colores del tema activo"
         '
         'Form1
         '
@@ -1071,4 +1084,6 @@ Partial Class Form1
     Private WithEvents MnuDesacoplar As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator21 As ToolStripSeparator
     Friend WithEvents MnuModificarColores As ToolStripMenuItem
+    Private WithEvents ToolStripSeparator22 As ToolStripSeparator
+    Private WithEvents MnuColorearTiposFicheros As ToolStripMenuItem
 End Class

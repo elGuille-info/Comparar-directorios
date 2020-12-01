@@ -4,6 +4,7 @@
 ' App.config:   jueves, ‎19‎ de ‎noviembre‎ de ‎2020, ‏‎20:27:35
 ' Form1.vb:     viernes, ‎20‎ de ‎noviembre‎ de ‎2020, ‏‎04:05:12
 '
+' Para las revisiones, ver el fichero Revisiones.txt
 '
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
@@ -62,6 +63,11 @@ Public Class Form1
     ''' Si se avisa de lo que se va a actualizar
     ''' </summary>
     Private avisarAlActualizar As Boolean = True
+
+    ''' <summary>
+    ''' Si se colorean los tipos de ficheros
+    ''' </summary>
+    Private colorearTiposFicheros As Boolean = True
 
     ''' <summary>
     ''' Avisar si se pulsa en actualizar estando activo el panel derecho
@@ -336,6 +342,8 @@ Public Class Form1
             If e.Control Then
                 If e.KeyCode = Keys.N Then
                     NuevoFichero()
+                ElseIf e.KeyCode = Keys.U Then
+                    IntercambiarPaneles()
                 End If
             ElseIf e.Alt Then
                 If e.KeyCode = Keys.C Then
@@ -454,6 +462,17 @@ Public Class Form1
     'Private WithEvents VisorTexto1 As VisorTexto
 
     Private Sub VisorTexto1_Guardado(fileName As String) 'Handles VisorTexto1.Guardado
+        Releer()
+    End Sub
+
+    ''' <summary>
+    ''' Intercambiar los paneles
+    ''' </summary>
+    Private Sub IntercambiarPaneles()
+        Dim dIzq = lvDirIzq.Tag
+        Dim dDer = lvDirDer.Tag
+        lvDirIzq.Tag = dDer
+        lvDirDer.Tag = dIzq
         Releer()
     End Sub
 
@@ -979,6 +998,7 @@ Public Class Form1
         'cfg.SetValue("Opciones", "CompararAlIniciar", compararAlIniciar)
         cfg.SetValue("Opciones", "AvisarActualizarEnIzquierdo", avisarActualizarEnIzquierdo)
         cfg.SetValue("Opciones", "AvisarAlActualizar", avisarAlActualizar)
+        cfg.SetValue("Opciones", "ColorearTiposFicheros", colorearTiposFicheros)
 
         cfg.SetKeyValue("Ventana", "Acoplada", VentanaAcoplada)
 
@@ -1052,7 +1072,10 @@ Public Class Form1
         avisarActualizarEnIzquierdo = cfg.GetValue("Opciones", "AvisarActualizarEnIzquierdo", True)
         MnuAvisarActualizarEnIzquierdo.Checked = avisarActualizarEnIzquierdo
         avisarAlActualizar = cfg.GetValue("Opciones", "AvisarAlActualizar", True)
+        colorearTiposFicheros = cfg.GetValue("Opciones", "ColorearTiposFicheros", True)
+
         MnuAvisarAlActualizar.Checked = avisarAlActualizar
+        MnuColorearTiposFicheros.Checked = colorearTiposFicheros
 
         VentanaAcoplada = cfg.GetValue("Ventana", "Acoplada", 0)
         'Me.Height = cfg.GetValue("Tamaño", "Height", Me.Height)
@@ -1180,7 +1203,6 @@ Public Class Form1
         lv.Items.Clear()
         If dir.Parent IsNot Nothing Then
             Dim it = lv.Items.Add("[..]")
-            'it.SubItems.Add("")
             'it.SubItems.Add($"[↑ {dir.Parent.Name.ToUpper}]")
             it.SubItems.Add($"[..\{dir.Parent.Name.ToUpper}]")
             it.SubItems.Add("[UP--DIR]")
@@ -1208,20 +1230,24 @@ Public Class Form1
         Next
         For Each fi In files
             Dim it = lv.Items.Add("")
-            If VisorTexto.ExtensionesCodigo.Contains(fi.Extension) Then
-                it.ForeColor = ItemCodigo(TemaActual)
-            ElseIf VisorTexto.ExtensionesImagen.Contains(fi.Extension) Then
-                it.ForeColor = ItemImagen(TemaActual)
-            ElseIf VisorTexto.ExtensionesTexto.Contains(fi.Extension) Then
-                it.ForeColor = ItemTexto(TemaActual)
-            ElseIf VisorTexto.ExtensionesWeb.Contains(fi.Extension) Then
-                it.ForeColor = ItemWeb(TemaActual)
-            ElseIf VisorTexto.ExtensionesZip.Contains(fi.Extension) Then
-                it.ForeColor = ItemZip(TemaActual)
-            ElseIf VisorTexto.ExtensionesVisor.Contains(fi.Extension) Then
-                it.ForeColor = ItemVisor(TemaActual)
-            ElseIf ExtensionesBin.Contains(fi.Extension) Then
-                it.ForeColor = ItemBin(TemaActual)
+            If colorearTiposFicheros Then
+                If VisorTexto.ExtensionesCodigo.Contains(fi.Extension) Then
+                    it.ForeColor = ItemCodigo(TemaActual)
+                ElseIf VisorTexto.ExtensionesImagen.Contains(fi.Extension) Then
+                    it.ForeColor = ItemImagen(TemaActual)
+                ElseIf VisorTexto.ExtensionesTexto.Contains(fi.Extension) Then
+                    it.ForeColor = ItemTexto(TemaActual)
+                ElseIf VisorTexto.ExtensionesWeb.Contains(fi.Extension) Then
+                    it.ForeColor = ItemWeb(TemaActual)
+                ElseIf VisorTexto.ExtensionesZip.Contains(fi.Extension) Then
+                    it.ForeColor = ItemZip(TemaActual)
+                ElseIf VisorTexto.ExtensionesVisor.Contains(fi.Extension) Then
+                    it.ForeColor = ItemVisor(TemaActual)
+                ElseIf ExtensionesBin.Contains(fi.Extension) Then
+                    it.ForeColor = ItemBin(TemaActual)
+                Else
+                    it.ForeColor = ItemIgual(TemaActual)
+                End If
             Else
                 it.ForeColor = ItemIgual(TemaActual)
             End If
@@ -1295,6 +1321,24 @@ Public Class Form1
         '   Es más pequeño      t<  DarkGreen
         '   Son iguales         =
 
+        ' Si no está asignado el panel activo, salir
+        If quePanel Is Nothing Then Return (-1, -1, -1)
+
+        ' Comparar siempre el izquierdo con el derecho, no el activo
+        If lvDirIzq IsNot quePanel Then
+            Dim res = ConfirmDialog.Show("Para comparar y actualizar, el panel activo debe ser el izquierdo." & vbCrLf & vbCrLf &
+                                         "¿Quieres que intercambie los paneles?",
+                                         "Comparar directorios",
+                                         DialogConfirmButtons.YesNo,
+                                         DialogConfirmIcon.Information)
+            If Not res = DialogConfirmResult.Yes Then
+                Return (-1, -1, -1)
+            End If
+            ' intercambiar los paneles
+            ' desde ahí se llama a Releer
+            IntercambiarPaneles()
+        End If
+
         Dim diIzq = TryCast(lvDirIzq.Tag, DirectoryInfo)
         If diIzq Is Nothing Then Return (-1, -1, -1)
         Dim diDer = TryCast(lvDirDer.Tag, DirectoryInfo)
@@ -1332,10 +1376,14 @@ Public Class Form1
             ' Asignar el color del texto predeterminado
             ' pero comprobando si es una de las extensiones indicadas
 
-            If VisorTexto.ExtensionesVisor.Contains(fiIzq.Extension) Then
-                itIzq.ForeColor = ItemVisor(TemaActual)
-            ElseIf ExtensionesBin.Contains(fiIzq.Extension) Then
-                itIzq.ForeColor = ItemBin(TemaActual)
+            If colorearTiposFicheros Then
+                If VisorTexto.ExtensionesVisor.Contains(fiIzq.Extension) Then
+                    itIzq.ForeColor = ItemVisor(TemaActual)
+                ElseIf ExtensionesBin.Contains(fiIzq.Extension) Then
+                    itIzq.ForeColor = ItemBin(TemaActual)
+                Else
+                    itIzq.ForeColor = ItemIgual(TemaActual)
+                End If
             Else
                 itIzq.ForeColor = ItemIgual(TemaActual)
             End If
@@ -1350,11 +1398,15 @@ Public Class Form1
                 Dim itDer = lvDirDer.Items(j)
 
                 ' Asignar el color del texto predeterminado
-                ' pero comprobando si es una de las extensiones indicadas
-                If VisorTexto.ExtensionesVisor.Contains(fiIzq.Extension) Then
-                    itDer.ForeColor = ItemVisor(TemaActual)
-                ElseIf ExtensionesBin.Contains(fiDer.Extension) Then
-                    itDer.ForeColor = ItemBin(TemaActual)
+                If colorearTiposFicheros Then
+                    ' pero comprobando si es una de las extensiones indicadas
+                    If VisorTexto.ExtensionesVisor.Contains(fiIzq.Extension) Then
+                        itDer.ForeColor = ItemVisor(TemaActual)
+                    ElseIf ExtensionesBin.Contains(fiDer.Extension) Then
+                        itDer.ForeColor = ItemBin(TemaActual)
+                    Else
+                        itDer.ForeColor = ItemIgual(TemaActual)
+                    End If
                 Else
                     itDer.ForeColor = ItemIgual(TemaActual)
                 End If
@@ -1804,6 +1856,9 @@ Public Class Form1
             avisarAlActualizar = Not ConfirmDialog.OpcionConfigurable.Value
         End If
 
+        Dim sbError As New StringBuilder
+        Dim numError = 0
+
         ' Los ficheros más recientes tendrán "f>" en el texto del item
         ' y los que no existen tendrán "x"
         For i = 0 To quePanel.Items.Count - 1
@@ -1815,11 +1870,35 @@ Public Class Form1
                 LabelInfo.Text = $"Copiando {fi.Name} a {dDest}..."
                 Application.DoEvents()
 
-                fi.CopyTo(fDest, True)
+                Try
+                    fi.CopyTo(fDest, True)
+                Catch ex As Exception
+                    numError += 1
+                    sbError.AppendFormat("{0} no copiado.{2}{1}", fi.Name, ex.Message, vbCrLf)
+                    LabelInfo.Text = ex.Message
+                    Application.DoEvents()
+                    Continue For
+                End Try
+
             End If
         Next
 
-        LabelInfo.Text = "Fin de actualizar ficheros más recientes (o que no existen en el destino)."
+        If numError > 0 Then
+            Dim s = $"no se han copiado {numError} ficheros"
+            If numError = 1 Then
+                s = "no se ha copiado 1 fichero"
+            End If
+            LabelInfo.Text = $"Fin de actualizar, hay {numError} {s}."
+
+            ConfirmDialog.Show(s.ToUpperFirstChar,
+                               "Actualizar recientes",
+                               DialogConfirmButtons.OK,
+                               DialogConfirmIcon.Information)
+        Else
+            LabelInfo.Text = "Fin de actualizar ficheros más recientes (o que no existen en el destino)."
+        End If
+
+
         Application.DoEvents()
 
         Releer()
@@ -1881,12 +1960,7 @@ Public Class Form1
     End Sub
 
     Private Sub BtnIntercambiar_Click(sender As Object, e As EventArgs) Handles BtnIntercambiar.Click, MnuFicIntercambiar.Click
-        Dim dIzq = lvDirIzq.Tag
-        Dim dDer = lvDirDer.Tag
-        lvDirIzq.Tag = dDer
-        lvDirDer.Tag = dIzq
-        Releer()
-
+        IntercambiarPaneles()
     End Sub
 
     Private Sub CboDirIzq_KeyUp(sender As Object, e As KeyEventArgs) Handles CboDirIzq.KeyUp
@@ -2386,6 +2460,12 @@ Public Class Form1
         avisarAlActualizar = MnuAvisarAlActualizar.Checked
     End Sub
 
+    Private Sub MnuColorearTiposFicheros_Click(sender As Object, e As EventArgs) Handles MnuColorearTiposFicheros.Click
+        MnuColorearTiposFicheros.Checked = Not MnuColorearTiposFicheros.Checked
+        colorearTiposFicheros = MnuColorearTiposFicheros.Checked
+        Releer()
+    End Sub
+
     Private Sub MnuFichero_DropDownOpening(sender As Object, e As EventArgs) Handles MnuFichero.DropDownOpening, MnuVentana.DropDownOpening, MnuOpciones.DropDownOpening, MnuTemas.DropDownOpening
         Dim tsmi = TryCast(sender, ToolStripMenuItem)
         If tsmi Is Nothing Then Return
@@ -2449,5 +2529,72 @@ Public Class Form1
         If fColores.ShowDialog = DialogResult.OK Then
 
         End If
+    End Sub
+
+    Private ReadOnly lvIzqColumnSort As New List(Of SortOrder)
+    Private ReadOnly lvDerColumnSort As New List(Of SortOrder)
+
+    Private Sub lvDir_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles lvDirIzq.ColumnClick, lvDirDer.ColumnClick
+        ' No clasificar por la columna cero
+        If e.Column = 0 Then Return
+
+        Dim lvDatos = TryCast(sender, ListView)
+        If lvDatos.Items.Count = 0 Then Return
+
+        Dim lvColumnSort As List(Of SortOrder)
+        If lvDatos Is lvDirIzq Then
+            lvColumnSort = lvIzqColumnSort
+        Else
+            lvColumnSort = lvDerColumnSort
+        End If
+
+        ' Crear una instancia de la clase que realizará la comparación
+        Dim oCompare As New ListViewColumnSort() 'New HashSet(Of String) From {lvDatos.Items(0).SubItems(e.Column).Text})
+
+        If lvColumnSort.Count = 0 Then
+            For i = 0 To lvDatos.Columns.Count - 1
+                lvColumnSort.Add(SortOrder.Ascending)
+            Next
+        End If
+        For i = 0 To lvDatos.Columns.Count - 1
+            If lvDatos.Columns(i).Text.StartsWith("↑") OrElse lvDatos.Columns(i).Text.StartsWith("↓") Then
+                lvDatos.Columns(i).Text = " " & lvDatos.Columns(i).Text.Substring(1)
+            End If
+        Next
+        If lvDatos.Columns(e.Column).Text.StartsWith("↑") = False AndAlso lvDatos.Columns(e.Column).Text.StartsWith("↓") = False Then
+            lvDatos.Columns(e.Column).Text = "↑" & lvDatos.Columns(e.Column).Text
+        End If
+        If lvColumnSort(e.Column) = SortOrder.Ascending Then
+            lvColumnSort(e.Column) = SortOrder.Descending
+            oCompare.Sorting = SortOrder.Descending
+            lvDatos.Columns(e.Column).Text = "↓" & lvDatos.Columns(e.Column).Text.Substring(1)
+            'ElseIf lvColumnSort(e.Column) = SortOrder.Descending Then
+            '    lvColumnSort(e.Column) = SortOrder.None
+            '    oCompare.Sorting = SortOrder.None
+        Else
+            lvColumnSort(e.Column) = SortOrder.Ascending
+            oCompare.Sorting = SortOrder.Ascending
+            lvDatos.Columns(e.Column).Text = "↑" & lvDatos.Columns(e.Column).Text.Substring(1)
+        End If
+        lvDatos.Sorting = oCompare.Sorting
+
+        ' La columna en la que se ha pulsado
+        oCompare.ColumnIndex = e.Column
+        Select Case e.Column
+            Case 0 ' para ponerlos normal
+                'oCompare.CompararPor = ListViewColumnSort.TipoCompare.Ninguno
+                oCompare.CompararPor = ListViewColumnSort.TipoCompare.Cadena
+            Case 2 ' tamaño
+                oCompare.CompararPor = ListViewColumnSort.TipoCompare.Numero
+            Case 3 ' Fecha
+                oCompare.CompararPor = ListViewColumnSort.TipoCompare.Fecha
+            Case Else
+                oCompare.CompararPor = ListViewColumnSort.TipoCompare.Cadena
+        End Select
+
+        ' Asignar la clase que implementa IComparer
+        ' y que se usará para realizar la comparación de cada elemento
+        lvDatos.ListViewItemSorter = oCompare
+
     End Sub
 End Class

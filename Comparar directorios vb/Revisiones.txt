@@ -1,0 +1,27 @@
+﻿Revisiones de Comparar directorios (y gsCommander)
+
+NOTA:
+    gsCommander en realidad es lo mismo que Comparar directorios
+    solo que empieza usando el tema Comandarte Norton en vez de el predeterminado.
+
+Hasta la fecha del 29-nov-2020 la numeración de las revisiones eran "a ojo"
+A partir de hoy (día 29 de noviembre) empeizo con la v1.0.0.150
+
+v1.0.0.150  29-nov-20   Se avisa si al comparar el panel activo no es el izquierdo
+                        y se cambia automáticamente si el usuario responde que SI, 
+                        en otro caso se cancela la comparación.
+                        Voy a añadir algunas teclas del CN para MS-DOS v4:
+                        Ctrl+U para intercambiar los paneles
+v1.0.0.151  01-dic-20   Opción para indicar si se colorean los ficheros según el tipo
+                        Clasificar lo mostrado al pulsar en las columnas del ListView
+
+
+TODO (por hacer)
+    29-nov-2020 Añadir las teclas del CN v4 para MS-DOS
+                Clasificar lo mostrado al pulsar en las columnas del ListView
+                Clasificar mediante combinaciones de teclas:
+                    Ctrl+F3 Nombre
+                    Ctrl+F4 Extensión
+                    Ctrl+F5 Fecha / Hora
+                    Ctrl+F6 Tamaño
+                    Ctrl+F7 Sin clasificar

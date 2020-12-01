@@ -73,6 +73,7 @@
     <Compile Include="ConfirmDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Extensiones.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +81,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ListViewColumnSort.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -135,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Folder_stuffed.WinVista.ico" />
+    <Content Include="Revisiones.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Editar Colores\Editar Colores.csproj">
