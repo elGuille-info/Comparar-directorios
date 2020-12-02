@@ -8,6 +8,10 @@
 
 
 # User-specific files
+**/.vs
+**/bin
+**/obj
+*.snk
 *.rsuser
 *.suo
 *.user
